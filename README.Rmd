@@ -121,6 +121,7 @@ for (i in seq_along(datasets)) {
 ## Get data of the servers:
 conn = datashield.login(logins = builder$build(), assign = TRUE)
 datashield.symbols(conn)
+ds.summary("D")
 ```
 
 ### Push and predict
