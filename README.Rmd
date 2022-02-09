@@ -1,0 +1,325 @@
+---
+title: DataSHIELD Use-case
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+source(here::here("R/generate-data.R"))
+source(here::here("R/create-model.R"))
+source(here::here("R/upload-data.R"))
+source(here::here("R/install-ds-packages.R"))
+
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "figures/"
+)
+
+library(ggplot2)
+library(ggsci)
+
+### Theme setup:
+## ==================================================================
+
+# Set font (if available):
+font = "Tinos"
+sysfonts::font_add_google(font, font)
+extrafont::loadfonts()
+ft = extrafont::fonttable()
+
+if (all(! grepl(font, x = ft$FamilyName))) stop("Cannot load font")
+
+# to determine width, use the latex package `layouts` and put
+# `\printinunitsof{mm}\prntlen{\textwidth}` into the tex file.
+textwidth = 148.92
+
+## Helper functions:
+## =====================================================================
+
+source(here::here("R/helper.R"))
+
+#' Open pdf files using evince on linux machines
+#' @param file to the pdf
+evince = function(file) system(paste0("evince ", file, " &"))
+```
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+## About the repository
+
+This repository contains a short use-case base on the three packages `ds.predict.base`, `ds.calibration`, and `ds.roc.glm`. The main intend is to have a use-case to demonstrate how to distributively evaluate a model using the distributed ROC-GLM.
+
+The following contains the preparation of test data and a test model as "setup" while the second part is the analysis. .
+
+### Structure of the repository
+
+TODO
+
+## Setup
+
+### Install packages
+
+Install all packages locally and also on the DataSHIELD test machine:
+
+```{r}
+remotes::install_github("difuture-lmu/ds.predict.base")
+remotes::install_github("difuture-lmu/ds.calibration")
+remotes::install_github("difuture-lmu/ds.roc.glm")
+```
+
+### Generate data and fit model
+
+The used data is the `GBSG2` from the `TH.data` packages. For further details see the help page `?TH.data::GBSG2`. The task is to predict whether hormonal therapy shows an improvement w.r.t. survival time. The model we are using is a random forest from the `ranger` package. The following code uses the `GBSG2` data, splits it into train and test data with 60 % for training and 40 % for testing. The test data is further split into 5 parts that are uploaded to DataSHIELD and used to simulate the distributed setup.
+
+```{r, eval=FALSE}
+source(here::here("R/generate-data.R"))
+source(here::here("R/create-model.R"))
+```
+
+### Install package on DataSHIELD and upload data
+
+```{r, eval=FALSE}
+source(here::here("R/upload-data.R"))
+source(here::here("R/install-ds-packages.R"))
+```
+
+## Analysis
+
+### Log into DataSHIELD test server
+
+```{r}
+library(DSI)
+library(DSOpal)
+library(dsBaseClient)
+
+library(ds.predict.base)
+library(ds.calibration)
+library(ds.roc.glm)
+
+library(ggplot2)
+
+builder = newDSLoginBuilder()
+
+surl     = "https://opal-demo.obiba.org/"
+username = "administrator"
+password = "password"
+
+datasets = paste0("SRV", seq_len(5L))
+for (i in seq_along(datasets)) {
+  builder$append(
+    server   = paste0("ds", i),
+    url      = surl,
+    user     = username,
+    password = password,
+    table    = paste0("DIFUTURE-TEST.", datasets[i])
+  )
+}
+
+## Get data of the servers:
+conn = datashield.login(logins = builder$build(), assign = TRUE)
+datashield.symbols(conn)
+```
+
+### Push and predict
+
+```{r}
+## Load the pre-calculated logistic regression:
+load(here::here("data/mod.Rda"))
+
+## Push the model to the servers:
+pushObject(conn, obj = mod)
+datashield.symbols(conn)
+
+## Predict the model on the data sets located at the servers:
+predictModel(conn, mod, "probs", predict_fun = "ranger:::predict.ranger(mod, data = D)$predictions")
+datashield.symbols(conn)
+```
+
+### Analyse calibration of the predictions
+
+```{r}
+brier = dsBrierScore(conn, "D$cens", "probs")
+brier
+
+cc = dsCalibrationCurve(conn, "D$cens", "probs")
+gg_cal = plotCalibrationCurve(cc, size = 1)
+gg_cal
+```
+
+```{r, include=FALSE}
+# Save figure for paper
+gg_cal_pub = gg_cal +
+  scale_color_uchicago() +
+  scale_fill_uchicago() +
+  theme_minimal(base_family = font) +
+  theme(
+    plot.title = element_text(size = 10),
+    plot.subtitle = element_text(size = 9),
+    axis.text = element_text(size = 7),
+    axis.title = element_text(size = 9),
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 9),
+    panel.border = element_rect(colour = "black", fill = NA, size = 0.5)
+  )
+
+ggsave(plot = gg_cal_pub,
+  filename = here::here("figures/analysis-distr-calibration.pdf"),
+  width = 0.7 * textwidth,
+  height = textwidth * 0.5,
+  units = "mm")
+
+# evince(here::here("figures/analysis-distr-calibration.pdf"))
+```
+
+### Evaluate the model using ROC analysis
+
+```{r}
+roc_glm = dsROCGLM(conn, "D$cens", "probs")
+gg_distr_roc = plot(roc_glm)
+gg_distr_roc
+```
+
+```{r, include=FALSE}
+# Save figure for paper
+df_auc = data.frame(lower = roc_glm$ci[1], upper = roc_glm$ci[2], auc = roc_glm$auc)
+
+gg_roc_pub = plot(roc_glm, plot_ci = FALSE) +
+  geom_errorbarh(data = df_auc,
+    aes_string(y = "0.1", xmin = "lower", xmax = "upper"), height = 0.05) +
+  geom_point(data = df_auc, aes_string(y = "0.1", x = "auc"), size = 3) +
+  geom_point(data = df_auc, aes_string(y = "0.1", x = "auc"), size = 1, color = "white") +
+  annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3) +
+  annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5) +
+  annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3) +
+  annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3) +
+  scale_color_uchicago() +
+  scale_fill_uchicago() +
+  theme_minimal(base_family = font) +
+  theme(
+    plot.title = element_text(size = 10),
+    plot.subtitle = element_text(size = 9),
+    axis.text = element_text(size = 7),
+    axis.title = element_text(size = 9),
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 9),
+    panel.border = element_rect(colour = "black", fill = NA, size = 0.5)
+  )
+
+ggsave(plot = gg_roc_pub,
+  filename = here::here("figures/analysis-distr-roc-glm.pdf"),
+  width = 0.5 * textwidth,
+  height = textwidth * 0.5,
+  units = "mm")
+
+# evince(here::here("figures/analysis-distr-roc-glm.pdf"))
+```
+
+
+## Cross check on pooled test data
+
+```{r}
+#' Calculate TPR and FPRs to plot the empirical ROC curve
+#'
+#' @param labels (`integer()`) True labels as 0-1-coded vector.
+#' @param scores (`numeric()`) Score values.
+#' @return (`data.frame()`) of the TPR and FPRs.
+simpleROC = function(labels, scores) {
+  labels = labels[order(scores, decreasing = TRUE)]
+  data.frame(
+    TPR = cumsum(labels) / sum(labels),
+    FPR = cumsum(! labels) / sum(! labels), labels)
+}
+
+# Load pooled test data and predict:
+dat_test = read.csv(here::here("data/data-test.csv"), stringsAsFactors = TRUE)
+probs = predict(mod, data = dat_test)$predictions
+
+# Calculate empirical AUC and compare with distributed ROC-GLM
+auc = pROC::auc(dat_test$cens, probs)
+c(auc_emp = auc, auc_distr_roc_glm = roc_glm$auc)
+
+# Calculate TPR and FPR values and add to distributed ROC-GLM plot
+plt_emp_roc_data = simpleROC(dat_test$cens, probs)
+
+gg_roc_pooled = plot(roc_glm) +
+  geom_line(data = plt_emp_roc_data, aes(x = FPR, y = TPR, color = "Empirical"))
+gg_roc_pooled
+
+# Calculate pooled brier score and calibration curve
+brier_pooled = mean((dat_test$cens - probs)^2)
+c(brier_pooled = brier_pooled, brier_distr = brier)
+
+cc_pooled = calibrationCurve("dat_test$cens", "probs", nbins = 10)
+
+# Visualize distributed calibration curve vs. pooled one:
+
+gg_cal_pooled = plotCalibrationCurve(cc, size = 1.5, individuals = FALSE) +
+    geom_line(data = cc_pooled, aes(x = prob, y = truth), color = "red")
+gg_cal_pooled
+```
+
+```{r, include=FALSE}
+# Save figure for paper
+gg_cal_pooled_pub = plotCalibrationCurve(cc, size = 1, individuals = FALSE) +
+    geom_line(data = cc_pooled, aes(x = prob, y = truth), color = "red") +
+  scale_color_uchicago() +
+  scale_fill_uchicago() +
+  theme_minimal(base_family = font) +
+  theme(
+    plot.title = element_text(size = 10),
+    plot.subtitle = element_text(size = 9),
+    axis.text = element_text(size = 7),
+    axis.title = element_text(size = 9),
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 9),
+    panel.border = element_rect(colour = "black", fill = NA, size = 0.5)
+  )
+
+ggsave(plot = gg_cal_pooled_pub,
+  filename = here::here("figures/analysis-distr-cal-pooled.pdf"),
+  width = 0.5 * textwidth,
+  height = textwidth * 0.5,
+  units = "mm")
+
+# evince(here::here("figures/analysis-distr-cal-pooled.pdf"))
+
+gg_roc_pooled_pub = plot(roc_glm, plot_ci = FALSE) +
+  geom_line(data = plt_emp_roc_data, aes(x = FPR, y = TPR), color = "red") +
+  geom_errorbarh(data = df_auc, aes_string(y = "0.1", xmin = "lower", xmax = "upper"), height = 0.05) +
+  geom_point(data = df_auc, aes_string(y = "0.1", x = "auc"), size = 3) +
+  geom_point(data = df_auc, aes_string(y = "0.1", x = "auc"), size = 1, color = "white") +
+  annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3, family = font) +
+  annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5, family = font) +
+  annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3, family = font) +
+  annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3, family = font) +
+  scale_color_uchicago() +
+  scale_fill_uchicago() +
+  theme_minimal(base_family = font) +
+  theme(
+    plot.title = element_text(size = 10),
+    plot.subtitle = element_text(size = 9),
+    axis.text = element_text(size = 7),
+    axis.title = element_text(size = 9),
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 9),
+    panel.border = element_rect(colour = "black", fill = NA, size = 0.5)
+  )
+
+ggsave(plot = gg_roc_pooled_pub,
+  filename = here::here("figures/analysis-distr-roc-glm-pooled.pdf"),
+  width = 0.5 * textwidth,
+  height = textwidth * 0.5,
+  units = "mm")
+
+# evince(here::here("figures/analysis-distr-roc-glm-pooled.pdf"))
+```
+
+
+## Log out from DataSHIELD servers
+
+```{r}
+datashield.logout(conn)
+```
