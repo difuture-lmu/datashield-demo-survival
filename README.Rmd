@@ -5,9 +5,9 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-source(here::here("R/generate-data.R"))
-source(here::here("R/create-model.R"))
+```{r, include=FALSE}
+#source(here::here("R/generate-data.R"))
+#source(here::here("R/create-model.R"))
 source(here::here("R/upload-data.R"))
 source(here::here("R/install-ds-packages.R"))
 
@@ -168,7 +168,7 @@ gg_cal_pub = gg_cal +
 ggsave(plot = gg_cal_pub,
   filename = here::here("figures/analysis-distr-calibration.pdf"),
   width = 0.7 * textwidth,
-  height = textwidth * 0.5,
+  height = textwidth * 0.4,
   units = "mm")
 
 # evince(here::here("figures/analysis-distr-calibration.pdf"))
@@ -235,7 +235,7 @@ simpleROC = function(labels, scores) {
 
 # Load pooled test data and predict:
 dat_test = read.csv(here::here("data/data-test.csv"), stringsAsFactors = TRUE)
-probs = predict(mod, data = dat_test)$predictions
+probs = ranger:::predict.ranger(mod, data = dat_test)$predictions
 
 # Calculate empirical AUC and compare with distributed ROC-GLM
 auc = pROC::auc(dat_test$cens, probs)
@@ -281,7 +281,7 @@ gg_cal_pooled_pub = plotCalibrationCurve(cc, size = 1, individuals = FALSE) +
 ggsave(plot = gg_cal_pooled_pub,
   filename = here::here("figures/analysis-distr-cal-pooled.pdf"),
   width = 0.5 * textwidth,
-  height = textwidth * 0.5,
+  height = textwidth * 0.4,
   units = "mm")
 
 # evince(here::here("figures/analysis-distr-cal-pooled.pdf"))
@@ -320,6 +320,6 @@ ggsave(plot = gg_roc_pooled_pub,
 
 ## Log out from DataSHIELD servers
 
-```{r}
+```{r, output=FALSE}
 datashield.logout(conn)
 ```
