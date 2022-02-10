@@ -16,47 +16,6 @@ IDX_TEST   = setdiff(IDX_ALL, IDX_TRAIN)
 set.seed(316)
 IDX_SERVER = sample(x = seq_len(NSERVER), size = length(IDX_TEST), replace = TRUE)
 
-## GENERATE DICTIONARY
-## ---------------------------------------------------------------- #
-
-#ll_vars = list()
-#ll_cats = list()
-#for (i in seq_along(dat)) {
-#  label = names(dat)[i]
-#  if (is.integer(dat[[i]])) {
-#    ll_vars = c(ll_vars, list(tibble::tribble(
-#      ~name, ~valueType, ~`label:en`,
-#      label, "integer", label
-#    )))
-#  }
-#  if (is.double(dat[[i]])) {
-#    ll_vars = c(ll_vars, list(tibble::tribble(
-#      ~name, ~valueType, ~`label:en`,
-#      label, "decimal", label
-#    )))
-#
-#  }
-#  if (is.factor(dat[[i]]) | is.character(dat[[i]])) {
-#    ll_vars = c(ll_vars, list(tibble::tribble(
-#      ~name, ~valueType, ~`label:en`,
-#      label, "text", label
-#    )))
-#    tmp = as.factor(dat[[i]])
-#    labels = levels(tmp)
-#    ll_labs = list()
-#    for (j in seq_along(labels)) {
-#      ll_labs = c(ll_labs, list(tibble::tribble(
-#        ~variable, ~name, ~missing, ~`label:en`,
-#        label, labels[j], sum(is.na(tmp[tmp == labels[j]])), labels[j]
-#      )))
-#    }
-#    ll_cats = c(ll_cats, list(do.call(rbind, ll_labs)))
-#  }
-#}
-#variables = do.call(rbind, ll_vars)
-#categories = do.call(rbind, ll_cats)
-#
-#d = opalr::dictionary.apply(dat, variables, categories)
 
 
 ## SPLIT DATA AND SAVE

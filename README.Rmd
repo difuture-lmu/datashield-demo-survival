@@ -6,8 +6,8 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include=FALSE}
-#source(here::here("R/generate-data.R"))
-#source(here::here("R/create-model.R"))
+source(here::here("R/generate-data.R"))
+source(here::here("R/create-model.R"))
 source(here::here("R/upload-data.R"))
 source(here::here("R/install-ds-packages.R"))
 
@@ -35,11 +35,6 @@ if (all(! grepl(font, x = ft$FamilyName))) stop("Cannot load font")
 # to determine width, use the latex package `layouts` and put
 # `\printinunitsof{mm}\prntlen{\textwidth}` into the tex file.
 textwidth = 148.92
-
-## Helper functions:
-## =====================================================================
-
-source(here::here("R/helper.R"))
 
 #' Open pdf files using evince on linux machines
 #' @param file to the pdf
@@ -178,7 +173,18 @@ ggsave(plot = gg_cal_pub,
 ### Evaluate the model using ROC analysis
 
 ```{r}
-roc_glm = dsROCGLM(conn, "D$cens", "probs")
+# Get the l2 sensitivity
+l2s = dsL2Sens(conn, "D", "probs")
+epsilon = 0.3
+delta = 0.2
+
+# Amount of noise added:
+sqrt(2 * log(1.25 / delta)) * l2s / epsilon
+
+
+# Calculate ROC-GLM
+roc_glm = dsROCGLM(conn, "D$cens", "probs", epsilon = epsilon,
+  delta = delta, dat_name = "D")
 gg_distr_roc = plot(roc_glm)
 gg_distr_roc
 ```

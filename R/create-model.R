@@ -24,7 +24,7 @@ dat_train = read.csv(here::here("data/data-train.csv"), stringsAsFactors = TRUE)
 #   control = ctrl, ntree = 100, mtry = 4, trace = TRUE, data = dat_train)
 
 set.seed(1618)
-mod = ranger::ranger(cens ~ age + tsize + tgrade + pnodes + progrec + estrec, data = dat_train)
+mod = ranger::ranger(cens ~ horTh + age + tsize + tgrade + pnodes + progrec + estrec, data = dat_train)
 
 object.size(mod) / 1024^2
 
