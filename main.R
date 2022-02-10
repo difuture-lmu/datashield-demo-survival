@@ -51,12 +51,25 @@ predictModel(conn, mod, "probs", predict_fun = "ranger:::predict.ranger(mod, dat
 datashield.symbols(conn)
 
 # Get the l2 sensitivity
-dsL2Sens(conn, "D", "probs")
+(l2s = dsL2Sens(conn, "D", "probs"))
 
 #l2sens("dat_test", "probs", cols = cols)
 
 # Calculate ROC-GLM
-roc_glm = dsROCGLM(conn, "D$cens", "probs", epsilon = 0.2, delta = 0.2, dat_name = "D")
+roc_glm2 = dsROCGLM(conn, "D$cens", "probs", epsilon = 0.2, delta = 0.2, dat_name = "D",
+  seed = 123, seed_object = "D")
+
+gg_distr_roc = plot(roc_glm)
+gg_distr_roc
+
+roc_glm$auc
+roc_glm1$auc
+roc_glm2$auc
+
+roc_glm$parameter
+roc_glm1$parameter
+roc_glm2$parameter
+
 
 datashield.logout(conn)
 

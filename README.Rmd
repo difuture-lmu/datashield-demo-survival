@@ -184,7 +184,7 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$cens", "probs", epsilon = epsilon,
-  delta = delta, dat_name = "D")
+  delta = delta, dat_name = "D", seed = 123, seed_object = "D")
 gg_distr_roc = plot(roc_glm)
 gg_distr_roc
 ```
