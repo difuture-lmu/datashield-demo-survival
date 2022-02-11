@@ -141,6 +141,8 @@ brier = dsBrierScore(conn, "D$cens", "probs")
 brier
 
 cc = dsCalibrationCurve(conn, "D$cens", "probs")
+cc
+
 gg_cal = plotCalibrationCurve(cc, size = 1)
 gg_cal
 ```
@@ -254,7 +256,7 @@ c(auc_emp = auc, auc_distr_roc_glm = roc_glm$auc)
 plt_emp_roc_data = simpleROC(dat_test$cens, probs)
 
 gg_roc_pooled = plot(roc_glm) +
-  geom_line(data = plt_emp_roc_data, aes(x = FPR, y = TPR, color = "Empirical"))
+  geom_line(data = plt_emp_roc_data, aes(x = FPR, y = TPR), color = "red")
 gg_roc_pooled
 
 # Calculate pooled brier score and calibration curve
