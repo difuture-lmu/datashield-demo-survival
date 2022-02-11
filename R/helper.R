@@ -118,11 +118,11 @@ toLogit = function(x) log(x / (1 - x))
 
 #' Calculate the variance of the logit AUC based on DeLong
 #'
-#' @param score (`numeric()`) Scores of the respective label.
+#' @param scores (`numeric()`) Scores of the respective label.
 #' @param truth (`integer()`) True labels coded a 0 and 1.
 #' @return (`numeric(1)`) Variance of the AUC based on DeLong.
 deLongVar = function(scores, truth) {
-  checkmate::assertNumeric(x = score, any.missing = FALSE, len = length(truth))
+  checkmate::assertNumeric(x = scores, any.missing = FALSE, len = length(truth))
   checkmate::assertIntegerish(x = truth, lower = 0, upper = 1, any.missing = FALSE)
 
   # survivor functions for diseased and non diseased:

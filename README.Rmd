@@ -143,6 +143,15 @@ brier
 cc = dsCalibrationCurve(conn, "D$cens", "probs")
 cc
 
+ll_tab = list()
+for (i in seq_along(cc$individuals)) {
+  ll_tab[[i]] = c(i, cc$individuals[[i]]$n)
+}
+tab = do.call(rbind, ll_tab)
+tab = as.data.frame(rbind(tab, colSums(tab)))
+colnames(tab) = c("Server", cc$individuals[[1]]$bin)
+knitr::kable(tab, format = "latex")
+
 gg_cal = plotCalibrationCurve(cc, size = 1)
 gg_cal
 ```
@@ -252,6 +261,10 @@ probs = ranger:::predict.ranger(mod, data = dat_test)$predictions
 auc = pROC::auc(dat_test$cens, probs)
 c(auc_emp = auc, auc_distr_roc_glm = roc_glm$auc)
 
+source(here::here("R/helper.R"))
+logitToAUC(pepeCI(toLogit(auc), 0.05, deLongVar(probs, dat_test$cens)))
+
+
 # Calculate TPR and FPR values and add to distributed ROC-GLM plot
 plt_emp_roc_data = simpleROC(dat_test$cens, probs)
 
@@ -292,7 +305,7 @@ gg_cal_pooled_pub = plotCalibrationCurve(cc, size = 1, individuals = FALSE) +
 ggsave(plot = gg_cal_pooled_pub,
   filename = here::here("figures/analysis-distr-cal-pooled.pdf"),
   width = 0.5 * textwidth,
-  height = textwidth * 0.4,
+  height = textwidth * 0.5,
   units = "mm")
 
 # evince(here::here("figures/analysis-distr-cal-pooled.pdf"))
