@@ -30,7 +30,7 @@ sysfonts::font_add_google(font, font)
 extrafont::loadfonts()
 ft = extrafont::fonttable()
 
-if (all(! grepl(font, x = ft$FamilyName))) stop("Cannot load font")
+#if (all(! grepl(font, x = ft$FamilyName))) stop("Cannot load font")
 
 # to determine width, use the latex package `layouts` and put
 # `\printinunitsof{mm}\prntlen{\textwidth}` into the tex file.
