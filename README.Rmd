@@ -197,6 +197,7 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 roc_glm = dsROCGLM(conn, "D$cens", "probs", epsilon = epsilon,
   delta = delta, dat_name = "D", seed = 123, seed_object = "D")
 roc_glm
+roc_glm$ci
 
 gg_distr_roc = plot(roc_glm)
 gg_distr_roc
@@ -300,7 +301,8 @@ gg_cal_pooled_pub = plotCalibrationCurve(cc, size = 1, individuals = FALSE) +
     legend.title = element_text(size = 10),
     legend.text = element_text(size = 9),
     panel.border = element_rect(colour = "black", fill = NA, size = 0.5)
-  )
+  ) +
+  ggtitle("", "")
 
 ggsave(plot = gg_cal_pooled_pub,
   filename = here::here("figures/analysis-distr-cal-pooled.pdf"),
