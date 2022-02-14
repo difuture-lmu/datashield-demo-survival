@@ -31,9 +31,11 @@ sysfonts::font_add_google(font, font)
 extrafont::loadfonts()
 ft = extrafont::fonttable()
 
-my_theme = theme_minimal()
-if (all(! grepl(font, x = ft$FamilyName))) my_theme = theme_minimal(base_family = font)
-
+if (all(! grepl(font, x = ft$FamilyName))) {
+  my_theme = theme_minimal()
+} else {
+  my_theme = theme_minimal(base_family = font)
+}
 # to determine width, use the latex package `layouts` and put
 # `\printinunitsof{mm}\prntlen{\textwidth}` into the tex file.
 textwidth = 148.92
