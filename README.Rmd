@@ -30,7 +30,8 @@ sysfonts::font_add_google(font, font)
 extrafont::loadfonts()
 ft = extrafont::fonttable()
 
-if (all(! grepl(font, x = ft$FamilyName))) stop("Cannot load font")
+my_theme = theme_minimal()
+if (all(! grepl(font, x = ft$FamilyName))) my_theme = theme_minimal(base_family = font)
 
 # to determine width, use the latex package `layouts` and put
 # `\printinunitsof{mm}\prntlen{\textwidth}` into the tex file.
@@ -161,7 +162,7 @@ gg_cal
 gg_cal_pub = gg_cal +
   scale_color_uchicago() +
   scale_fill_uchicago() +
-  theme_minimal(base_family = font) +
+  my_theme +
   theme(
     plot.title = element_text(size = 10),
     plot.subtitle = element_text(size = 9),
@@ -195,7 +196,7 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$cens", "probs", epsilon = epsilon,
-  delta = delta, dat_name = "D", seed = 123, seed_object = "D")
+  delta = delta, dat_name = "D", seed = 123, seed_object = "probs")
 roc_glm
 roc_glm$ci
 
@@ -218,7 +219,7 @@ gg_roc_pub = plot(roc_glm, plot_ci = FALSE) +
   annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3) +
   scale_color_uchicago() +
   scale_fill_uchicago() +
-  theme_minimal(base_family = font) +
+  my_theme +
   theme(
     plot.title = element_text(size = 10),
     plot.subtitle = element_text(size = 9),
@@ -292,7 +293,7 @@ gg_cal_pooled_pub = plotCalibrationCurve(cc, size = 1, individuals = FALSE) +
     geom_line(data = cc_pooled, aes(x = prob, y = truth), color = "red") +
   scale_color_uchicago() +
   scale_fill_uchicago() +
-  theme_minimal(base_family = font) +
+  my_theme +
   theme(
     plot.title = element_text(size = 10),
     plot.subtitle = element_text(size = 9),
@@ -317,13 +318,13 @@ gg_roc_pooled_pub = plot(roc_glm, plot_ci = FALSE) +
   geom_errorbarh(data = df_auc, aes_string(y = "0.1", xmin = "lower", xmax = "upper"), height = 0.05) +
   geom_point(data = df_auc, aes_string(y = "0.1", x = "auc"), size = 3) +
   geom_point(data = df_auc, aes_string(y = "0.1", x = "auc"), size = 1, color = "white") +
-  annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3, family = font) +
-  annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5, family = font) +
-  annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3, family = font) +
-  annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3, family = font) +
+  # annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3, family = font) +
+  # annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5, family = font) +
+  # annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3, family = font) +
+  # annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3, family = font) +
   scale_color_uchicago() +
   scale_fill_uchicago() +
-  theme_minimal(base_family = font) +
+  my_theme +
   theme(
     plot.title = element_text(size = 10),
     plot.subtitle = element_text(size = 9),
@@ -333,6 +334,20 @@ gg_roc_pooled_pub = plot(roc_glm, plot_ci = FALSE) +
     legend.text = element_text(size = 9),
     panel.border = element_rect(colour = "black", fill = NA, size = 0.5)
   )
+
+if (all(! grepl(font, x = ft$FamilyName))) {
+  gg_roc_pooled_pub = gg_roc_pooled_pub +
+    annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3, family = font) +
+    annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5, family = font) +
+    annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3, family = font) +
+    annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3, family = font)
+} else {
+  gg_roc_pooled_pub = gg_roc_pooled_pub +
+    annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3) +
+    annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5) +
+    annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3) +
+    annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3)
+}
 
 ggsave(plot = gg_roc_pooled_pub,
   filename = here::here("figures/analysis-distr-roc-glm-pooled.pdf"),
