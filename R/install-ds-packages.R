@@ -15,7 +15,7 @@ tmp = opalr::dsadmin.install_package(opal = opal, pkg = "ranger")
 #tmp = opalr::dsadmin.install_package(opal = opal, pkg = "partykit")
 
 
-pkgs = c("ds.predict.base", "ds.calibration", "ds.roc.glm")#, "rmmodeldata")
+pkgs = c("dsPredictBase", "dsCalibration", "dsROCGLM")#, "rmmodeldata")
 for (pkg in pkgs) {
   cat("Install package", pkg, "\n")
   check1 = opalr::dsadmin.install_github_package(opal = opal, pkg = pkg, username = "difuture-lmu", ref = "main")

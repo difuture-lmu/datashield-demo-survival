@@ -49,7 +49,7 @@ evince = function(file) system(paste0("evince ", file, " &"))
 
 ## About the repository
 
-This repository contains a short use-case base on the three packages `ds.predict.base`, `ds.calibration`, and `ds.roc.glm`. The main intend is to have a use-case to demonstrate how to distributively evaluate a model using the distributed ROC-GLM.
+This repository contains a short use-case base on the three packages `dsPredictBase`, `dsCalibration`, and `dsROCGLM`. The main intend is to have a use-case to demonstrate how to distributively evaluate a model using the distributed ROC-GLM.
 
 The following contains the preparation of test data and a test model as "setup" while the second part is the analysis. .
 
@@ -64,9 +64,9 @@ TODO
 Install all packages locally and also on the DataSHIELD test machine:
 
 ```{r}
-remotes::install_github("difuture-lmu/ds.predict.base")
-remotes::install_github("difuture-lmu/ds.calibration")
-remotes::install_github("difuture-lmu/ds.roc.glm")
+remotes::install_github("difuture-lmu/dsPredictBase")
+remotes::install_github("difuture-lmu/dsCalibration")
+remotes::install_github("difuture-lmu/dsROCGLM")
 ```
 
 ### Generate data and fit model
@@ -94,9 +94,9 @@ library(DSI)
 library(DSOpal)
 library(dsBaseClient)
 
-library(ds.predict.base)
-library(ds.calibration)
-library(ds.roc.glm)
+library(dsPredictBase)
+library(dsCalibration)
+library(dsROCGLM)
 
 library(ggplot2)
 
@@ -216,10 +216,10 @@ gg_roc_pub = plot(roc_glm, plot_ci = FALSE) +
     aes_string(y = "0.1", xmin = "lower", xmax = "upper"), height = 0.05) +
   geom_point(data = df_auc, aes_string(y = "0.1", x = "auc"), size = 3) +
   geom_point(data = df_auc, aes_string(y = "0.1", x = "auc"), size = 1, color = "white") +
-  annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3) +
-  annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5) +
-  annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3) +
-  annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3) +
+  # annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3) +
+  # annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5) +
+  # annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3) +
+  # annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3) +
   scale_color_uchicago() +
   scale_fill_uchicago() +
   my_theme +
@@ -232,6 +232,21 @@ gg_roc_pub = plot(roc_glm, plot_ci = FALSE) +
     legend.text = element_text(size = 9),
     panel.border = element_rect(colour = "black", fill = NA, size = 0.5)
   )
+
+if (all(! grepl(font, x = ft$FamilyName))) {
+  gg_roc_pub = gg_roc_pub +
+    annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3) +
+    annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5) +
+    annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3) +
+    annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3)
+} else {
+  gg_roc_pub = gg_roc_pub +
+    annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3, family = font) +
+    annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5, family = font) +
+    annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3, family = font) +
+    annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3, family = font)
+}
+
 
 ggsave(plot = gg_roc_pub,
   filename = here::here("figures/analysis-distr-roc-glm.pdf"),
@@ -340,16 +355,16 @@ gg_roc_pooled_pub = plot(roc_glm, plot_ci = FALSE) +
 
 if (all(! grepl(font, x = ft$FamilyName))) {
   gg_roc_pooled_pub = gg_roc_pooled_pub +
-    annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3, family = font) +
-    annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5, family = font) +
-    annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3, family = font) +
-    annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3, family = font)
-} else {
-  gg_roc_pooled_pub = gg_roc_pooled_pub +
     annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3) +
     annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5) +
     annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3) +
     annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3)
+} else {
+  gg_roc_pooled_pub = gg_roc_pooled_pub +
+    annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3, family = font) +
+    annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5, family = font) +
+    annotate("text", x = df_auc$lower, y = 0.1, label = round(df_auc$lower, 2), hjust = 1.2, size = 3, family = font) +
+    annotate("text", x = df_auc$upper, y = 0.1, label = round(df_auc$upper, 2), hjust = -0.2, size = 3, family = font)
 }
 
 ggsave(plot = gg_roc_pooled_pub,
