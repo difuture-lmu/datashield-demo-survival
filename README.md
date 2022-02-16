@@ -27,45 +27,78 @@ Install all packages locally and also on the DataSHIELD test machine:
 
 ``` r
 remotes::install_github("difuture-lmu/dsPredictBase")
+#> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsPredictBase@HEAD
-#>      checking for file ‘/tmp/RtmppMQBsb/remotesa9aa1f2f8190/difuture-lmu-dsPredictBase-aab7c2d/DESCRIPTION’ ...  ✔  checking for file ‘/tmp/RtmppMQBsb/remotesa9aa1f2f8190/difuture-lmu-dsPredictBase-aab7c2d/DESCRIPTION’
-#>   ─  preparing ‘dsPredictBase’:
-#>      checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
-#>   ─  checking for LF line-endings in source and make files and shell scripts
-#>   ─  checking for empty or unneeded directories
-#>        NB: this package now depends on R (>= 3.5.0)
-#>        WARNING: Added dependency on R >= 3.5.0 because serialized objects in
-#>      serialize/load version 3 cannot be read in older versions of R.
-#>      File(s) containing such objects:
-#>        ‘dsPredictBase/inst/extdata/mod.Rda’
-#>   ─  building ‘dsPredictBase_0.0.1.tar.gz’
-#>      
-#> 
-#> Installing package into '/home/daniel/.R/library'
+#> dsBaseClient (NA -> d22ba5140...) [GitHub]
+#> backports    (NA -> 1.4.1       ) [CRAN]
+#> DSI          (NA -> 1.3.0       ) [CRAN]
+#> checkmate    (NA -> 2.0.0       ) [CRAN]
+#> DSOpal       (NA -> 1.3.1       ) [CRAN]
+#> Downloading GitHub repo datashield/dsBaseClient@HEAD
+#> gridExtra    (NA -> 2.3   ) [CRAN]
+#> dotCall64    (NA -> 1.0-1 ) [CRAN]
+#> data.table   (NA -> 1.14.2) [CRAN]
+#> pbapply      (NA -> 1.5-0 ) [CRAN]
+#> mathjaxr     (NA -> 1.4-0 ) [CRAN]
+#> maps         (NA -> 3.4.0 ) [CRAN]
+#> viridis      (NA -> 0.6.2 ) [CRAN]
+#> spam         (NA -> 2.8-0 ) [CRAN]
+#> panelaggr... (NA -> 0.1.1 ) [CRAN]
+#> metafor      (NA -> 3.0-2 ) [CRAN]
+#> fields       (NA -> 13.3  ) [CRAN]
+#> DSI          (NA -> 1.3.0 ) [CRAN]
+#> Installing 12 packages: gridExtra, dotCall64, data.table, pbapply, mathjaxr, maps, viridis, spam, panelaggregation, metafor, fields, DSI
+#> Installing packages into '/home/runner/work/_temp/Library'
+#> (as 'lib' is unspecified)
+#> * checking for file ‘/tmp/RtmpVk0D7b/remotes8efe96e199d/datashield-dsBaseClient-d22ba51/DESCRIPTION’ ... OK
+#> * preparing ‘dsBaseClient’:
+#> * checking DESCRIPTION meta-information ... OK
+#> * checking for LF line-endings in source and make files and shell scripts
+#> * checking for empty or unneeded directories
+#> * building ‘dsBaseClient_6.1.1.tar.gz’
+#> Installing package into '/home/runner/work/_temp/Library'
+#> (as 'lib' is unspecified)
+#> Installing 4 packages: backports, DSI, checkmate, DSOpal
+#> Installing packages into '/home/runner/work/_temp/Library'
+#> (as 'lib' is unspecified)
+#> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (d22ba514) has not changed since last install.
+#>   Use `force = TRUE` to force installation
+#> * checking for file ‘/tmp/RtmpVk0D7b/remotes8efe761eadf8/difuture-lmu-dsPredictBase-aab7c2d/DESCRIPTION’ ... OK
+#> * preparing ‘dsPredictBase’:
+#> * checking DESCRIPTION meta-information ... OK
+#> * checking for LF line-endings in source and make files and shell scripts
+#> * checking for empty or unneeded directories
+#>   NB: this package now depends on R (>= 3.5.0)
+#>   WARNING: Added dependency on R >= 3.5.0 because serialized objects in
+#>   serialize/load version 3 cannot be read in older versions of R.
+#>   File(s) containing such objects:
+#>     ‘dsPredictBase/inst/extdata/mod.Rda’
+#> * building ‘dsPredictBase_0.0.1.tar.gz’
+#> Installing package into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
 remotes::install_github("difuture-lmu/dsCalibration")
+#> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsCalibration@HEAD
-#>      checking for file ‘/tmp/RtmppMQBsb/remotesa9aa4409cc9/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ...  ✔  checking for file ‘/tmp/RtmppMQBsb/remotesa9aa4409cc9/difuture-lmu-dsCalibration-1805632/DESCRIPTION’
-#>   ─  preparing ‘dsCalibration’:
-#>      checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
-#>   ─  checking for LF line-endings in source and make files and shell scripts
-#>   ─  checking for empty or unneeded directories
-#>   ─  building ‘dsCalibration_0.0.1.tar.gz’
-#>      
 #> 
-#> Installing package into '/home/daniel/.R/library'
+#> * checking for file ‘/tmp/RtmpVk0D7b/remotes8efe1a68b4a/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
+#> * preparing ‘dsCalibration’:
+#> * checking DESCRIPTION meta-information ... OK
+#> * checking for LF line-endings in source and make files and shell scripts
+#> * checking for empty or unneeded directories
+#> * building ‘dsCalibration_0.0.1.tar.gz’
+#> Installing package into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
 remotes::install_github("difuture-lmu/dsROCGLM")
+#> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsROCGLM@HEAD
-#>      checking for file ‘/tmp/RtmppMQBsb/remotesa9aa63b97dd2/difuture-lmu-dsROCGLM-ecf0a8f/DESCRIPTION’ ...  ✔  checking for file ‘/tmp/RtmppMQBsb/remotesa9aa63b97dd2/difuture-lmu-dsROCGLM-ecf0a8f/DESCRIPTION’
-#>   ─  preparing ‘dsROCGLM’:
-#>      checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
-#>   ─  checking for LF line-endings in source and make files and shell scripts
-#>   ─  checking for empty or unneeded directories
-#>   ─  building ‘dsROCGLM_0.0.1.tar.gz’
-#>      
 #> 
-#> Installing package into '/home/daniel/.R/library'
+#> * checking for file ‘/tmp/RtmpVk0D7b/remotes8efe48b45dba/difuture-lmu-dsROCGLM-2d76f54/DESCRIPTION’ ... OK
+#> * preparing ‘dsROCGLM’:
+#> * checking DESCRIPTION meta-information ... OK
+#> * checking for LF line-endings in source and make files and shell scripts
+#> * checking for empty or unneeded directories
+#> * building ‘dsROCGLM_0.0.1.tar.gz’
+#> Installing package into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
 ```
 
@@ -130,14 +163,12 @@ for (i in seq_along(datasets)) {
 conn = datashield.login(logins = builder$build(), assign = TRUE)
 #> 
 #> Logging into the collaborating servers
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Login ds1 [============>---------------------------------------------------------------]  17% / 0s  Login ds2 [========================>---------------------------------------------------]  33% / 0s  Login ds3 [=====================================>--------------------------------------]  50% / 1s  Login ds4 [==================================================>-------------------------]  67% / 1s  Login ds5 [==============================================================>-------------]  83% / 2s  Logged in all servers [================================================================] 100% / 2s
 #> 
 #>   No variables have been specified. 
 #>   All the variables in the table 
 #>   (the whole dataset) will be assigned to R!
 #> 
 #> Assigning table data...
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Assigning ds1 (DIFUTURE-TEST.SRV1) [=======>-------------------------------------------]  17% / 2s  Assigning ds2 (DIFUTURE-TEST.SRV2) [================>----------------------------------]  33% / 2s  Assigning ds3 (DIFUTURE-TEST.SRV3) [=========================>-------------------------]  50% / 2s  Assigning ds4 (DIFUTURE-TEST.SRV4) [=================================>-----------------]  67% / 3s  Assigning ds5 (DIFUTURE-TEST.SRV5) [=========================================>---------]  83% / 3s  Assigned all tables [==================================================================] 100% / 3s
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"
@@ -154,23 +185,6 @@ datashield.symbols(conn)
 #> $ds5
 #> [1] "D"
 ds.summary("D")
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (exists("D")) [-----------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (exists("D")) [=======>------------------------------------------]  17% / 0s  Checking ds2 (exists("D")) [=========>-------------------------------------------------]  17% / 0s  Getting aggregate ds2 (exists("D")) [================>---------------------------------]  33% / 0s  Checking ds3 (exists("D")) [===================>---------------------------------------]  33% / 1s  Getting aggregate ds3 (exists("D")) [========================>-------------------------]  50% / 1s  Checking ds4 (exists("D")) [=============================>-----------------------------]  50% / 1s  Getting aggregate ds4 (exists("D")) [================================>-----------------]  67% / 1s  Checking ds5 (exists("D")) [======================================>--------------------]  67% / 1s  Getting aggregate ds5 (exists("D")) [=========================================>--------]  83% / 1s  Aggregated (exists("D")) [=============================================================] 100% / 1s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Aggregating ds1 (classDS("D")) [========>----------------------------------------------]  17% / 0s  Aggregating ds2 (classDS("D")) [=================>-------------------------------------]  33% / 0s  Aggregating ds3 (classDS("D")) [===========================>---------------------------]  50% / 0s  Aggregating ds4 (classDS("D")) [====================================>------------------]  67% / 0s  Aggregating ds5 (classDS("D")) [=============================================>---------]  83% / 0s  Checking ds1 (classDS("D")) [----------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (classDS("D")) [=======>-----------------------------------------]  17% / 0s  Checking ds2 (classDS("D")) [=========>------------------------------------------------]  17% / 0s  Getting aggregate ds2 (classDS("D")) [===============>---------------------------------]  33% / 0s  Checking ds3 (classDS("D")) [==================>---------------------------------------]  33% / 0s  Getting aggregate ds3 (classDS("D")) [=======================>-------------------------]  50% / 0s  Checking ds4 (classDS("D")) [============================>-----------------------------]  50% / 0s  Getting aggregate ds4 (classDS("D")) [================================>----------------]  67% / 0s  Checking ds5 (classDS("D")) [======================================>-------------------]  67% / 0s  Getting aggregate ds5 (classDS("D")) [========================================>--------]  83% / 0s  Aggregated (classDS("D")) [============================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (isValidDS(D)) [----------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (isValidDS(D)) [=======================>-------------------------]  50% / 0s  Aggregated (isValidDS(D)) [============================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (dimDS("D")) [------------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (dimDS("D")) [=========================>-------------------------]  50% / 0s  Aggregated (dimDS("D")) [==============================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (colnamesDS("D")) [-------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (colnamesDS("D")) [======================>-----------------------]  50% / 0s  Aggregated (colnamesDS("D")) [=========================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds2 (isValidDS(D)) [----------------------------------------------------------]   0% / 0s  Getting aggregate ds2 (isValidDS(D)) [=======================>-------------------------]  50% / 0s  Aggregated (isValidDS(D)) [============================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds2 (dimDS("D")) [------------------------------------------------------------]   0% / 0s  Getting aggregate ds2 (dimDS("D")) [=========================>-------------------------]  50% / 0s  Aggregated (dimDS("D")) [==============================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds2 (colnamesDS("D")) [-------------------------------------------------------]   0% / 0s  Getting aggregate ds2 (colnamesDS("D")) [======================>-----------------------]  50% / 0s  Aggregated (colnamesDS("D")) [=========================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds3 (isValidDS(D)) [----------------------------------------------------------]   0% / 0s  Getting aggregate ds3 (isValidDS(D)) [=======================>-------------------------]  50% / 0s  Aggregated (isValidDS(D)) [============================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds3 (dimDS("D")) [------------------------------------------------------------]   0% / 0s  Getting aggregate ds3 (dimDS("D")) [=========================>-------------------------]  50% / 0s  Aggregated (dimDS("D")) [==============================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds3 (colnamesDS("D")) [-------------------------------------------------------]   0% / 0s  Getting aggregate ds3 (colnamesDS("D")) [======================>-----------------------]  50% / 0s  Aggregated (colnamesDS("D")) [=========================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds4 (isValidDS(D)) [----------------------------------------------------------]   0% / 0s  Getting aggregate ds4 (isValidDS(D)) [=======================>-------------------------]  50% / 0s  Aggregated (isValidDS(D)) [============================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds4 (dimDS("D")) [------------------------------------------------------------]   0% / 0s  Getting aggregate ds4 (dimDS("D")) [=========================>-------------------------]  50% / 0s  Aggregated (dimDS("D")) [==============================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds4 (colnamesDS("D")) [-------------------------------------------------------]   0% / 0s  Getting aggregate ds4 (colnamesDS("D")) [======================>-----------------------]  50% / 0s  Aggregated (colnamesDS("D")) [=========================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds5 (isValidDS(D)) [----------------------------------------------------------]   0% / 0s  Getting aggregate ds5 (isValidDS(D)) [=======================>-------------------------]  50% / 0s  Aggregated (isValidDS(D)) [============================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds5 (dimDS("D")) [------------------------------------------------------------]   0% / 0s  Waiting...  (dimDS("D")) [-------------------------------------------------------------]   0% / 0s  Checking ds5 (dimDS("D")) [------------------------------------------------------------]   0% / 0s  Getting aggregate ds5 (dimDS("D")) [=========================>-------------------------]  50% / 0s  Aggregated (dimDS("D")) [==============================================================] 100% / 0s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds5 (colnamesDS("D")) [-------------------------------------------------------]   0% / 0s  Getting aggregate ds5 (colnamesDS("D")) [======================>-----------------------]  50% / 0s  Aggregated (colnamesDS("D")) [=========================================================] 100% / 0s
 #> $ds1
 #> $ds1$class
 #> [1] "data.frame"
@@ -182,8 +196,8 @@ ds.summary("D")
 #> [1] 10
 #> 
 #> $ds1$`variables held`
-#>  [1] "horTh"    "age"      "menostat" "tsize"    "tgrade"   "pnodes"   "progrec"  "estrec"   "time"    
-#> [10] "cens"    
+#>  [1] "horTh"    "age"      "menostat" "tsize"    "tgrade"   "pnodes"  
+#>  [7] "progrec"  "estrec"   "time"     "cens"    
 #> 
 #> 
 #> $ds2
@@ -197,8 +211,8 @@ ds.summary("D")
 #> [1] 10
 #> 
 #> $ds2$`variables held`
-#>  [1] "horTh"    "age"      "menostat" "tsize"    "tgrade"   "pnodes"   "progrec"  "estrec"   "time"    
-#> [10] "cens"    
+#>  [1] "horTh"    "age"      "menostat" "tsize"    "tgrade"   "pnodes"  
+#>  [7] "progrec"  "estrec"   "time"     "cens"    
 #> 
 #> 
 #> $ds3
@@ -212,8 +226,8 @@ ds.summary("D")
 #> [1] 10
 #> 
 #> $ds3$`variables held`
-#>  [1] "horTh"    "age"      "menostat" "tsize"    "tgrade"   "pnodes"   "progrec"  "estrec"   "time"    
-#> [10] "cens"    
+#>  [1] "horTh"    "age"      "menostat" "tsize"    "tgrade"   "pnodes"  
+#>  [7] "progrec"  "estrec"   "time"     "cens"    
 #> 
 #> 
 #> $ds4
@@ -227,8 +241,8 @@ ds.summary("D")
 #> [1] 10
 #> 
 #> $ds4$`variables held`
-#>  [1] "horTh"    "age"      "menostat" "tsize"    "tgrade"   "pnodes"   "progrec"  "estrec"   "time"    
-#> [10] "cens"    
+#>  [1] "horTh"    "age"      "menostat" "tsize"    "tgrade"   "pnodes"  
+#>  [7] "progrec"  "estrec"   "time"     "cens"    
 #> 
 #> 
 #> $ds5
@@ -242,8 +256,8 @@ ds.summary("D")
 #> [1] 10
 #> 
 #> $ds5$`variables held`
-#>  [1] "horTh"    "age"      "menostat" "tsize"    "tgrade"   "pnodes"   "progrec"  "estrec"   "time"    
-#> [10] "cens"
+#>  [1] "horTh"    "age"      "menostat" "tsize"    "tgrade"   "pnodes"  
+#>  [7] "progrec"  "estrec"   "time"     "cens"
 ```
 
 ### Push and predict
@@ -254,8 +268,7 @@ load(here::here("data/mod.Rda"))
 
 ## Push the model to the servers:
 pushObject(conn, obj = mod)
-#> [2022-02-15 12:55:00] Your object is bigger than 1 MB (7.2 MB). Uploading larger objects may take some time.
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (mod <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-54-...  Finalizing assignment ds1 (mod <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00...  Checking ds2 (mod <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-54-...  Finalizing assignment ds2 (mod <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00...  Checking ds3 (mod <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-54-...  Finalizing assignment ds3 (mod <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00...  Checking ds4 (mod <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-54-...  Finalizing assignment ds4 (mod <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00...  Checking ds5 (mod <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-54-...  Finalizing assignment ds5 (mod <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00...  Assigned expr. (mod <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-5...
+#> [2022-02-16 08:51:59] Your object is bigger than 1 MB (7.2 MB). Uploading larger objects may take some time.
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"   "mod"
@@ -274,7 +287,6 @@ datashield.symbols(conn)
 
 ## Predict the model on the data sets located at the servers:
 predictModel(conn, mod, "probs", predict_fun = "ranger:::predict.ranger(mod, data = D)$predictions")
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Checking ds2 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Checking ds3 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Checking ds4 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Checking ds5 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Waiting...  (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05...  Checking ds1 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Checking ds2 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Checking ds3 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Checking ds4 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Checking ds5 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Waiting...  (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05...  Checking ds1 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Finalizing assignment ds1 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-...  Checking ds2 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Finalizing assignment ds2 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-...  Checking ds3 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Finalizing assignment ds3 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-...  Checking ds4 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Finalizing assignment ds4 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-...  Checking ds5 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-0...  Finalizing assignment ds5 (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-...  Assigned expr. (probs <- assignPredictModel("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00...
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"     "mod"   "probs"
@@ -296,92 +308,90 @@ datashield.symbols(conn)
 
 ``` r
 brier = dsBrierScore(conn, "D$cens", "probs")
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (brierScore("D$cens", "probs")) [-----------------------------------------]   0% / 0s  Getting aggregate ds1 (brierScore("D$cens", "probs")) [====>---------------------------]  17% / 0s  Checking ds2 (brierScore("D$cens", "probs")) [======>----------------------------------]  17% / 0s  Getting aggregate ds2 (brierScore("D$cens", "probs")) [==========>---------------------]  33% / 0s  Checking ds3 (brierScore("D$cens", "probs")) [=============>---------------------------]  33% / 1s  Getting aggregate ds3 (brierScore("D$cens", "probs")) [===============>----------------]  50% / 1s  Checking ds4 (brierScore("D$cens", "probs")) [===================>---------------------]  50% / 1s  Getting aggregate ds4 (brierScore("D$cens", "probs")) [====================>-----------]  67% / 1s  Checking ds5 (brierScore("D$cens", "probs")) [==========================>--------------]  67% / 1s  Getting aggregate ds5 (brierScore("D$cens", "probs")) [==========================>-----]  83% / 1s  Aggregated (brierScore("D$cens", "probs")) [===========================================] 100% / 1s
 brier
-#> [1] 0.2264
+#> [1] 0.2263843
 
 cc = dsCalibrationCurve(conn, "D$cens", "probs")
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calibrationCurve("D$cens", "probs", 10, TRUE)) [-------------------------]   0% / 0s  Getting aggregate ds1 (calibrationCurve("D$cens", "probs", 10, TRUE)) [==>-------------]  17% / 0s  Checking ds2 (calibrationCurve("D$cens", "probs", 10, TRUE)) [===>---------------------]  17% / 0s  Getting aggregate ds2 (calibrationCurve("D$cens", "probs", 10, TRUE)) [====>-----------]  33% / 0s  Checking ds3 (calibrationCurve("D$cens", "probs", 10, TRUE)) [=======>-----------------]  33% / 0s  Getting aggregate ds3 (calibrationCurve("D$cens", "probs", 10, TRUE)) [=======>--------]  50% / 0s  Checking ds4 (calibrationCurve("D$cens", "probs", 10, TRUE)) [===========>-------------]  50% / 0s  Getting aggregate ds4 (calibrationCurve("D$cens", "probs", 10, TRUE)) [==========>-----]  67% / 1s  Checking ds5 (calibrationCurve("D$cens", "probs", 10, TRUE)) [================>--------]  67% / 1s  Getting aggregate ds5 (calibrationCurve("D$cens", "probs", 10, TRUE)) [============>---]  83% / 1s  Aggregated (calibrationCurve("D$cens", "probs", 10, TRUE)) [===========================] 100% / 1s
 cc
 #> $individuals
 #> $individuals$ds1
-#>          bin  n lower upper  truth   prob
-#> 1    (0,0.1]  0   0.0   0.1     NA     NA
-#> 2  (0.1,0.2]  5   0.1   0.2 0.6000 0.1311
-#> 3  (0.2,0.3] 12   0.2   0.3 0.2500 0.2429
-#> 4  (0.3,0.4] 12   0.3   0.4 0.2500 0.3453
-#> 5  (0.4,0.5]  7   0.4   0.5 0.4286 0.4428
-#> 6  (0.5,0.6]  5   0.5   0.6 0.6000 0.5423
-#> 7  (0.6,0.7]  9   0.6   0.7 0.7778 0.6504
-#> 8  (0.7,0.8]  1   0.7   0.8     NA     NA
-#> 9  (0.8,0.9]  1   0.8   0.9     NA     NA
-#> 10   (0.9,1]  0   0.9   1.0     NA     NA
+#>          bin  n lower upper     truth      prob
+#> 1    (0,0.1]  0   0.0   0.1        NA        NA
+#> 2  (0.1,0.2]  5   0.1   0.2 0.6000000 0.1311465
+#> 3  (0.2,0.3] 12   0.2   0.3 0.2500000 0.2428933
+#> 4  (0.3,0.4] 12   0.3   0.4 0.2500000 0.3453467
+#> 5  (0.4,0.5]  7   0.4   0.5 0.4285714 0.4428137
+#> 6  (0.5,0.6]  5   0.5   0.6 0.6000000 0.5422724
+#> 7  (0.6,0.7]  9   0.6   0.7 0.7777778 0.6504166
+#> 8  (0.7,0.8]  1   0.7   0.8        NA        NA
+#> 9  (0.8,0.9]  1   0.8   0.9        NA        NA
+#> 10   (0.9,1]  0   0.9   1.0        NA        NA
 #> 
 #> $individuals$ds2
-#>          bin  n lower upper  truth   prob
-#> 1    (0,0.1]  0   0.0   0.1     NA     NA
-#> 2  (0.1,0.2]  7   0.1   0.2 0.1429 0.1723
-#> 3  (0.2,0.3]  7   0.2   0.3 0.2857 0.2375
-#> 4  (0.3,0.4] 10   0.3   0.4 0.3000 0.3518
-#> 5  (0.4,0.5] 10   0.4   0.5 0.7000 0.4386
-#> 6  (0.5,0.6]  7   0.5   0.6 0.5714 0.5393
-#> 7  (0.6,0.7]  2   0.6   0.7     NA     NA
-#> 8  (0.7,0.8]  3   0.7   0.8     NA     NA
-#> 9  (0.8,0.9]  0   0.8   0.9     NA     NA
-#> 10   (0.9,1]  0   0.9   1.0     NA     NA
+#>          bin  n lower upper     truth      prob
+#> 1    (0,0.1]  0   0.0   0.1        NA        NA
+#> 2  (0.1,0.2]  7   0.1   0.2 0.1428571 0.1722572
+#> 3  (0.2,0.3]  7   0.2   0.3 0.2857143 0.2375414
+#> 4  (0.3,0.4] 10   0.3   0.4 0.3000000 0.3517808
+#> 5  (0.4,0.5] 10   0.4   0.5 0.7000000 0.4385546
+#> 6  (0.5,0.6]  7   0.5   0.6 0.5714286 0.5392888
+#> 7  (0.6,0.7]  2   0.6   0.7        NA        NA
+#> 8  (0.7,0.8]  3   0.7   0.8        NA        NA
+#> 9  (0.8,0.9]  0   0.8   0.9        NA        NA
+#> 10   (0.9,1]  0   0.9   1.0        NA        NA
 #> 
 #> $individuals$ds3
-#>          bin  n lower upper  truth   prob
-#> 1    (0,0.1]  1   0.0   0.1     NA     NA
-#> 2  (0.1,0.2]  4   0.1   0.2     NA     NA
-#> 3  (0.2,0.3]  9   0.2   0.3 0.3333 0.2361
-#> 4  (0.3,0.4]  7   0.3   0.4 0.2857 0.3609
-#> 5  (0.4,0.5] 14   0.4   0.5 0.3571 0.4513
-#> 6  (0.5,0.6] 10   0.5   0.6 0.6000 0.5455
-#> 7  (0.6,0.7]  5   0.6   0.7 0.8000 0.6481
-#> 8  (0.7,0.8]  4   0.7   0.8     NA     NA
-#> 9  (0.8,0.9]  1   0.8   0.9     NA     NA
-#> 10   (0.9,1]  0   0.9   1.0     NA     NA
+#>          bin  n lower upper     truth      prob
+#> 1    (0,0.1]  1   0.0   0.1        NA        NA
+#> 2  (0.1,0.2]  4   0.1   0.2        NA        NA
+#> 3  (0.2,0.3]  9   0.2   0.3 0.3333333 0.2360727
+#> 4  (0.3,0.4]  7   0.3   0.4 0.2857143 0.3609350
+#> 5  (0.4,0.5] 14   0.4   0.5 0.3571429 0.4513132
+#> 6  (0.5,0.6] 10   0.5   0.6 0.6000000 0.5455135
+#> 7  (0.6,0.7]  5   0.6   0.7 0.8000000 0.6481305
+#> 8  (0.7,0.8]  4   0.7   0.8        NA        NA
+#> 9  (0.8,0.9]  1   0.8   0.9        NA        NA
+#> 10   (0.9,1]  0   0.9   1.0        NA        NA
 #> 
 #> $individuals$ds4
-#>          bin  n lower upper  truth   prob
-#> 1    (0,0.1]  2   0.0   0.1     NA     NA
-#> 2  (0.1,0.2]  9   0.1   0.2 0.1111 0.1509
-#> 3  (0.2,0.3]  4   0.2   0.3     NA     NA
-#> 4  (0.3,0.4] 16   0.3   0.4 0.4375 0.3469
-#> 5  (0.4,0.5] 10   0.4   0.5 0.5000 0.4733
-#> 6  (0.5,0.6]  6   0.5   0.6 0.6667 0.5543
-#> 7  (0.6,0.7]  7   0.6   0.7 0.7143 0.6400
-#> 8  (0.7,0.8]  5   0.7   0.8 0.8000 0.7561
-#> 9  (0.8,0.9]  0   0.8   0.9     NA     NA
-#> 10   (0.9,1]  0   0.9   1.0     NA     NA
+#>          bin  n lower upper     truth      prob
+#> 1    (0,0.1]  2   0.0   0.1        NA        NA
+#> 2  (0.1,0.2]  9   0.1   0.2 0.1111111 0.1508689
+#> 3  (0.2,0.3]  4   0.2   0.3        NA        NA
+#> 4  (0.3,0.4] 16   0.3   0.4 0.4375000 0.3469428
+#> 5  (0.4,0.5] 10   0.4   0.5 0.5000000 0.4732906
+#> 6  (0.5,0.6]  6   0.5   0.6 0.6666667 0.5543423
+#> 7  (0.6,0.7]  7   0.6   0.7 0.7142857 0.6399625
+#> 8  (0.7,0.8]  5   0.7   0.8 0.8000000 0.7561251
+#> 9  (0.8,0.9]  0   0.8   0.9        NA        NA
+#> 10   (0.9,1]  0   0.9   1.0        NA        NA
 #> 
 #> $individuals$ds5
-#>          bin  n lower upper  truth   prob
-#> 1    (0,0.1]  0   0.0   0.1     NA     NA
-#> 2  (0.1,0.2]  4   0.1   0.2     NA     NA
-#> 3  (0.2,0.3]  7   0.2   0.3 0.2857 0.2501
-#> 4  (0.3,0.4] 15   0.3   0.4 0.3333 0.3530
-#> 5  (0.4,0.5] 14   0.4   0.5 0.4286 0.4463
-#> 6  (0.5,0.6]  5   0.5   0.6 0.6000 0.5261
-#> 7  (0.6,0.7]  8   0.6   0.7 0.3750 0.6172
-#> 8  (0.7,0.8]  7   0.7   0.8 0.4286 0.7325
-#> 9  (0.8,0.9]  3   0.8   0.9     NA     NA
-#> 10   (0.9,1]  0   0.9   1.0     NA     NA
+#>          bin  n lower upper     truth      prob
+#> 1    (0,0.1]  0   0.0   0.1        NA        NA
+#> 2  (0.1,0.2]  4   0.1   0.2        NA        NA
+#> 3  (0.2,0.3]  7   0.2   0.3 0.2857143 0.2500613
+#> 4  (0.3,0.4] 15   0.3   0.4 0.3333333 0.3529974
+#> 5  (0.4,0.5] 14   0.4   0.5 0.4285714 0.4463042
+#> 6  (0.5,0.6]  5   0.5   0.6 0.6000000 0.5260634
+#> 7  (0.6,0.7]  8   0.6   0.7 0.3750000 0.6171521
+#> 8  (0.7,0.8]  7   0.7   0.8 0.4285714 0.7324551
+#> 9  (0.8,0.9]  3   0.8   0.9        NA        NA
+#> 10   (0.9,1]  0   0.9   1.0        NA        NA
 #> 
 #> 
 #> $aggregated
-#>          bin lower upper  truth   prob missing_ratio
-#> 1    (0,0.1]   0.0   0.1 0.0000 0.0000       1.00000
-#> 2  (0.1,0.2]   0.1   0.2 0.1724 0.1110       0.27586
-#> 3  (0.2,0.3]   0.2   0.3 0.2564 0.2167       0.10256
-#> 4  (0.3,0.4]   0.3   0.4 0.3333 0.3506       0.00000
-#> 5  (0.4,0.5]   0.4   0.5 0.4727 0.4506       0.00000
-#> 6  (0.5,0.6]   0.5   0.6 0.6061 0.5424       0.00000
-#> 7  (0.6,0.7]   0.6   0.7 0.6129 0.5971       0.06452
-#> 8  (0.7,0.8]   0.7   0.8 0.3500 0.4454       0.40000
-#> 9  (0.8,0.9]   0.8   0.9 0.0000 0.0000       1.00000
-#> 10   (0.9,1]   0.9   1.0    NaN    NaN           NaN
+#>          bin lower upper     truth      prob missing_ratio
+#> 1    (0,0.1]   0.0   0.1 0.0000000 0.0000000    1.00000000
+#> 2  (0.1,0.2]   0.1   0.2 0.1724138 0.1110122    0.27586207
+#> 3  (0.2,0.3]   0.2   0.3 0.2564103 0.2167331    0.10256410
+#> 4  (0.3,0.4]   0.3   0.4 0.3333333 0.3505760    0.00000000
+#> 5  (0.4,0.5]   0.4   0.5 0.4727273 0.4506326    0.00000000
+#> 6  (0.5,0.6]   0.5   0.6 0.6060606 0.5423603    0.00000000
+#> 7  (0.6,0.7]   0.6   0.7 0.6129032 0.5971405    0.06451613
+#> 8  (0.7,0.8]   0.7   0.8 0.3500000 0.4453905    0.40000000
+#> 9  (0.8,0.9]   0.8   0.9 0.0000000 0.0000000    1.00000000
+#> 10   (0.9,1]   0.9   1.0       NaN       NaN           NaN
 
 ll_tab = list()
 for (i in seq_along(cc$individuals)) {
@@ -410,72 +420,48 @@ gg_cal
 ``` r
 # Get the l2 sensitivity
 (l2s = dsL2Sens(conn, "D", "probs"))
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (dimDS("D")) [------------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (dimDS("D")) [=======>-------------------------------------------]  17% / 0s  Checking ds2 (dimDS("D")) [=========>--------------------------------------------------]  17% / 0s  Getting aggregate ds2 (dimDS("D")) [================>----------------------------------]  33% / 0s  Checking ds3 (dimDS("D")) [===================>----------------------------------------]  33% / 0s  Getting aggregate ds3 (dimDS("D")) [=========================>-------------------------]  50% / 1s  Checking ds4 (dimDS("D")) [=============================>------------------------------]  50% / 1s  Getting aggregate ds4 (dimDS("D")) [=================================>-----------------]  67% / 1s  Checking ds5 (dimDS("D")) [=======================================>--------------------]  67% / 1s  Getting aggregate ds5 (dimDS("D")) [=========================================>---------]  83% / 1s  Aggregated (dimDS("D")) [==============================================================] 100% / 1s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-...  Finalizing assignment ds1 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00...  Checking ds2 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-...  Finalizing assignment ds2 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00...  Checking ds3 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-...  Finalizing assignment ds3 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00...  Checking ds4 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-...  Finalizing assignment ds4 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00...  Checking ds5 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-...  Finalizing assignment ds5 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00...  Assigned expr. (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-5...
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (l2sens("D", "probs", 91, "xXcols")) [------------------------------------]   0% / 0s  Getting aggregate ds1 (l2sens("D", "probs", 91, "xXcols")) [===>-----------------------]  17% / 0s  Checking ds2 (l2sens("D", "probs", 91, "xXcols")) [=====>------------------------------]  17% / 0s  Getting aggregate ds2 (l2sens("D", "probs", 91, "xXcols")) [========>------------------]  33% / 0s  Checking ds3 (l2sens("D", "probs", 91, "xXcols")) [===========>------------------------]  33% / 0s  Getting aggregate ds3 (l2sens("D", "probs", 91, "xXcols")) [=============>-------------]  50% / 1s  Checking ds4 (l2sens("D", "probs", 91, "xXcols")) [=================>------------------]  50% / 1s  Getting aggregate ds4 (l2sens("D", "probs", 91, "xXcols")) [=================>---------]  67% / 1s  Checking ds5 (l2sens("D", "probs", 91, "xXcols")) [=======================>------------]  67% / 1s  Getting aggregate ds5 (l2sens("D", "probs", 91, "xXcols")) [=====================>-----]  83% / 1s  Aggregated (...) [=====================================================================] 100% / 1s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (rmDS("xXcols")) [--------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (rmDS("xXcols")) [=======>---------------------------------------]  17% / 0s  Checking ds2 (rmDS("xXcols")) [========>-----------------------------------------------]  17% / 0s  Getting aggregate ds2 (rmDS("xXcols")) [===============>-------------------------------]  33% / 0s  Checking ds3 (rmDS("xXcols")) [==================>-------------------------------------]  33% / 0s  Getting aggregate ds3 (rmDS("xXcols")) [=======================>-----------------------]  50% / 1s  Checking ds4 (rmDS("xXcols")) [===========================>----------------------------]  50% / 1s  Getting aggregate ds4 (rmDS("xXcols")) [==============================>----------------]  67% / 1s  Checking ds5 (rmDS("xXcols")) [====================================>-------------------]  67% / 1s  Getting aggregate ds5 (rmDS("xXcols")) [======================================>--------]  83% / 1s  Aggregated (rmDS("xXcols")) [==========================================================] 100% / 1s
-#> [1] 0.01599
+#> [1] 0.01599175
 epsilon = 0.3
 delta = 0.2
 
 # Amount of noise added:
 sqrt(2 * log(1.25 / delta)) * l2s / epsilon
-#> [1] 0.1021
+#> [1] 0.1020519
 
 
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$cens", "probs", epsilon = epsilon,
   delta = delta, dat_name = "D", seed_object = "D$cens")
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (dimDS("D")) [------------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (dimDS("D")) [=======>-------------------------------------------]  17% / 0s  Checking ds2 (dimDS("D")) [=========>--------------------------------------------------]  17% / 0s  Getting aggregate ds2 (dimDS("D")) [================>----------------------------------]  33% / 0s  Checking ds3 (dimDS("D")) [===================>----------------------------------------]  33% / 1s  Getting aggregate ds3 (dimDS("D")) [=========================>-------------------------]  50% / 1s  Checking ds4 (dimDS("D")) [=============================>------------------------------]  50% / 1s  Getting aggregate ds4 (dimDS("D")) [=================================>-----------------]  67% / 1s  Checking ds5 (dimDS("D")) [=======================================>--------------------]  67% / 1s  Getting aggregate ds5 (dimDS("D")) [=========================================>---------]  83% / 1s  Aggregated (dimDS("D")) [==============================================================] 100% / 1s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-...  Finalizing assignment ds1 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00...  Checking ds2 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-...  Finalizing assignment ds2 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00...  Checking ds3 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-...  Finalizing assignment ds3 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00...  Checking ds4 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-...  Finalizing assignment ds4 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00...  Checking ds5 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-...  Finalizing assignment ds5 (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00...  Assigned expr. (xXcols <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-5...
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (l2sens("D", "probs", 91, "xXcols")) [------------------------------------]   0% / 0s  Getting aggregate ds1 (l2sens("D", "probs", 91, "xXcols")) [===>-----------------------]  17% / 0s  Checking ds2 (l2sens("D", "probs", 91, "xXcols")) [=====>------------------------------]  17% / 0s  Getting aggregate ds2 (l2sens("D", "probs", 91, "xXcols")) [========>------------------]  33% / 0s  Checking ds3 (l2sens("D", "probs", 91, "xXcols")) [===========>------------------------]  33% / 1s  Getting aggregate ds3 (l2sens("D", "probs", 91, "xXcols")) [=============>-------------]  50% / 1s  Checking ds4 (l2sens("D", "probs", 91, "xXcols")) [=================>------------------]  50% / 1s  Getting aggregate ds4 (l2sens("D", "probs", 91, "xXcols")) [=================>---------]  67% / 1s  Checking ds5 (l2sens("D", "probs", 91, "xXcols")) [=======================>------------]  67% / 1s  Getting aggregate ds5 (l2sens("D", "probs", 91, "xXcols")) [=====================>-----]  83% / 1s  Aggregated (...) [=====================================================================] 100% / 1s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (rmDS("xXcols")) [--------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (rmDS("xXcols")) [=======>---------------------------------------]  17% / 0s  Checking ds2 (rmDS("xXcols")) [========>-----------------------------------------------]  17% / 0s  Getting aggregate ds2 (rmDS("xXcols")) [===============>-------------------------------]  33% / 0s  Checking ds3 (rmDS("xXcols")) [==================>-------------------------------------]  33% / 1s  Getting aggregate ds3 (rmDS("xXcols")) [=======================>-----------------------]  50% / 1s  Checking ds4 (rmDS("xXcols")) [===========================>----------------------------]  50% / 1s  Getting aggregate ds4 (rmDS("xXcols")) [==============================>----------------]  67% / 1s  Checking ds5 (rmDS("xXcols")) [====================================>-------------------]  67% / 1s  Getting aggregate ds5 (rmDS("xXcols")) [======================================>--------]  83% / 1s  Aggregated (rmDS("xXcols")) [==========================================================] 100% / 1s
 #> 
-#> [2022-02-15 12:58:16] L2 sensitivity is: 0.016
+#> [2022-02-16 08:56:29] L2 sensitivity is: 0.016
 #> 
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (l2s <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-54-...  Finalizing assignment ds1 (l2s <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00...  Checking ds2 (l2s <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-54-...  Finalizing assignment ds2 (l2s <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00...  Checking ds3 (l2s <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-54-...  Finalizing assignment ds3 (l2s <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00...  Checking ds4 (l2s <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-54-...  Finalizing assignment ds4 (l2s <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00...  Checking ds5 (l2s <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-54-...  Finalizing assignment ds5 (l2s <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00...  Assigned expr. (l2s <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00-05-55-5...
+#> [2022-02-16 08:56:32] Initializing ROC-GLM
 #> 
-#> [2022-02-15 12:58:17] Initializing ROC-GLM
-#> 
-#> [2022-02-15 12:58:17] Host: Received scores of negative response
-#> 
-#> [2022-02-15 12:58:17] Receiving negative scores
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [--------------]   0% / 1s  Getting aggregate ds1 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [>----]  17% / 1s  Checking ds2 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [=>------------]  17% / 1s  Getting aggregate ds2 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [=>---]  33% / 1s  Checking ds3 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [====>---------]  33% / 1s  Getting aggregate ds3 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [=>---]  50% / 1s  Checking ds4 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [======>-------]  50% / 1s  Getting aggregate ds4 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [==>--]  67% / 1s  Checking ds5 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [========>-----]  67% / 1s  Getting aggregate ds5 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [===>-]  83% / 1s  Aggregated (...) [=====================================================================] 100% / 1s
-#> [2022-02-15 12:58:18] Host: Pushing pooled scores
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (pooled_scores <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00...  Finalizing assignment ds1 (pooled_scores <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-0...  Checking ds2 (pooled_scores <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00...  Finalizing assignment ds2 (pooled_scores <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-0...  Checking ds3 (pooled_scores <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00...  Finalizing assignment ds3 (pooled_scores <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-0...  Checking ds4 (pooled_scores <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00...  Finalizing assignment ds4 (pooled_scores <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-0...  Checking ds5 (pooled_scores <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-00...  Finalizing assignment ds5 (pooled_scores <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-0...  Assigned expr. (pooled_scores <- decodeBinary("58-0a-00-00-00-03-00-04-01-02-00-03-05-00-00-00-...
-#> [2022-02-15 12:58:19] Server: Calculating placement values and parts for ROC-GLM
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (roc_data <- rocGLMFrame("D$cens", "probs", "pooled_scores")) [-----------]   0% / 0s  Finalizing assignment ds1 (roc_data <- rocGLMFrame("D$cens", "probs", "pooled_scores")) []  17%...  Checking ds2 (roc_data <- rocGLMFrame("D$cens", "probs", "pooled_scores")) [=>---------]  17% / 0s  Finalizing assignment ds2 (roc_data <- rocGLMFrame("D$cens", "probs", "pooled_scores")) []  33%...  Checking ds3 (roc_data <- rocGLMFrame("D$cens", "probs", "pooled_scores")) [===>-------]  33% / 1s  Finalizing assignment ds3 (roc_data <- rocGLMFrame("D$cens", "probs", "pooled_scores")) []  50%...  Checking ds4 (roc_data <- rocGLMFrame("D$cens", "probs", "pooled_scores")) [=====>-----]  50% / 1s  Finalizing assignment ds4 (roc_data <- rocGLMFrame("D$cens", "probs", "pooled_scores")) []  67%...  Checking ds5 (roc_data <- rocGLMFrame("D$cens", "probs", "pooled_scores")) [======>----]  67% / 1s  Finalizing assignment ds5 (roc_data <- rocGLMFrame("D$cens", "probs", "pooled_scores")) []  83%...  Assigned expr. (roc_data <- rocGLMFrame("D$cens", "probs", "pooled_scores")) [=========] 100% / 1s
-#> [2022-02-15 12:58:20] Server: Calculating probit regression to obtain ROC-GLM
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]   0% / 0s  Getting aggregate ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]  17% / 0s  Getting aggregate ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  33% / 1s  Getting aggregate ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  50% / 1s  Getting aggregate ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  67% / 1s  Getting aggregate ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Aggregated (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [====] 100% / 1s
-#> [2022-02-15 12:58:21] Deviance of iter1=52.6631
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]   0% / 0s  Getting aggregate ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]  17% / 0s  Getting aggregate ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  33% / 1s  Getting aggregate ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  50% / 1s  Getting aggregate ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  67% / 1s  Getting aggregate ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Aggregated (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [====] 100% / 1s
-#> [2022-02-15 12:58:22] Deviance of iter2=79.5328
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]   0% / 0s  Getting aggregate ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]  17% / 0s  Getting aggregate ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  33% / 1s  Getting aggregate ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  50% / 1s  Getting aggregate ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  67% / 1s  Getting aggregate ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Aggregated (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [====] 100% / 1s
-#> [2022-02-15 12:58:23] Deviance of iter3=90.7944
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]   0% / 0s  Getting aggregate ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]  17% / 0s  Getting aggregate ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  33% / 1s  Getting aggregate ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  50% / 1s  Getting aggregate ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  67% / 1s  Getting aggregate ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Aggregated (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [====] 100% / 1s
-#> [2022-02-15 12:58:24] Deviance of iter4=91.5055
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]   0% / 0s  Getting aggregate ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]  17% / 0s  Getting aggregate ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  33% / 1s  Getting aggregate ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  50% / 1s  Getting aggregate ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  67% / 1s  Getting aggregate ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Aggregated (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [====] 100% / 1s
-#> [2022-02-15 12:58:25] Deviance of iter5=91.5081
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]   0% / 0s  Getting aggregate ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]  17% / 0s  Getting aggregate ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  33% / 0s  Getting aggregate ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  50% / 1s  Getting aggregate ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  67% / 1s  Getting aggregate ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Aggregated (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [====] 100% / 1s
-#> [2022-02-15 12:58:26] Deviance of iter6=91.5081
-#> [2022-02-15 12:58:26] Host: Finished calculating ROC-GLM
-#> [2022-02-15 12:58:26] Host: Cleaning data on server
-#> [2022-02-15 12:58:28] Host: Calculating AUC and CI
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (meanDS(D$cens)) [--------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (meanDS(D$cens)) [=======>---------------------------------------]  17% / 0s  Checking ds2 (meanDS(D$cens)) [========>-----------------------------------------------]  17% / 0s  Getting aggregate ds2 (meanDS(D$cens)) [===============>-------------------------------]  33% / 0s  Checking ds3 (meanDS(D$cens)) [==================>-------------------------------------]  33% / 1s  Getting aggregate ds3 (meanDS(D$cens)) [=======================>-----------------------]  50% / 1s  Checking ds4 (meanDS(D$cens)) [===========================>----------------------------]  50% / 1s  Getting aggregate ds4 (meanDS(D$cens)) [==============================>----------------]  67% / 1s  Checking ds5 (meanDS(D$cens)) [====================================>-------------------]  67% / 1s  Getting aggregate ds5 (meanDS(D$cens)) [======================================>--------]  83% / 1s  Aggregated (meanDS(D$cens)) [==========================================================] 100% / 1s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (getNegativeScoresVar("D$cens", "probs")) [-------------------------------]   0% / 0s  Getting aggregate ds1 (getNegativeScoresVar("D$cens", "probs")) [===>------------------]  17% / 0s  Checking ds2 (getNegativeScoresVar("D$cens", "probs")) [====>--------------------------]  17% / 0s  Getting aggregate ds2 (getNegativeScoresVar("D$cens", "probs")) [======>---------------]  33% / 0s  Checking ds3 (getNegativeScoresVar("D$cens", "probs")) [=========>---------------------]  33% / 0s  Getting aggregate ds3 (getNegativeScoresVar("D$cens", "probs")) [==========>-----------]  50% / 1s  Checking ds4 (getNegativeScoresVar("D$cens", "probs")) [===============>---------------]  50% / 1s  Getting aggregate ds4 (getNegativeScoresVar("D$cens", "probs")) [==============>-------]  67% / 1s  Checking ds5 (getNegativeScoresVar("D$cens", "probs")) [====================>----------]  67% / 1s  Getting aggregate ds5 (getNegativeScoresVar("D$cens", "probs")) [=================>----]  83% / 1s  Aggregated (...) [=====================================================================] 100% / 1s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (getPositiveScoresVar("D$cens", "probs")) [-------------------------------]   0% / 0s  Getting aggregate ds1 (getPositiveScoresVar("D$cens", "probs")) [===>------------------]  17% / 0s  Checking ds2 (getPositiveScoresVar("D$cens", "probs")) [====>--------------------------]  17% / 0s  Getting aggregate ds2 (getPositiveScoresVar("D$cens", "probs")) [======>---------------]  33% / 0s  Checking ds3 (getPositiveScoresVar("D$cens", "probs")) [=========>---------------------]  33% / 1s  Getting aggregate ds3 (getPositiveScoresVar("D$cens", "probs")) [==========>-----------]  50% / 1s  Checking ds4 (getPositiveScoresVar("D$cens", "probs")) [===============>---------------]  50% / 1s  Getting aggregate ds4 (getPositiveScoresVar("D$cens", "probs")) [==============>-------]  67% / 1s  Checking ds5 (getPositiveScoresVar("D$cens", "probs")) [====================>----------]  67% / 1s  Getting aggregate ds5 (getPositiveScoresVar("D$cens", "probs")) [=================>----]  83% / 1s  Aggregated (...) [=====================================================================] 100% / 1s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [--------------]   0% / 0s  Getting aggregate ds1 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [>----]  17% / 0s  Checking ds2 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [=>------------]  17% / 0s  Getting aggregate ds2 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [=>---]  33% / 0s  Checking ds3 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [====>---------]  33% / 1s  Getting aggregate ds3 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [=>---]  50% / 1s  Checking ds4 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [======>-------]  50% / 1s  Getting aggregate ds4 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [==>--]  67% / 1s  Checking ds5 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [========>-----]  67% / 1s  Getting aggregate ds5 (getNegativeScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [===>-]  83% / 1s  Aggregated (...) [=====================================================================] 100% / 1s
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (getPositiveScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [--------------]   0% / 0s  Getting aggregate ds1 (getPositiveScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [>----]  17% / 0s  Checking ds2 (getPositiveScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [=>------------]  17% / 0s  Getting aggregate ds2 (getPositiveScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [=>---]  33% / 0s  Checking ds3 (getPositiveScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [====>---------]  33% / 1s  Getting aggregate ds3 (getPositiveScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [=>---]  50% / 1s  Checking ds4 (getPositiveScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [======>-------]  50% / 1s  Getting aggregate ds4 (getPositiveScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [==>--]  67% / 1s  Checking ds5 (getPositiveScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [========>-----]  67% / 1s  Getting aggregate ds5 (getPositiveScores("D$cens", "probs", 0.3, 0.2, "D$cens")) [===>-]  83% / 1s  Aggregated (...) [=====================================================================] 100% / 1s
-#> [2022-02-15 12:58:33] Finished!
+#> [2022-02-16 08:56:32] Host: Received scores of negative response
+#> [2022-02-16 08:56:32] Receiving negative scores
+#> [2022-02-16 08:56:35] Host: Pushing pooled scores
+#> [2022-02-16 08:56:39] Server: Calculating placement values and parts for ROC-GLM
+#> [2022-02-16 08:56:42] Server: Calculating probit regression to obtain ROC-GLM
+#> [2022-02-16 08:56:45] Deviance of iter1=52.6631
+#> [2022-02-16 08:56:49] Deviance of iter2=74.2983
+#> [2022-02-16 08:56:52] Deviance of iter3=88.1869
+#> [2022-02-16 08:56:55] Deviance of iter4=89.6172
+#> [2022-02-16 08:56:58] Deviance of iter5=89.6298
+#> [2022-02-16 08:57:02] Deviance of iter6=89.6298
+#> [2022-02-16 08:57:05] Deviance of iter7=89.6298
+#> [2022-02-16 08:57:05] Host: Finished calculating ROC-GLM
+#> [2022-02-16 08:57:05] Host: Cleaning data on server
+#> [2022-02-16 08:57:08] Host: Calculating AUC and CI
+#> [2022-02-16 08:57:24] Finished!
 roc_glm
 #> 
 #> ROC-GLM after Pepe:
 #> 
-#>  Binormal form: pnorm(0.69 + 1.04*qnorm(t))
+#>  Binormal form: pnorm(0.71 + 1.38*qnorm(t))
 #> 
-#>  AUC and 0.95 CI: [0.59----0.68----0.76]
+#>  AUC and 0.95 CI: [0.58----0.66----0.74]
 roc_glm$ci
-#> [1] 0.5921 0.7629
+#> [1] 0.5753081 0.7367395
 
 gg_distr_roc = plot(roc_glm)
 gg_distr_roc
@@ -508,11 +494,11 @@ auc = pROC::auc(dat_test$cens, probs)
 #> Setting direction: controls < cases
 c(auc_emp = auc, auc_distr_roc_glm = roc_glm$auc)
 #>           auc_emp auc_distr_roc_glm 
-#>            0.6725            0.6837
+#>         0.6724603         0.6606778
 
 source(here::here("R/helper.R"))
 logitToAUC(pepeCI(toLogit(auc), 0.05, deLongVar(probs, dat_test$cens)))
-#> [1] 0.6055 0.7330
+#> [1] 0.6055192 0.7330499
 
 
 # Calculate TPR and FPR values and add to distributed ROC-GLM plot
@@ -531,7 +517,7 @@ gg_roc_pooled
 brier_pooled = mean((dat_test$cens - probs)^2)
 c(brier_pooled = brier_pooled, brier_distr = brier)
 #> brier_pooled  brier_distr 
-#>       0.2264       0.2264
+#>    0.2263843    0.2263843
 
 cc_pooled = calibrationCurve("dat_test$cens", "probs", nbins = 10)
 
@@ -551,5 +537,4 @@ gg_cal_pooled
 
 ``` r
 datashield.logout(conn)
-#>    [-------------------------------------------------------------------------------------]   0% / 0s  Logout ds1 [===========>---------------------------------------------------------------]  17% / 0s  Logout ds2 [========================>--------------------------------------------------]  33% / 0s  Logout ds3 [=====================================>-------------------------------------]  50% / 0s  Logout ds4 [=================================================>-------------------------]  67% / 1s  Logout ds5 [=============================================================>-------------]  83% / 1s  Logged out from all servers [==========================================================] 100% / 1s
 ```
