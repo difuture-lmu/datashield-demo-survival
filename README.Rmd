@@ -162,7 +162,7 @@ for (i in seq_along(cc$individuals)) {
 tab = do.call(rbind, ll_tab)
 tab = as.data.frame(rbind(tab, colSums(tab)))
 colnames(tab) = c("Server", cc$individuals[[1]]$bin)
-knitr::kable(tab, format = "latex")
+cat(knitr::kable(tab, format = "latex"))
 
 gg_cal = plotCalibrationCurve(cc, size = 1)
 gg_cal
