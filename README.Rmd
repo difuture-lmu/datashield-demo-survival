@@ -62,9 +62,9 @@ TODO
 Install all packages locally and also on the DataSHIELD test machine:
 
 ```{r}
-remotes::install_github("difuture-lmu/dsPredictBase")
-remotes::install_github("difuture-lmu/dsCalibration")
-remotes::install_github("difuture-lmu/dsROCGLM")
+remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
+remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
+remotes::install_github("difuture-lmu/dsROCGLM", upgrade = "never")
 ```
 
 ### Generate data and fit model
@@ -118,7 +118,7 @@ for (i in seq_along(datasets)) {
 ## Get data of the servers:
 conn = datashield.login(logins = builder$build(), assign = TRUE)
 datashield.symbols(conn)
-ds.summary("D")
+ds.dim("D")
 ```
 
 ### Push and predict
@@ -127,22 +127,32 @@ ds.summary("D")
 ## Load the pre-calculated logistic regression:
 load(here::here("data/mod.Rda"))
 
-## Push the model to the servers:
+## Push the model to the servers (upload takes ~11 Minutes):
+t0 = proc.time()
 pushObject(conn, obj = mod)
+(t0 = proc.time() - t0)
 datashield.symbols(conn)
 
+## Time point:
+which(ranger::timepoints(mod) >= 730)[1]
+
 ## Predict the model on the data sets located at the servers:
-predictModel(conn, mod, "probs", predict_fun = "ranger:::predict.ranger(mod, data = D)$predictions")
+pfun = "ranger:::predict.ranger(mod, data = D)$survival[, 127]"
+predictModel(conn, mod, "probs", predict_fun = pfun, package = "ranger")
 datashield.symbols(conn)
+
+# Because labels are flipped for the 0-1-setting we also calculate
+# 1 - probs:
+datashield.assign(conn, "pinv", quote(1 - probs))
 ```
 
 ### Analyse calibration of the predictions
 
 ```{r}
-brier = dsBrierScore(conn, "D$cens", "probs")
+brier = dsBrierScore(conn, "D$valid", "pinv")
 brier
 
-cc = dsCalibrationCurve(conn, "D$cens", "probs")
+cc = dsCalibrationCurve(conn, "D$valid", "pinv")
 cc
 
 ll_tab = list()
@@ -187,17 +197,16 @@ ggsave(plot = gg_cal_pub,
 
 ```{r}
 # Get the l2 sensitivity
-(l2s = dsL2Sens(conn, "D", "probs"))
-epsilon = 0.3
+(l2s = dsL2Sens(conn, "D", "pinv"))
+epsilon = 0.4
 delta = 0.2
 
 # Amount of noise added:
 sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 
-
 # Calculate ROC-GLM
-roc_glm = dsROCGLM(conn, "D$cens", "probs", epsilon = epsilon,
-  delta = delta, dat_name = "D", seed_object = "D$cens")
+roc_glm = dsROCGLM(conn, "D$valid", "pinv", epsilon = epsilon,
+  delta = delta, dat_name = "D", seed_object = "D$valid")
 roc_glm
 roc_glm$ci
 
@@ -273,28 +282,28 @@ simpleROC = function(labels, scores) {
 
 # Load pooled test data and predict:
 dat_test = read.csv(here::here("data/data-test.csv"), stringsAsFactors = TRUE)
-probs = ranger:::predict.ranger(mod, data = dat_test)$predictions
+probs = ranger:::predict.ranger(mod, data = dat_test)$survival[, 127]
 
 # Calculate empirical AUC and compare with distributed ROC-GLM
-auc = pROC::auc(dat_test$cens, probs)
+auc = pROC::auc(dat_test$valid, 1 - probs)
 c(auc_emp = auc, auc_distr_roc_glm = roc_glm$auc)
 
 source(here::here("R/helper.R"))
-logitToAUC(pepeCI(toLogit(auc), 0.05, deLongVar(probs, dat_test$cens)))
+logitToAUC(pepeCI(toLogit(auc), 0.05, deLongVar(1 - probs, dat_test$valid)))
 
 
 # Calculate TPR and FPR values and add to distributed ROC-GLM plot
-plt_emp_roc_data = simpleROC(dat_test$cens, probs)
+plt_emp_roc_data = simpleROC(dat_test$valid, 1 - probs)
 
 gg_roc_pooled = plot(roc_glm) +
   geom_line(data = plt_emp_roc_data, aes(x = FPR, y = TPR), color = "red")
 gg_roc_pooled
 
 # Calculate pooled brier score and calibration curve
-brier_pooled = mean((dat_test$cens - probs)^2)
+brier_pooled = mean((dat_test$valid - (1 - probs))^2)
 c(brier_pooled = brier_pooled, brier_distr = brier)
 
-cc_pooled = calibrationCurve("dat_test$cens", "probs", nbins = 10)
+cc_pooled = calibrationCurve("dat_test$valid", "1 - probs", nbins = 10)
 
 # Visualize distributed calibration curve vs. pooled one:
 

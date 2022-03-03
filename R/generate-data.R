@@ -7,11 +7,21 @@ NSERVER = 5L
 # install.packages("TH.data")
 dat = TH.data::GBSG2
 
+
+# 3 Years for validation. Sampling test data must have a time >= t0.
+T0VAL   = 2 * 365
+
+# Add column for validation:
+dat$valid = ifelse((dat$time <= T0VAL) & (dat$cens == 1), 1, 0)
+
+# Sample indices:
+IDX_TO  = which(dat$time > T0VAL)
 IDX_ALL = seq_len(nrow(dat))
+IDX_TO  = IDX_ALL
 
 set.seed(314)
-IDX_TRAIN  = sample(x = IDX_ALL, size = FTRAIN * nrow(dat))
-IDX_TEST   = setdiff(IDX_ALL, IDX_TRAIN)
+IDX_TEST   = sample(x = IDX_TO, size = (1 - FTRAIN) * nrow(dat))
+IDX_TRAIN  = setdiff(IDX_ALL, IDX_TEST)
 
 set.seed(316)
 IDX_SERVER = sample(x = seq_len(NSERVER), size = length(IDX_TEST), replace = TRUE)

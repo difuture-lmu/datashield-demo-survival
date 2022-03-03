@@ -24,5 +24,5 @@ for (d in datasets) {
     force = TRUE)
 }
 opal.logout(opal)
-
+#opal.file_upload(opal, source = "~/repos/datashield-demo-survival/data/mod.Rda", destination = "/projects/DIFUTURE-TEST")
 rm(list = ls())
