@@ -51,6 +51,8 @@ This repository contains a short use-case base on the three packages `dsPredictB
 
 The following contains the preparation of test data and a test model as "setup" while the second part is the analysis. .
 
+Last time rendered: `r as.character(format(Sys.time(), "%H:%M - %d. %h %Y"))`
+
 ### Structure of the repository
 
 TODO
@@ -118,7 +120,7 @@ for (i in seq_along(datasets)) {
 ## Get data of the servers:
 conn = datashield.login(logins = builder$build(), assign = TRUE)
 datashield.symbols(conn)
-ds.dim("D")
+(ddim = ds.dim("D"))
 ```
 
 ### Push and predict
@@ -155,15 +157,6 @@ brier
 cc = dsCalibrationCurve(conn, "D$valid", "pinv")
 cc
 
-ll_tab = list()
-for (i in seq_along(cc$individuals)) {
-  ll_tab[[i]] = c(i, cc$individuals[[i]]$n)
-}
-tab = do.call(rbind, ll_tab)
-tab = as.data.frame(rbind(tab, colSums(tab)))
-colnames(tab) = c("Server", cc$individuals[[1]]$bin)
-cat(knitr::kable(tab, format = "latex"))
-
 gg_cal = plotCalibrationCurve(cc, size = 1)
 gg_cal
 ```
@@ -198,7 +191,7 @@ ggsave(plot = gg_cal_pub,
 ```{r}
 # Get the l2 sensitivity
 (l2s = dsL2Sens(conn, "D", "pinv"))
-epsilon = 0.4
+epsilon = 0.3
 delta = 0.2
 
 # Amount of noise added:
@@ -206,12 +199,26 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", epsilon = epsilon,
-  delta = delta, dat_name = "D", seed_object = "D$valid")
+  delta = delta, dat_name = "D", seed_object = "D$age")
 roc_glm
 roc_glm$ci
 
 gg_distr_roc = plot(roc_glm)
 gg_distr_roc
+```
+
+__Simple check if old (model from the last rendering) and new ROC-GLM are equal:__
+```{r}
+# Check if roc_glm object is the same for the new and the last run:
+if (! file.exists(here::here("data/roc-glm.Rda"))) {
+  saveRDS(roc_glm, file = here::here("data/roc-glm.Rda"))
+} else {
+  roc_glm_last_run = readRDS(here::here("data/roc-glm.Rda"))
+  if (! identical(roc_glm_last_run, roc_glm))
+    warning("Old and new ROC-GLM are not equal!")
+
+  saveRDS(roc_glm, file = here::here("data/roc-glm.Rda"))
+}
 ```
 
 ```{r, include=FALSE}
@@ -289,7 +296,7 @@ auc = pROC::auc(dat_test$valid, 1 - probs)
 c(auc_emp = auc, auc_distr_roc_glm = roc_glm$auc)
 
 source(here::here("R/helper.R"))
-logitToAUC(pepeCI(toLogit(auc), 0.05, deLongVar(1 - probs, dat_test$valid)))
+(ci_emp = logitToAUC(pepeCI(toLogit(auc), 0.05, deLongVar(1 - probs, dat_test$valid))))
 
 
 # Calculate TPR and FPR values and add to distributed ROC-GLM plot
@@ -304,6 +311,29 @@ brier_pooled = mean((dat_test$valid - (1 - probs))^2)
 c(brier_pooled = brier_pooled, brier_distr = brier)
 
 cc_pooled = calibrationCurve("dat_test$valid", "1 - probs", nbins = 10)
+
+# Table of elements per server for the calibration curve:
+ll_tab = list()
+for (i in seq_along(cc$individuals)) {
+  ll_tab[[i]] = c(i, cc$individuals[[i]]$n)
+}
+tab = do.call(rbind, ll_tab)
+tab = as.data.frame(rbind(tab, colSums(tab)))
+colnames(tab) = c("Server", cc$individuals[[1]]$bin)
+tab0 = tab
+for (j in seq_along(tab)[-1]) {
+  tab[[j]] = paste0("$", ifelse(tab[[j]] < 5, tab[[j]], paste0("\\bm{", tab[[j]], "}")), "$")
+}
+tab[[1]] = paste0("$", tab[[1]], "$")
+tab[6, 1] = "$\\sum$"
+
+# LaTeX Table:
+writeLines(knitr::kable(tab, format = "latex", escape = FALSE),
+  con = here::here("tables/tab-cc.tex"))
+
+knitr::kable(tab0)
+
+
 
 # Visualize distributed calibration curve vs. pooled one:
 
@@ -381,8 +411,64 @@ ggsave(plot = gg_roc_pooled_pub,
   units = "mm")
 
 # evince(here::here("figures/analysis-distr-roc-glm-pooled.pdf"))
+
+# Log:
+logVector = function(x, sep = " - ") paste(x, collapse = sep)
+log = data.frame(
+  time = as.character(Sys.time()),
+  auc_roc = roc_glm$auc,
+  auc_emp = auc,
+  ci_roc_lower = roc_glm$ci[1],
+  ci_emp_lower = ci_emp[1],
+  ci_roc_upper = roc_glm$ci[2],
+  ci_emp_upper = ci_emp[2],
+  brier_dist = brier,
+  brier_pooled = brier_pooled,
+  n1 = ddim[[1]][1],
+  n2 = ddim[[2]][1],
+  n3 = ddim[[3]][1],
+  n4 = ddim[[4]][1],
+  n5 = ddim[[5]][1],
+  calibration_preds = logVector(cc$aggregated$prob),
+  calibration_truths = logVector(cc$aggregated$truth),
+  calibration_n = logVector(tail(tab0, 1)[-1]),
+  calibration_nas = logVector(paste0(
+    tail(tab0, 1)[-1] * cc$aggregated$missing_ratio, "/", tail(tab0, 1)[-1]))
+)
+if (! file.exists(here::here("data/log.csv"))) {
+  write.csv(log, file = here::here("data/log.csv"), row.names = FALSE)
+} else {
+  log_old = read.csv(here::here("data/log.csv"))
+  log = rbind(log, log_old)
+  write.csv(log, file = here::here("data/log.csv"), row.names = FALSE)
+}
 ```
 
+```{r}
+# Summary of the results used in the paper:
+tex_results = rbind(
+  data.frame(command = "\\cdistlower", value = round(roc_glm$ci[1], 4)),
+  data.frame(command = "\\cidistupper", value = round(roc_glm$ci[2], 4)),
+  data.frame(command = "\\ciemplower", value = round(ci_emp[1], 4)),
+  data.frame(command = "\\ciempupper", value = round(ci_emp[2], 4)),
+  data.frame(command = "\\aucdist", value = round(roc_glm$auc, 4)),
+  data.frame(command = "\\aucpooled", value = round(auc, 4)),
+  data.frame(command = "\\rocglmparamOne", value = round(roc_glm$parameter[1], 4)),
+  data.frame(command = "\\rocglmparamTwo", value = round(roc_glm$parameter[2], 4)),
+  data.frame(command = "\\bsemp", value = round(brier_pooled, 4)),
+  data.frame(command = "\\ts", value = 2 * 365),
+  data.frame(command = "\\nOne", value = ddim[[1]][1]),
+  data.frame(command = "\\nTwo", value = ddim[[2]][1]),
+  data.frame(command = "\\nThree", value = ddim[[3]][1]),
+  data.frame(command = "\\nFour", value = ddim[[4]][1]),
+  data.frame(command = "\\nFive", value = ddim[[5]][1]),
+  data.frame(command = "\\privparOne", value = "0.4"),
+  data.frame(command = "\\privparTwo", value = "0.2"),
+  data.frame(command = "\\ltwosensUC", value = round(l2s, 4))
+)
+writeLines(paste0("\\newcommand{", tex_results[[1]], "}{", tex_results[[2]], "}"),
+  here::here("tables/tab-results.tex"))
+```
 
 ## Log out from DataSHIELD servers
 

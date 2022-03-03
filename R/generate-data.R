@@ -19,13 +19,10 @@ IDX_TO  = which(dat$time > T0VAL)
 IDX_ALL = seq_len(nrow(dat))
 IDX_TO  = IDX_ALL
 
-set.seed(314)
+set.seed(1234)
 IDX_TEST   = sample(x = IDX_TO, size = (1 - FTRAIN) * nrow(dat))
 IDX_TRAIN  = setdiff(IDX_ALL, IDX_TEST)
-
-set.seed(316)
 IDX_SERVER = sample(x = seq_len(NSERVER), size = length(IDX_TEST), replace = TRUE)
-
 
 
 ## SPLIT DATA AND SAVE

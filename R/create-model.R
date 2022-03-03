@@ -33,13 +33,15 @@ if (FALSE) {
     ylim(0, 1)
 
 
+  source(here::here("R/generate-data.R"))
+  source(here::here("R/create-model.R"))
   load(here::here("data", "mod.Rda"))
   l2ss = list()
   for (i in seq_len(5L)) {
     tmp = read.csv(here::here("data", paste0("SRV", i, ".csv")))
     tmp$id = NULL
     ptmp = ranger:::predict.ranger(mod, data = tmp)$survival[, 127]
-    l2s  = dsROCGLM::l2sens(tmp, ptmp, nbreaks = 31)
+    l2s  = dsROCGLM::l2sens(tmp, ptmp, nbreaks = 91)
     l2ss[[i]] = data.frame(l2s = l2s$l2sens, l1n = l2s$l1n, n = nrow(tmp), p = ncol(tmp))
   }
   df_l2s = do.call(rbind, l2ss)
