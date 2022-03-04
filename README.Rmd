@@ -5,6 +5,21 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+- [About the repository](#about-the-repository)
+    - [Structure of the repository](#structure-of-the-repository)
+- [Setup](#setup)
+    - [Install packages](#install-packages)
+    - [Generate data and fit model](#generate-data-and-fit-model)
+    - [Install package on DataSHIELD and upload data](#install-package-on-datashield-and-upload-data)
+- [Analysis](#inspect-results-using-the-docker)
+    - [Log into DataSHIELD test server](#log-into-datashield-test-server)
+    - [Push and predict](#push-and-predict)
+    - [Analyse calibration of the predictions](#analyse-calibration-of-the-predictions)
+    - [Evaluate the model using ROC analysis](#evaluate-the-model-using-roc-analysis)
+    - [Cross check on pooled test data](#cross-check-on-pooled-test-data)
+- [Log out from DataSHIELD servers](#log-out-from-datashield-servers)
+
+
 ```{r, include=FALSE}
 source(here::here("R/generate-data.R"))
 source(here::here("R/create-model.R"))
@@ -47,21 +62,35 @@ evince = function(file) system(paste0("evince ", file, " &"))
 
 ## About the repository
 
-This repository contains a short use-case base on the three packages `dsPredictBase`, `dsCalibration`, and `dsROCGLM`. The main intend is to have a use-case to demonstrate how to distributively evaluate a model using the distributed ROC-GLM.
+This repository contains a short use-case base on the three packages `dsPredictBase`, `dsCalibration`, and `dsROCGLM`. The main intend is to have a use-case to demonstrate how to distributively evaluate a model using the distributed [ROC-GLM](https://pubmed.ncbi.nlm.nih.gov/10877289/).
 
-The following contains the preparation of test data and a test model as "setup" while the second part is the analysis. .
+The following contains the preparation of test data and a test model as "setup" while the second part is the analysis.
 
-Last time rendered: `r as.character(format(Sys.time(), "%H:%M - %d. %h %Y"))`
+Last time rendered: `r as.character(format(Sys.time(), "%H:%M - %d. %h %Y"))` by user `r Sys.getenv()[["USER"]]`
 
 ### Structure of the repository
 
-TODO
+- `R`:
+    - `create-model.R`: Creates a [`ranger`](https://cran.r-project.org/web/packages/ranger/ranger.pdf) used for the use-case based on the data in `generate-data.R`
+    - `generate-data.R`: Takes the data set `GBSG2` (see `?GBSG2` for a description) from the [`TH.data`](https://cran.r-project.org/web/packages/TH.data/index.html), splits it into trian and test using 60 - 40 % of the data, and furhter splits the 40 % for testing into 5 parts for the distributed setup.
+    - `helper.R`: Helper functions to locally calculate the [ROC-GLM](https://pubmed.ncbi.nlm.nih.gov/10877289/) and compute confidence intervals etc.
+    - `install-ds-packages.R`: Install the necessary packages (`ranger`, `dsPredictBase`, `dsCalibration`, and `dsROCGLM`) __at the DataSHIELD servers__.
+    - `install-packages.R`: Install ncessary packages locally.
+    - `upload-data.R` Creates a project at the DataSHIELD server and uploads the data created by `generate-data.R`.
+- `data`: All data is stored here:
+    - Train and test split of the GBSG2 data set (`data-train.csv` and `data-test.csv`).
+    - The 5 splits of the `data-test.csv` for the servers (`SRV1.csv`, `SRV2.csv`, `SRV3.csv`, `SRV4.csv`, and `SRV5.csv`).
+    - The model created by `create-model.R` (`mod.Rda`).
+    - A csv file for logging each rendering (`log.csv`). This file can be used to get an overview about the important values and when each rendering was conducted. The main purpose is to show that the results are reproduced at each rendering.
+    - The ROC-GLM of the last rendering (`roc-glm.Rda`).
+- `figures`: Figures created by the rendering are placed here. These are the `.pdf` fuiles used in the publication but also the `.png` files of the README.
+- `tables`: Tables created by the rendering are placed here.
 
 ## Setup
 
 ### Install packages
 
-Install all packages locally and also on the DataSHIELD test machine:
+Install all packages locally:
 
 ```{r}
 remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
