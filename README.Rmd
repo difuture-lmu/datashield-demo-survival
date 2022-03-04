@@ -67,6 +67,7 @@ This repository contains a short use-case base on the three packages `dsPredictB
 The following contains the preparation of test data and a test model as [setup](#setup) while the second part is the [analysis](#analysis).
 
 Last time rendered: `r as.character(format(Sys.time(), "%H:%M - %d. %h %Y"))` by user `r Sys.getenv()[["USER"]]`
+
 Autobuild: [![Render README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
 
 ### Structure of the repository
