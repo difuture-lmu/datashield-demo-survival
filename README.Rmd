@@ -1,6 +1,5 @@
 ---
-title: DataSHIELD Use-case: Distributed non-disclosive validation of predictive models by a
-modified ROC-GLM
+title: DataSHIELD Use-case: Distributed non-disclosive validation of predictive models by a modified ROC-GLM
 output: github_document
 ---
 
