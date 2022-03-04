@@ -491,8 +491,8 @@ tex_results = rbind(
   data.frame(command = "\\nThree", value = ddim[[3]][1]),
   data.frame(command = "\\nFour", value = ddim[[4]][1]),
   data.frame(command = "\\nFive", value = ddim[[5]][1]),
-  data.frame(command = "\\privparOne", value = "0.4"),
-  data.frame(command = "\\privparTwo", value = "0.2"),
+  data.frame(command = "\\privparOne", value = epsilon),
+  data.frame(command = "\\privparTwo", value = delta),
   data.frame(command = "\\ltwosensUC", value = round(l2s, 4))
 )
 writeLines(paste0("\\newcommand{", tex_results[[1]], "}{", tex_results[[2]], "}"),
