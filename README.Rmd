@@ -64,9 +64,10 @@ evince = function(file) system(paste0("evince ", file, " &"))
 
 This repository contains a short use-case base on the three packages `dsPredictBase`, `dsCalibration`, and `dsROCGLM`. The main intend is to have a use-case to demonstrate how to distributively evaluate a model using the distributed [ROC-GLM](https://pubmed.ncbi.nlm.nih.gov/10877289/).
 
-The following contains the preparation of test data and a test model as "setup" while the second part is the analysis.
+The following contains the preparation of test data and a test model as [setup](#setup) while the second part is the [analysis](#analysis).
 
-Last time rendered: `r as.character(format(Sys.time(), "%H:%M - %d. %h %Y"))` by user `r Sys.getenv()[["USER"]]`
+Last time rendered: `r as.character(format(Sys.time(), "%H:%M - %d. %h %Y"))` by user `r Sys.getenv()[["USER"]]` 
+Autobuild: [![Render README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
 
 ### Structure of the repository
 
