@@ -476,7 +476,7 @@ if (! file.exists(here::here("data/log.csv"))) {
 ```{r}
 # Summary of the results used in the paper:
 tex_results = rbind(
-  data.frame(command = "\\cdistlower", value = round(roc_glm$ci[1], 4)),
+  data.frame(command = "\\cidistlower", value = round(roc_glm$ci[1], 4)),
   data.frame(command = "\\cidistupper", value = round(roc_glm$ci[2], 4)),
   data.frame(command = "\\ciemplower", value = round(ci_emp[1], 4)),
   data.frame(command = "\\ciempupper", value = round(ci_emp[2], 4)),
