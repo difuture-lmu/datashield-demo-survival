@@ -152,26 +152,28 @@ for (i in seq_along(datasets)) {
 conn = datashield.login(logins = builder$build(), assign = TRUE)
 datashield.symbols(conn)
 (ddim = ds.dim("D"))
+```
 
+```{r, include=FALSE}
 seeds = datashield.aggregate(conn, quote(seedBoundedToObject("D$age")))
 
-seed_log_file = here::here("data/seeds.rds")
+seed_log_file = here::here("data/seeds.csv")
 if (file.exists(seed_log_file)) {
-  sds_old = readRDS(seed_log_file)
+  sds_old = read.csv(seed_log_file)
   sds = do.call(data.frame, c(list(
     time = as.character(Sys.time()),
     user = Sys.getenv()[["USER"]],
     os = Sys.info()[["release"]]),
     seeds))
   sds = rbind(sds, sds_old)
-  saveRDS(sds, file = seed_log_file)
+  write.csv(sds, file = seed_log_file, row.names = FALSE)
 } else {
   sds = do.call(data.frame, c(list(
     time = as.character(Sys.time()),
     user = Sys.getenv()[["USER"]],
     os = Sys.info()[["release"]]),
     seeds))
-  saveRDS(sds, file = seed_log_file)
+  write.csv(sds, file = seed_log_file, row.names = FALSE)
 }
 ```
 
