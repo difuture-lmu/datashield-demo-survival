@@ -36,7 +36,7 @@ using the distributed
 The following contains the preparation of test data and a test model as
 [setup](#setup) while the second part is the [analysis](#analysis).
 
-Last time rendered: 11:27 - 07. Mar 2022 by user runner
+Last time rendered: 13:46 - 07. Mar 2022 by user runner
 
 Autobuild: [![Render
 README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
@@ -92,7 +92,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Installing 12 packages: gridExtra, dotCall64, data.table, pbapply, mathjaxr, maps, viridis, spam, panelaggregation, metafor, fields, DSI
 #> Installing packages into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
-#> * checking for file ‘/tmp/RtmpVRvFxF/remotes90b91abc580f/datashield-dsBaseClient-d22ba51/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpB9oh8l/remotes90b5b2cea0a/datashield-dsBaseClient-d22ba51/DESCRIPTION’ ... OK
 #> * preparing ‘dsBaseClient’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -105,7 +105,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> (as 'lib' is unspecified)
 #> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (d22ba514) has not changed since last install.
 #>   Use `force = TRUE` to force installation
-#> * checking for file ‘/tmp/RtmpVRvFxF/remotes90b955680e22/difuture-lmu-dsPredictBase-ed79fd1/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpB9oh8l/remotes90b5535cba98/difuture-lmu-dsPredictBase-ed79fd1/DESCRIPTION’ ... OK
 #> * preparing ‘dsPredictBase’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -121,7 +121,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsCalibration@HEAD
-#> * checking for file ‘/tmp/RtmpVRvFxF/remotes90b9193d3bea/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpB9oh8l/remotes90b53dad49c/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
 #> * preparing ‘dsCalibration’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -132,7 +132,7 @@ remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 remotes::install_github("difuture-lmu/dsROCGLM", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsROCGLM@HEAD
-#> * checking for file ‘/tmp/RtmpVRvFxF/remotes90b9363f2ce5/difuture-lmu-dsROCGLM-c951c0c/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpB9oh8l/remotes90b52da1ffe1/difuture-lmu-dsROCGLM-c951c0c/DESCRIPTION’ ... OK
 #> * preparing ‘dsROCGLM’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -253,10 +253,10 @@ load(here::here("data/mod.Rda"))
 ## Push the model to the servers (upload takes ~11 Minutes):
 t0 = proc.time()
 pushObject(conn, obj = mod)
-#> [2022-03-07 11:31:09] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
+#> [2022-03-07 13:49:55] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
 (t0 = proc.time() - t0)
 #>    user  system elapsed 
-#> 115.401  49.288 784.046
+#> 113.497  52.915 784.454
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"   "mod"
@@ -417,25 +417,25 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", epsilon = epsilon,
   delta = delta, dat_name = "D", seed_object = "D$age")
 #> 
-#> [2022-03-07 11:44:53] L2 sensitivity is: 0.016
+#> [2022-03-07 14:03:24] L2 sensitivity is: 0.016
 #> 
-#> [2022-03-07 11:44:56] Initializing ROC-GLM
+#> [2022-03-07 14:03:26] Initializing ROC-GLM
 #> 
-#> [2022-03-07 11:44:56] Host: Received scores of negative response
-#> [2022-03-07 11:44:56] Receiving negative scores
-#> [2022-03-07 11:44:59] Host: Pushing pooled scores
-#> [2022-03-07 11:45:03] Server: Calculating placement values and parts for ROC-GLM
-#> [2022-03-07 11:45:06] Server: Calculating probit regression to obtain ROC-GLM
-#> [2022-03-07 11:45:09] Deviance of iter1=32.6342
-#> [2022-03-07 11:45:13] Deviance of iter2=41.2037
-#> [2022-03-07 11:45:16] Deviance of iter3=44.444
-#> [2022-03-07 11:45:19] Deviance of iter4=44.6241
-#> [2022-03-07 11:45:22] Deviance of iter5=44.6246
-#> [2022-03-07 11:45:26] Deviance of iter6=44.6246
-#> [2022-03-07 11:45:26] Host: Finished calculating ROC-GLM
-#> [2022-03-07 11:45:26] Host: Cleaning data on server
-#> [2022-03-07 11:45:29] Host: Calculating AUC and CI
-#> [2022-03-07 11:45:45] Finished!
+#> [2022-03-07 14:03:26] Host: Received scores of negative response
+#> [2022-03-07 14:03:26] Receiving negative scores
+#> [2022-03-07 14:03:28] Host: Pushing pooled scores
+#> [2022-03-07 14:03:30] Server: Calculating placement values and parts for ROC-GLM
+#> [2022-03-07 14:03:32] Server: Calculating probit regression to obtain ROC-GLM
+#> [2022-03-07 14:03:34] Deviance of iter1=32.6342
+#> [2022-03-07 14:03:36] Deviance of iter2=41.1218
+#> [2022-03-07 14:03:39] Deviance of iter3=44.4089
+#> [2022-03-07 14:03:41] Deviance of iter4=44.5915
+#> [2022-03-07 14:03:43] Deviance of iter5=44.592
+#> [2022-03-07 14:03:45] Deviance of iter6=44.592
+#> [2022-03-07 14:03:45] Host: Finished calculating ROC-GLM
+#> [2022-03-07 14:03:45] Host: Cleaning data on server
+#> [2022-03-07 14:03:47] Host: Calculating AUC and CI
+#> [2022-03-07 14:03:57] Finished!
 roc_glm
 #> 
 #> ROC-GLM after Pepe:
@@ -444,7 +444,7 @@ roc_glm
 #> 
 #>  AUC and 0.95 CI: [0.61----0.7----0.77]
 roc_glm$ci
-#> [1] 0.6146840 0.7679554
+#> [1] 0.6114123 0.7689032
 
 gg_distr_roc = plot(roc_glm)
 gg_distr_roc
@@ -494,7 +494,7 @@ auc = pROC::auc(dat_test$valid, 1 - probs)
 #> Setting direction: controls < cases
 c(auc_emp = auc, auc_distr_roc_glm = roc_glm$auc)
 #>           auc_emp auc_distr_roc_glm 
-#>         0.6886905         0.6967615
+#>         0.6886905         0.6958664
 
 source(here::here("R/helper.R"))
 (ci_emp = logitToAUC(pepeCI(toLogit(auc), 0.05, deLongVar(1 - probs, dat_test$valid))))
