@@ -152,7 +152,24 @@ for (i in seq_along(datasets)) {
 conn = datashield.login(logins = builder$build(), assign = TRUE)
 datashield.symbols(conn)
 (ddim = ds.dim("D"))
-```
+
+datashield.aggregate(conn, quote(seedBoundedToObject("D$age")))
+
+### Seed when running the code from arch:
+#$ds1
+#[1] 500690
+#
+#$ds2
+#[1] 334635
+#
+#$ds3
+#[1] 6641313
+#
+#$ds4
+#[1] 47
+#
+#$ds5
+#[1] 9010512```
 
 ### Push and predict
 
