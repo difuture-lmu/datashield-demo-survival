@@ -192,10 +192,10 @@ pushObject(conn, obj = mod)
 datashield.symbols(conn)
 
 ## Time point:
-which(ranger::timepoints(mod) >= 730)[1]
+(tpoint = which(ranger::timepoints(mod) >= 730)[1])
 
 ## Predict the model on the data sets located at the servers:
-pfun = "ranger:::predict.ranger(mod, data = D)$survival[, 127]"
+pfun = paste0("ranger:::predict.ranger(mod, data = D)$survival[, ", tpoint, "]")
 predictModel(conn, mod, "probs", predict_fun = pfun, package = "ranger")
 datashield.symbols(conn)
 
@@ -255,7 +255,7 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", epsilon = epsilon,
-  delta = delta, dat_name = "D", seed_object = "D$age")
+  delta = delta, dat_name = "D", seed_object = "probs")
 roc_glm
 roc_glm$ci
 
@@ -345,7 +345,7 @@ simpleROC = function(labels, scores) {
 
 # Load pooled test data and predict:
 dat_test = read.csv(here::here("data/data-test.csv"), stringsAsFactors = TRUE)
-probs = ranger:::predict.ranger(mod, data = dat_test)$survival[, 127]
+probs = ranger:::predict.ranger(mod, data = dat_test)$survival[, tpoint]
 
 # Calculate empirical AUC and compare with distributed ROC-GLM
 auc = pROC::auc(dat_test$valid, 1 - probs)
