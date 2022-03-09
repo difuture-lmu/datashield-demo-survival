@@ -36,7 +36,7 @@ using the distributed
 The following contains the preparation of test data and a test model as
 [setup](#setup) while the second part is the [analysis](#analysis).
 
-Last time rendered: 17:24 - 09. Mar 2022 by user runner
+Last time rendered: 22:15 - 09. Mar 2022 by user runner
 
 Autobuild: [![Render
 README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
@@ -92,7 +92,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Installing 12 packages: gridExtra, dotCall64, data.table, pbapply, mathjaxr, maps, viridis, spam, panelaggregation, metafor, fields, DSI
 #> Installing packages into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
-#> * checking for file ‘/tmp/RtmpOSGzQH/remotes906ab1fd33a/datashield-dsBaseClient-d22ba51/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpAsLlMA/remotes90b822e59cb1/datashield-dsBaseClient-d22ba51/DESCRIPTION’ ... OK
 #> * preparing ‘dsBaseClient’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -105,7 +105,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> (as 'lib' is unspecified)
 #> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (d22ba514) has not changed since last install.
 #>   Use `force = TRUE` to force installation
-#> * checking for file ‘/tmp/RtmpOSGzQH/remotes906a22d07a81/difuture-lmu-dsPredictBase-ed79fd1/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpAsLlMA/remotes90b8712c6d33/difuture-lmu-dsPredictBase-ed79fd1/DESCRIPTION’ ... OK
 #> * preparing ‘dsPredictBase’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -121,7 +121,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsCalibration@HEAD
-#> * checking for file ‘/tmp/RtmpOSGzQH/remotes906a589aab04/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpAsLlMA/remotes90b842b27080/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
 #> * preparing ‘dsCalibration’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -132,7 +132,7 @@ remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 remotes::install_github("difuture-lmu/dsROCGLM", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsROCGLM@HEAD
-#> * checking for file ‘/tmp/RtmpOSGzQH/remotes906a1209c6b3/difuture-lmu-dsROCGLM-92bdca9/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpAsLlMA/remotes90b81db16852/difuture-lmu-dsROCGLM-92bdca9/DESCRIPTION’ ... OK
 #> * preparing ‘dsROCGLM’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -255,10 +255,10 @@ load(here::here("data/mod.Rda"))
 ## Push the model to the servers (upload takes ~11 Minutes):
 t0 = proc.time()
 pushObject(conn, obj = mod)
-#> [2022-03-09 17:26:37] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
+#> [2022-03-09 22:18:16] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
 (t0 = proc.time() - t0)
 #>    user  system elapsed 
-#>  79.270  79.707 776.840
+#> 106.064  53.439 774.877
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"   "mod"
@@ -276,11 +276,11 @@ datashield.symbols(conn)
 #> [1] "D"   "mod"
 
 ## Time point:
-which(ranger::timepoints(mod) >= 730)[1]
+(tpoint = which(ranger::timepoints(mod) >= 730)[1])
 #> [1] 134
 
 ## Predict the model on the data sets located at the servers:
-pfun = "ranger:::predict.ranger(mod, data = D)$survival[, 127]"
+pfun = paste0("ranger:::predict.ranger(mod, data = D)$survival[, ", tpoint, "]")
 predictModel(conn, mod, "probs", predict_fun = pfun, package = "ranger")
 datashield.symbols(conn)
 #> $ds1
@@ -308,94 +308,94 @@ datashield.assign(conn, "pinv", quote(1 - probs))
 ``` r
 brier = dsBrierScore(conn, "D$valid", "pinv")
 brier
-#> [1] 0.1721405
+#> [1] 0.1733217
 
 cc = dsCalibrationCurve(conn, "D$valid", "pinv")
 cc
 #> $individuals
 #> $individuals$ds1
 #>          bin  n lower upper      truth       prob
-#> 1    (0,0.1] 12   0.0   0.1 0.08333333 0.05573981
-#> 2  (0.1,0.2] 12   0.1   0.2 0.16666667 0.15281753
-#> 3  (0.2,0.3] 14   0.2   0.3 0.14285714 0.23768818
-#> 4  (0.3,0.4]  1   0.3   0.4         NA         NA
-#> 5  (0.4,0.5]  4   0.4   0.5         NA         NA
-#> 6  (0.5,0.6]  6   0.5   0.6 0.50000000 0.56610773
-#> 7  (0.6,0.7]  4   0.6   0.7         NA         NA
+#> 1    (0,0.1] 12   0.0   0.1 0.08333333 0.05843787
+#> 2  (0.1,0.2] 11   0.1   0.2 0.09090909 0.15889461
+#> 3  (0.2,0.3] 13   0.2   0.3 0.23076923 0.24332767
+#> 4  (0.3,0.4]  3   0.3   0.4         NA         NA
+#> 5  (0.4,0.5]  2   0.4   0.5         NA         NA
+#> 6  (0.5,0.6]  7   0.5   0.6 0.71428571 0.56052096
+#> 7  (0.6,0.7]  5   0.6   0.7 0.40000000 0.64127509
 #> 8  (0.7,0.8]  0   0.7   0.8         NA         NA
 #> 9  (0.8,0.9]  0   0.8   0.9         NA         NA
 #> 10   (0.9,1]  0   0.9   1.0         NA         NA
 #> 
 #> $individuals$ds2
 #>          bin  n lower upper      truth      prob
-#> 1    (0,0.1] 12   0.0   0.1 0.08333333 0.0616019
-#> 2  (0.1,0.2] 16   0.1   0.2 0.18750000 0.1431774
-#> 3  (0.2,0.3]  6   0.2   0.3 0.16666667 0.2349759
+#> 1    (0,0.1] 11   0.0   0.1 0.09090909 0.0618246
+#> 2  (0.1,0.2] 14   0.1   0.2 0.21428571 0.1521453
+#> 3  (0.2,0.3]  9   0.2   0.3 0.11111111 0.2547455
 #> 4  (0.3,0.4]  1   0.3   0.4         NA        NA
-#> 5  (0.4,0.5]  6   0.4   0.5 0.33333333 0.4662758
-#> 6  (0.5,0.6]  3   0.5   0.6         NA        NA
+#> 5  (0.4,0.5]  4   0.4   0.5         NA        NA
+#> 6  (0.5,0.6]  5   0.5   0.6 0.00000000 0.5479249
 #> 7  (0.6,0.7]  2   0.6   0.7         NA        NA
 #> 8  (0.7,0.8]  0   0.7   0.8         NA        NA
 #> 9  (0.8,0.9]  0   0.8   0.9         NA        NA
 #> 10   (0.9,1]  0   0.9   1.0         NA        NA
 #> 
 #> $individuals$ds3
-#>          bin  n lower upper     truth      prob
-#> 1    (0,0.1] 14   0.0   0.1 0.0000000 0.0676965
-#> 2  (0.1,0.2] 13   0.1   0.2 0.3076923 0.1389881
-#> 3  (0.2,0.3] 12   0.2   0.3 0.4166667 0.2334543
-#> 4  (0.3,0.4]  4   0.3   0.4        NA        NA
-#> 5  (0.4,0.5]  4   0.4   0.5        NA        NA
-#> 6  (0.5,0.6]  3   0.5   0.6        NA        NA
-#> 7  (0.6,0.7]  6   0.6   0.7 0.3333333 0.6267099
-#> 8  (0.7,0.8]  1   0.7   0.8        NA        NA
-#> 9  (0.8,0.9]  0   0.8   0.9        NA        NA
-#> 10   (0.9,1]  0   0.9   1.0        NA        NA
+#>          bin  n lower upper     truth       prob
+#> 1    (0,0.1] 13   0.0   0.1 0.0000000 0.06865713
+#> 2  (0.1,0.2] 12   0.1   0.2 0.2500000 0.14193578
+#> 3  (0.2,0.3] 12   0.2   0.3 0.4166667 0.24110349
+#> 4  (0.3,0.4]  5   0.3   0.4 0.4000000 0.33940491
+#> 5  (0.4,0.5]  3   0.4   0.5        NA         NA
+#> 6  (0.5,0.6]  4   0.5   0.6        NA         NA
+#> 7  (0.6,0.7]  7   0.6   0.7 0.2857143 0.63177041
+#> 8  (0.7,0.8]  1   0.7   0.8        NA         NA
+#> 9  (0.8,0.9]  0   0.8   0.9        NA         NA
+#> 10   (0.9,1]  0   0.9   1.0        NA         NA
 #> 
 #> $individuals$ds4
 #>          bin n lower upper     truth       prob
-#> 1    (0,0.1] 9   0.0   0.1 0.1111111 0.03511216
-#> 2  (0.1,0.2] 7   0.1   0.2 0.2857143 0.15901472
-#> 3  (0.2,0.3] 7   0.2   0.3 0.4285714 0.25236634
-#> 4  (0.3,0.4] 7   0.3   0.4 0.2857143 0.34306077
-#> 5  (0.4,0.5] 8   0.4   0.5 0.2500000 0.44863063
-#> 6  (0.5,0.6] 6   0.5   0.6 0.1666667 0.55147884
-#> 7  (0.6,0.7] 4   0.6   0.7        NA         NA
+#> 1    (0,0.1] 8   0.0   0.1 0.1250000 0.02960261
+#> 2  (0.1,0.2] 6   0.1   0.2 0.3333333 0.14317594
+#> 3  (0.2,0.3] 9   0.2   0.3 0.3333333 0.26274740
+#> 4  (0.3,0.4] 5   0.3   0.4 0.2000000 0.36038460
+#> 5  (0.4,0.5] 9   0.4   0.5 0.2222222 0.44374449
+#> 6  (0.5,0.6] 6   0.5   0.6 0.3333333 0.55035963
+#> 7  (0.6,0.7] 5   0.6   0.7 0.6000000 0.63459336
 #> 8  (0.7,0.8] 0   0.7   0.8        NA         NA
 #> 9  (0.8,0.9] 0   0.8   0.9        NA         NA
 #> 10   (0.9,1] 0   0.9   1.0        NA         NA
 #> 
 #> $individuals$ds5
-#>          bin  n lower upper      truth       prob
-#> 1    (0,0.1] 13   0.0   0.1 0.07692308 0.05046711
-#> 2  (0.1,0.2] 14   0.1   0.2 0.14285714 0.14687493
-#> 3  (0.2,0.3] 10   0.2   0.3 0.00000000 0.23572883
-#> 4  (0.3,0.4]  0   0.3   0.4         NA         NA
-#> 5  (0.4,0.5]  6   0.4   0.5 0.16666667 0.44664107
-#> 6  (0.5,0.6]  6   0.5   0.6 0.33333333 0.52449110
-#> 7  (0.6,0.7]  8   0.6   0.7 0.75000000 0.63735767
-#> 8  (0.7,0.8]  1   0.7   0.8         NA         NA
-#> 9  (0.8,0.9]  0   0.8   0.9         NA         NA
-#> 10   (0.9,1]  0   0.9   1.0         NA         NA
+#>          bin  n lower upper      truth      prob
+#> 1    (0,0.1] 13   0.0   0.1 0.07692308 0.0512249
+#> 2  (0.1,0.2] 13   0.1   0.2 0.15384615 0.1575906
+#> 3  (0.2,0.3] 10   0.2   0.3 0.00000000 0.2480549
+#> 4  (0.3,0.4]  1   0.3   0.4         NA        NA
+#> 5  (0.4,0.5]  6   0.4   0.5 0.16666667 0.4558774
+#> 6  (0.5,0.6]  5   0.5   0.6 0.40000000 0.5387631
+#> 7  (0.6,0.7]  9   0.6   0.7 0.66666667 0.6366734
+#> 8  (0.7,0.8]  1   0.7   0.8         NA        NA
+#> 9  (0.8,0.9]  0   0.8   0.9         NA        NA
+#> 10   (0.9,1]  0   0.9   1.0         NA        NA
 #> 
 #> 
 #> $aggregated
 #>          bin lower upper      truth       prob missing_ratio
-#> 1    (0,0.1]   0.0   0.1 0.06666667 0.05546556     0.0000000
-#> 2  (0.1,0.2]   0.1   0.2 0.20967742 0.14678783     0.0000000
-#> 3  (0.2,0.3]   0.2   0.3 0.22448980 0.23801622     0.0000000
-#> 4  (0.3,0.4]   0.3   0.4 0.15384615 0.18472503     0.4615385
-#> 5  (0.4,0.5]   0.4   0.5 0.17857143 0.32380523     0.2857143
-#> 6  (0.5,0.6]   0.5   0.6 0.25000000 0.41051942     0.2500000
-#> 7  (0.6,0.7]   0.6   0.7 0.33333333 0.36913004     0.4166667
-#> 8  (0.7,0.8]   0.7   0.8 0.00000000 0.00000000     1.0000000
+#> 1    (0,0.1]   0.0   0.1 0.07017544 0.05573004    0.00000000
+#> 2  (0.1,0.2]   0.1   0.2 0.19642857 0.15158639    0.00000000
+#> 3  (0.2,0.3]   0.2   0.3 0.22641509 0.24895257    0.00000000
+#> 4  (0.3,0.4]   0.3   0.4 0.20000000 0.23326317    0.33333333
+#> 5  (0.4,0.5]   0.4   0.5 0.12500000 0.28037354    0.37500000
+#> 6  (0.5,0.6]   0.5   0.6 0.33333333 0.46886090    0.14814815
+#> 7  (0.6,0.7]   0.6   0.7 0.46428571 0.59042129    0.07142857
+#> 8  (0.7,0.8]   0.7   0.8 0.00000000 0.00000000    1.00000000
 #> 9  (0.8,0.9]   0.8   0.9        NaN        NaN           NaN
 #> 10   (0.9,1]   0.9   1.0        NaN        NaN           NaN
 
 gg_cal = plotCalibrationCurve(cc, size = 1)
 gg_cal
-#> Warning: Removed 26 rows containing missing values (geom_point).
-#> Warning: Removed 26 row(s) containing missing values (geom_path).
+#> Warning: Removed 23 rows containing missing values (geom_point).
+#> Warning: Removed 23 row(s) containing missing values (geom_path).
 #> Warning: Removed 2 rows containing missing values (geom_point).
 #> Warning: Removed 2 row(s) containing missing values (geom_path).
 ```
@@ -417,36 +417,36 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", epsilon = epsilon,
-  delta = delta, dat_name = "D", seed_object = "D$age")
+  delta = delta, dat_name = "D", seed_object = "probs")
 #> 
-#> [2022-03-09 17:40:05] L2 sensitivity is: 0.016
+#> [2022-03-09 22:31:36] L2 sensitivity is: 0.016
 #> 
-#> [2022-03-09 17:40:07] Initializing ROC-GLM
+#> [2022-03-09 22:31:38] Initializing ROC-GLM
 #> 
-#> [2022-03-09 17:40:07] Host: Received scores of negative response
-#> [2022-03-09 17:40:07] Receiving negative scores
-#> [2022-03-09 17:40:10] Host: Pushing pooled scores
-#> [2022-03-09 17:40:12] Server: Calculating placement values and parts for ROC-GLM
-#> [2022-03-09 17:40:15] Server: Calculating probit regression to obtain ROC-GLM
-#> [2022-03-09 17:40:17] Deviance of iter1=32.6342
-#> [2022-03-09 17:40:20] Deviance of iter2=40.5945
-#> [2022-03-09 17:40:22] Deviance of iter3=43.8294
-#> [2022-03-09 17:40:25] Deviance of iter4=44.016
-#> [2022-03-09 17:40:27] Deviance of iter5=44.0166
-#> [2022-03-09 17:40:30] Deviance of iter6=44.0166
-#> [2022-03-09 17:40:30] Host: Finished calculating ROC-GLM
-#> [2022-03-09 17:40:30] Host: Cleaning data on server
-#> [2022-03-09 17:40:32] Host: Calculating AUC and CI
-#> [2022-03-09 17:40:45] Finished!
+#> [2022-03-09 22:31:38] Host: Received scores of negative response
+#> [2022-03-09 22:31:38] Receiving negative scores
+#> [2022-03-09 22:31:40] Host: Pushing pooled scores
+#> [2022-03-09 22:31:42] Server: Calculating placement values and parts for ROC-GLM
+#> [2022-03-09 22:31:44] Server: Calculating probit regression to obtain ROC-GLM
+#> [2022-03-09 22:31:46] Deviance of iter1=32.6342
+#> [2022-03-09 22:31:48] Deviance of iter2=41.6637
+#> [2022-03-09 22:31:50] Deviance of iter3=45.9195
+#> [2022-03-09 22:31:52] Deviance of iter4=46.1016
+#> [2022-03-09 22:31:54] Deviance of iter5=46.1019
+#> [2022-03-09 22:31:56] Deviance of iter6=46.1019
+#> [2022-03-09 22:31:56] Host: Finished calculating ROC-GLM
+#> [2022-03-09 22:31:56] Host: Cleaning data on server
+#> [2022-03-09 22:31:59] Host: Calculating AUC and CI
+#> [2022-03-09 22:32:09] Finished!
 roc_glm
 #> 
 #> ROC-GLM after Pepe:
 #> 
-#>  Binormal form: pnorm(0.81 + 1.18*qnorm(t))
+#>  Binormal form: pnorm(0.72 + 1.1*qnorm(t))
 #> 
-#>  AUC and 0.95 CI: [0.62----0.7----0.77]
+#>  AUC and 0.95 CI: [0.6----0.69----0.76]
 roc_glm$ci
-#> [1] 0.6179411 0.7699820
+#> [1] 0.5968184 0.7642498
 
 gg_distr_roc = plot(roc_glm)
 gg_distr_roc
@@ -488,7 +488,7 @@ simpleROC = function(labels, scores) {
 
 # Load pooled test data and predict:
 dat_test = read.csv(here::here("data/data-test.csv"), stringsAsFactors = TRUE)
-probs = ranger:::predict.ranger(mod, data = dat_test)$survival[, 127]
+probs = ranger:::predict.ranger(mod, data = dat_test)$survival[, tpoint]
 
 # Calculate empirical AUC and compare with distributed ROC-GLM
 auc = pROC::auc(dat_test$valid, 1 - probs)
@@ -496,11 +496,11 @@ auc = pROC::auc(dat_test$valid, 1 - probs)
 #> Setting direction: controls < cases
 c(auc_emp = auc, auc_distr_roc_glm = roc_glm$auc)
 #>           auc_emp auc_distr_roc_glm 
-#>         0.6886905         0.6994150
+#>         0.6918527         0.6865790
 
 source(here::here("R/helper.R"))
 (ci_emp = logitToAUC(pepeCI(toLogit(auc), 0.05, deLongVar(1 - probs, dat_test$valid))))
-#> [1] 0.6100142 0.7577965
+#> [1] 0.6131496 0.7607906
 
 
 # Calculate TPR and FPR values and add to distributed ROC-GLM plot
@@ -519,7 +519,7 @@ gg_roc_pooled
 brier_pooled = mean((dat_test$valid - (1 - probs))^2)
 c(brier_pooled = brier_pooled, brier_distr = brier)
 #> brier_pooled  brier_distr 
-#>    0.1721405    0.1721405
+#>    0.1733217    0.1733217
 
 cc_pooled = calibrationCurve("dat_test$valid", "1 - probs", nbins = 10)
 
@@ -547,12 +547,12 @@ knitr::kable(tab0)
 
 | Server | (0,0.1\] | (0.1,0.2\] | (0.2,0.3\] | (0.3,0.4\] | (0.4,0.5\] | (0.5,0.6\] | (0.6,0.7\] | (0.7,0.8\] | (0.8,0.9\] | (0.9,1\] |
 | -----: | -------: | ---------: | ---------: | ---------: | ---------: | ---------: | ---------: | ---------: | ---------: | -------: |
-|      1 |       12 |         12 |         14 |          1 |          4 |          6 |          4 |          0 |          0 |        0 |
-|      2 |       12 |         16 |          6 |          1 |          6 |          3 |          2 |          0 |          0 |        0 |
-|      3 |       14 |         13 |         12 |          4 |          4 |          3 |          6 |          1 |          0 |        0 |
-|      4 |        9 |          7 |          7 |          7 |          8 |          6 |          4 |          0 |          0 |        0 |
-|      5 |       13 |         14 |         10 |          0 |          6 |          6 |          8 |          1 |          0 |        0 |
-|     15 |       60 |         62 |         49 |         13 |         28 |         24 |         24 |          2 |          0 |        0 |
+|      1 |       12 |         11 |         13 |          3 |          2 |          7 |          5 |          0 |          0 |        0 |
+|      2 |       11 |         14 |          9 |          1 |          4 |          5 |          2 |          0 |          0 |        0 |
+|      3 |       13 |         12 |         12 |          5 |          3 |          4 |          7 |          1 |          0 |        0 |
+|      4 |        8 |          6 |          9 |          5 |          9 |          6 |          5 |          0 |          0 |        0 |
+|      5 |       13 |         13 |         10 |          1 |          6 |          5 |          9 |          1 |          0 |        0 |
+|     15 |       57 |         56 |         53 |         15 |         24 |         27 |         28 |          2 |          0 |        0 |
 
 ``` r
 
