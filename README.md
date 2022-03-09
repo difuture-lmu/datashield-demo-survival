@@ -36,7 +36,7 @@ using the distributed
 The following contains the preparation of test data and a test model as
 [setup](#setup) while the second part is the [analysis](#analysis).
 
-Last time rendered: 15:53 - 09. Mar 2022 by user runner
+Last time rendered: 16:30 - 09. Mar 2022 by user runner
 
 Autobuild: [![Render
 README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
@@ -92,7 +92,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Installing 12 packages: gridExtra, dotCall64, data.table, pbapply, mathjaxr, maps, viridis, spam, panelaggregation, metafor, fields, DSI
 #> Installing packages into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
-#> * checking for file ‘/tmp/RtmpsFup9J/remotes900110175ed0/datashield-dsBaseClient-d22ba51/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpmkaV5O/remotes8f8b3bcbb415/datashield-dsBaseClient-d22ba51/DESCRIPTION’ ... OK
 #> * preparing ‘dsBaseClient’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -105,7 +105,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> (as 'lib' is unspecified)
 #> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (d22ba514) has not changed since last install.
 #>   Use `force = TRUE` to force installation
-#> * checking for file ‘/tmp/RtmpsFup9J/remotes90012fe3b6f0/difuture-lmu-dsPredictBase-ed79fd1/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpmkaV5O/remotes8f8b70f01fff/difuture-lmu-dsPredictBase-ed79fd1/DESCRIPTION’ ... OK
 #> * preparing ‘dsPredictBase’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -121,7 +121,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsCalibration@HEAD
-#> * checking for file ‘/tmp/RtmpsFup9J/remotes9001de63ffd/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpmkaV5O/remotes8f8b665f2793/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
 #> * preparing ‘dsCalibration’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -132,7 +132,7 @@ remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 remotes::install_github("difuture-lmu/dsROCGLM", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsROCGLM@HEAD
-#> * checking for file ‘/tmp/RtmpsFup9J/remotes90014941bd9c/difuture-lmu-dsROCGLM-92bdca9/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpmkaV5O/remotes8f8b45ef9851/difuture-lmu-dsROCGLM-92bdca9/DESCRIPTION’ ... OK
 #> * preparing ‘dsROCGLM’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -225,6 +225,7 @@ datashield.symbols(conn)
 #> $ds5
 #> [1] "D"
 
+## Data dimensions per server:
 (ddim = ds.dim("D"))
 #> $`dimensions of D in ds1`
 #> [1] 56 11
@@ -254,10 +255,10 @@ load(here::here("data/mod.Rda"))
 ## Push the model to the servers (upload takes ~11 Minutes):
 t0 = proc.time()
 pushObject(conn, obj = mod)
-#> [2022-03-09 15:55:11] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
+#> [2022-03-09 16:32:20] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
 (t0 = proc.time() - t0)
 #>    user  system elapsed 
-#>  77.748  77.666 773.609
+#>  74.103  75.937 766.807
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"   "mod"
@@ -418,25 +419,25 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", epsilon = epsilon,
   delta = delta, dat_name = "D", seed_object = "D$age")
 #> 
-#> [2022-03-09 16:08:38] L2 sensitivity is: 0.016
+#> [2022-03-09 16:45:39] L2 sensitivity is: 0.016
 #> 
-#> [2022-03-09 16:08:40] Initializing ROC-GLM
+#> [2022-03-09 16:45:42] Initializing ROC-GLM
 #> 
-#> [2022-03-09 16:08:40] Host: Received scores of negative response
-#> [2022-03-09 16:08:40] Receiving negative scores
-#> [2022-03-09 16:08:43] Host: Pushing pooled scores
-#> [2022-03-09 16:08:46] Server: Calculating placement values and parts for ROC-GLM
-#> [2022-03-09 16:08:48] Server: Calculating probit regression to obtain ROC-GLM
-#> [2022-03-09 16:08:51] Deviance of iter1=32.6342
-#> [2022-03-09 16:08:53] Deviance of iter2=40.5945
-#> [2022-03-09 16:08:56] Deviance of iter3=43.8294
-#> [2022-03-09 16:08:59] Deviance of iter4=44.016
-#> [2022-03-09 16:09:01] Deviance of iter5=44.0166
-#> [2022-03-09 16:09:04] Deviance of iter6=44.0166
-#> [2022-03-09 16:09:04] Host: Finished calculating ROC-GLM
-#> [2022-03-09 16:09:04] Host: Cleaning data on server
-#> [2022-03-09 16:09:06] Host: Calculating AUC and CI
-#> [2022-03-09 16:09:19] Finished!
+#> [2022-03-09 16:45:42] Host: Received scores of negative response
+#> [2022-03-09 16:45:42] Receiving negative scores
+#> [2022-03-09 16:45:45] Host: Pushing pooled scores
+#> [2022-03-09 16:45:47] Server: Calculating placement values and parts for ROC-GLM
+#> [2022-03-09 16:45:50] Server: Calculating probit regression to obtain ROC-GLM
+#> [2022-03-09 16:45:53] Deviance of iter1=32.6342
+#> [2022-03-09 16:45:55] Deviance of iter2=40.5945
+#> [2022-03-09 16:45:58] Deviance of iter3=43.8294
+#> [2022-03-09 16:46:00] Deviance of iter4=44.016
+#> [2022-03-09 16:46:03] Deviance of iter5=44.0166
+#> [2022-03-09 16:46:05] Deviance of iter6=44.0166
+#> [2022-03-09 16:46:05] Host: Finished calculating ROC-GLM
+#> [2022-03-09 16:46:05] Host: Cleaning data on server
+#> [2022-03-09 16:46:08] Host: Calculating AUC and CI
+#> [2022-03-09 16:46:21] Finished!
 roc_glm
 #> 
 #> ROC-GLM after Pepe:
@@ -467,7 +468,6 @@ if (! file.exists(here::here("data/roc-glm.Rda"))) {
 
   saveRDS(roc_glm, file = here::here("data/roc-glm.Rda"))
 }
-#> Warning: Old and new ROC-GLM are not equal!
 ```
 
 ## Cross check on pooled test data
