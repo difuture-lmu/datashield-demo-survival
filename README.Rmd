@@ -11,7 +11,7 @@ output: github_document
     - [Install packages](#install-packages)
     - [Generate data and fit model](#generate-data-and-fit-model)
     - [Install package on DataSHIELD and upload data](#install-package-on-datashield-and-upload-data)
-- [Analysis](#inspect-results-using-the-docker)
+- [Analysis](#analysis)
     - [Log into DataSHIELD test server](#log-into-datashield-test-server)
     - [Push and predict](#push-and-predict)
     - [Analyse calibration of the predictions](#analyse-calibration-of-the-predictions)
@@ -248,14 +248,15 @@ ggsave(plot = gg_cal_pub,
 # Get the l2 sensitivity
 (l2s = dsL2Sens(conn, "D", "pinv"))
 epsilon = 0.3
-delta = 0.2
+delta = 0.3
 
 # Amount of noise added:
 sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", epsilon = epsilon,
-  delta = delta, dat_name = "D", seed_object = "probs")
+  delta = delta, dat_name = "D", seed_object = "D$cens")
+
 roc_glm
 roc_glm$ci
 
@@ -520,7 +521,9 @@ tex_results = rbind(
   data.frame(command = "\\nFive", value = ddim[[5]][1]),
   data.frame(command = "\\privparOne", value = epsilon),
   data.frame(command = "\\privparTwo", value = delta),
-  data.frame(command = "\\ltwosensUC", value = round(l2s, 4))
+  data.frame(command = "\\ltwosensUC", value = round(l2s, 4)),
+  data.frame(command = "\\AUCdiffusecase", value = round(abs(auc - roc_glm$auc), 4)),
+  data.frame(command = "\\CIdiffusecase", value = round(sum(abs(ci_emp - roc_glm$ci)), 4))
 )
 writeLines(paste0("\\newcommand{", tex_results[[1]], "}{", tex_results[[2]], "}"),
   here::here("tables/tab-results.tex"))

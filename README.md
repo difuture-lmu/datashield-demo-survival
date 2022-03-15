@@ -11,7 +11,7 @@ models by a modified ROC-GLM
       - [Generate data and fit model](#generate-data-and-fit-model)
       - [Install package on DataSHIELD and upload
         data](#install-package-on-datashield-and-upload-data)
-  - [Analysis](#inspect-results-using-the-docker)
+  - [Analysis](#analysis)
       - [Log into DataSHIELD test
         server](#log-into-datashield-test-server)
       - [Push and predict](#push-and-predict)
@@ -36,7 +36,7 @@ using the distributed
 The following contains the preparation of test data and a test model as
 [setup](#setup) while the second part is the [analysis](#analysis).
 
-Last time rendered: 13:54 - 14. Mar 2022 by user runner
+Last time rendered: 17:17 - 15. Mar 2022 by user daniel
 
 Autobuild: [![Render
 README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
@@ -86,60 +86,14 @@ Install all packages locally:
 
 ``` r
 remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
-#> Using github PAT from envvar GITHUB_PAT
-#> Downloading GitHub repo difuture-lmu/dsPredictBase@HEAD
-#> Downloading GitHub repo datashield/dsBaseClient@HEAD
-#> Installing 12 packages: gridExtra, dotCall64, data.table, pbapply, mathjaxr, maps, viridis, spam, panelaggregation, metafor, fields, DSI
-#> Installing packages into '/home/runner/work/_temp/Library'
-#> (as 'lib' is unspecified)
-#> * checking for file ‘/tmp/RtmpexOi4A/remotes913c494ddbfc/datashield-dsBaseClient-d22ba51/DESCRIPTION’ ... OK
-#> * preparing ‘dsBaseClient’:
-#> * checking DESCRIPTION meta-information ... OK
-#> * checking for LF line-endings in source and make files and shell scripts
-#> * checking for empty or unneeded directories
-#> * building ‘dsBaseClient_6.1.1.tar.gz’
-#> Installing package into '/home/runner/work/_temp/Library'
-#> (as 'lib' is unspecified)
-#> Installing 4 packages: backports, DSI, checkmate, DSOpal
-#> Installing packages into '/home/runner/work/_temp/Library'
-#> (as 'lib' is unspecified)
-#> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (d22ba514) has not changed since last install.
+#> Skipping install of 'dsPredictBase' from a github remote, the SHA1 (ed79fd17) has not changed since last install.
 #>   Use `force = TRUE` to force installation
-#> * checking for file ‘/tmp/RtmpexOi4A/remotes913c50aa2f90/difuture-lmu-dsPredictBase-ed79fd1/DESCRIPTION’ ... OK
-#> * preparing ‘dsPredictBase’:
-#> * checking DESCRIPTION meta-information ... OK
-#> * checking for LF line-endings in source and make files and shell scripts
-#> * checking for empty or unneeded directories
-#>   NB: this package now depends on R (>= 3.5.0)
-#>   WARNING: Added dependency on R >= 3.5.0 because serialized objects in
-#>   serialize/load version 3 cannot be read in older versions of R.
-#>   File(s) containing such objects:
-#>     ‘dsPredictBase/inst/extdata/mod.Rda’
-#> * building ‘dsPredictBase_0.0.1.tar.gz’
-#> Installing package into '/home/runner/work/_temp/Library'
-#> (as 'lib' is unspecified)
 remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
-#> Using github PAT from envvar GITHUB_PAT
-#> Downloading GitHub repo difuture-lmu/dsCalibration@HEAD
-#> * checking for file ‘/tmp/RtmpexOi4A/remotes913c2c5942af/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
-#> * preparing ‘dsCalibration’:
-#> * checking DESCRIPTION meta-information ... OK
-#> * checking for LF line-endings in source and make files and shell scripts
-#> * checking for empty or unneeded directories
-#> * building ‘dsCalibration_0.0.1.tar.gz’
-#> Installing package into '/home/runner/work/_temp/Library'
-#> (as 'lib' is unspecified)
+#> Skipping install of 'dsCalibration' from a github remote, the SHA1 (1805632c) has not changed since last install.
+#>   Use `force = TRUE` to force installation
 remotes::install_github("difuture-lmu/dsROCGLM", upgrade = "never")
-#> Using github PAT from envvar GITHUB_PAT
-#> Downloading GitHub repo difuture-lmu/dsROCGLM@HEAD
-#> * checking for file ‘/tmp/RtmpexOi4A/remotes913c6133c4ea/difuture-lmu-dsROCGLM-92bdca9/DESCRIPTION’ ... OK
-#> * preparing ‘dsROCGLM’:
-#> * checking DESCRIPTION meta-information ... OK
-#> * checking for LF line-endings in source and make files and shell scripts
-#> * checking for empty or unneeded directories
-#> * building ‘dsROCGLM_0.0.1.tar.gz’
-#> Installing package into '/home/runner/work/_temp/Library'
-#> (as 'lib' is unspecified)
+#> Skipping install of 'dsROCGLM' from a github remote, the SHA1 (92bdca9a) has not changed since last install.
+#>   Use `force = TRUE` to force installation
 ```
 
 ### Generate data and fit model
@@ -171,8 +125,6 @@ source(here::here("R/install-ds-packages.R"))
 
 ``` r
 library(DSI)
-#> Loading required package: progress
-#> Loading required package: R6
 library(DSOpal)
 library(dsBaseClient)
 
@@ -203,12 +155,14 @@ for (i in seq_along(datasets)) {
 conn = datashield.login(logins = builder$build(), assign = TRUE)
 #> 
 #> Logging into the collaborating servers
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Login ds1 [============>---------------------------------------------------------------]  17% / 0s  Login ds2 [========================>---------------------------------------------------]  33% / 0s  Login ds3 [=====================================>--------------------------------------]  50% / 1s  Login ds4 [==================================================>-------------------------]  67% / 1s  Login ds5 [==============================================================>-------------]  83% / 1s  Logged in all servers [================================================================] 100% / 2s
 #> 
 #>   No variables have been specified. 
 #>   All the variables in the table 
 #>   (the whole dataset) will be assigned to R!
 #> 
 #> Assigning table data...
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Assigning ds1 (DIFUTURE-TEST.SRV1) [=======>-------------------------------------------]  17% / 2s  Assigning ds2 (DIFUTURE-TEST.SRV2) [================>----------------------------------]  33% / 2s  Assigning ds3 (DIFUTURE-TEST.SRV3) [=========================>-------------------------]  50% / 2s  Assigning ds4 (DIFUTURE-TEST.SRV4) [=================================>-----------------]  67% / 3s  Assigning ds5 (DIFUTURE-TEST.SRV5) [=========================================>---------]  83% / 3s  Assigned all tables [==================================================================] 100% / 3s
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"
@@ -227,6 +181,7 @@ datashield.symbols(conn)
 
 ## Data dimensions per server:
 (ddim = ds.dim("D"))
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (dimDS("D")) [------------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (dimDS("D")) [=======>-------------------------------------------]  17% / 0s  Checking ds2 (dimDS("D")) [=========>--------------------------------------------------]  17% / 0s  Getting aggregate ds2 (dimDS("D")) [================>----------------------------------]  33% / 0s  Checking ds3 (dimDS("D")) [===================>----------------------------------------]  33% / 0s  Getting aggregate ds3 (dimDS("D")) [=========================>-------------------------]  50% / 1s  Checking ds4 (dimDS("D")) [=============================>------------------------------]  50% / 1s  Getting aggregate ds4 (dimDS("D")) [=================================>-----------------]  67% / 1s  Checking ds5 (dimDS("D")) [=======================================>--------------------]  67% / 1s  Getting aggregate ds5 (dimDS("D")) [=========================================>---------]  83% / 1s  Aggregated (dimDS("D")) [==============================================================] 100% / 1s
 #> $`dimensions of D in ds1`
 #> [1] 56 11
 #> 
@@ -255,10 +210,11 @@ load(here::here("data/mod.Rda"))
 ## Push the model to the servers (upload takes ~11 Minutes):
 t0 = proc.time()
 pushObject(conn, obj = mod)
-#> [2022-03-14 13:57:48] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
+#> [2022-03-15 17:18:02] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (mod <- decodeBinary("580a000000030004010200030500000000055554462d3800000313000000...  Finalizing assignment ds1 (mod <- decodeBinary("580a000000030004010200030500000000055554462d380...  Checking ds2 (mod <- decodeBinary("580a000000030004010200030500000000055554462d3800000313000000...  Finalizing assignment ds2 (mod <- decodeBinary("580a000000030004010200030500000000055554462d380...  Checking ds3 (mod <- decodeBinary("580a000000030004010200030500000000055554462d3800000313000000...  Finalizing assignment ds3 (mod <- decodeBinary("580a000000030004010200030500000000055554462d380...  Checking ds4 (mod <- decodeBinary("580a000000030004010200030500000000055554462d3800000313000000...  Finalizing assignment ds4 (mod <- decodeBinary("580a000000030004010200030500000000055554462d380...  Checking ds5 (mod <- decodeBinary("580a000000030004010200030500000000055554462d3800000313000000...  Finalizing assignment ds5 (mod <- decodeBinary("580a000000030004010200030500000000055554462d380...  Assigned expr. (mod <- decodeBinary("580a000000030004010200030500000000055554462d38000003130000...
 (t0 = proc.time() - t0)
 #>    user  system elapsed 
-#> 117.284  50.582 768.136
+#>  32.844   0.507 699.374
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"   "mod"
@@ -282,6 +238,7 @@ datashield.symbols(conn)
 ## Predict the model on the data sets located at the servers:
 pfun = paste0("ranger:::predict.ranger(mod, data = D)$survival[, ", tpoint, "]")
 predictModel(conn, mod, "probs", predict_fun = pfun, package = "ranger")
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Checking ds2 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Checking ds3 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Checking ds4 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Checking ds5 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Waiting...  (probs <- assignPredictModel("580a000000030004010200030500000000055554462d380000001...  Checking ds1 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Checking ds2 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Checking ds3 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Checking ds4 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Checking ds5 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Waiting...  (probs <- assignPredictModel("580a000000030004010200030500000000055554462d380000001...  Checking ds1 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Finalizing assignment ds1 (probs <- assignPredictModel("580a00000003000401020003050000000005555...  Checking ds2 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Finalizing assignment ds2 (probs <- assignPredictModel("580a00000003000401020003050000000005555...  Checking ds3 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Finalizing assignment ds3 (probs <- assignPredictModel("580a00000003000401020003050000000005555...  Checking ds4 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Finalizing assignment ds4 (probs <- assignPredictModel("580a00000003000401020003050000000005555...  Checking ds5 (probs <- assignPredictModel("580a000000030004010200030500000000055554462d38000000...  Finalizing assignment ds5 (probs <- assignPredictModel("580a00000003000401020003050000000005555...  Assigned expr. (probs <- assignPredictModel("580a000000030004010200030500000000055554462d380000...
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"     "mod"   "probs"
@@ -301,96 +258,99 @@ datashield.symbols(conn)
 # Because labels are flipped for the 0-1-setting we also calculate
 # 1 - probs:
 datashield.assign(conn, "pinv", quote(1 - probs))
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (pinv <- 1 - probs) [-----------------------------------------------------]   0% / 0s  Finalizing assignment ds1 (pinv <- 1 - probs) [======>---------------------------------]  17% / 0s  Checking ds2 (pinv <- 1 - probs) [========>--------------------------------------------]  17% / 0s  Finalizing assignment ds2 (pinv <- 1 - probs) [============>---------------------------]  33% / 0s  Checking ds3 (pinv <- 1 - probs) [=================>-----------------------------------]  33% / 0s  Finalizing assignment ds3 (pinv <- 1 - probs) [===================>--------------------]  50% / 1s  Checking ds4 (pinv <- 1 - probs) [=========================>---------------------------]  50% / 1s  Finalizing assignment ds4 (pinv <- 1 - probs) [==========================>-------------]  67% / 1s  Checking ds5 (pinv <- 1 - probs) [==================================>------------------]  67% / 1s  Finalizing assignment ds5 (pinv <- 1 - probs) [================================>-------]  83% / 1s  Assigned expr. (pinv <- 1 - probs) [===================================================] 100% / 1s
 ```
 
 ### Analyse calibration of the predictions
 
 ``` r
 brier = dsBrierScore(conn, "D$valid", "pinv")
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (brierScore("D$valid", "pinv")) [-----------------------------------------]   0% / 0s  Getting aggregate ds1 (brierScore("D$valid", "pinv")) [====>---------------------------]  17% / 0s  Checking ds2 (brierScore("D$valid", "pinv")) [======>----------------------------------]  17% / 0s  Getting aggregate ds2 (brierScore("D$valid", "pinv")) [==========>---------------------]  33% / 0s  Checking ds3 (brierScore("D$valid", "pinv")) [=============>---------------------------]  33% / 1s  Getting aggregate ds3 (brierScore("D$valid", "pinv")) [===============>----------------]  50% / 1s  Checking ds4 (brierScore("D$valid", "pinv")) [===================>---------------------]  50% / 1s  Getting aggregate ds4 (brierScore("D$valid", "pinv")) [====================>-----------]  67% / 1s  Checking ds5 (brierScore("D$valid", "pinv")) [==========================>--------------]  67% / 1s  Getting aggregate ds5 (brierScore("D$valid", "pinv")) [==========================>-----]  83% / 1s  Aggregated (brierScore("D$valid", "pinv")) [===========================================] 100% / 1s
 brier
-#> [1] 0.1733217
+#> [1] 0.1733
 
 cc = dsCalibrationCurve(conn, "D$valid", "pinv")
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calibrationCurve("D$valid", "pinv", 10, TRUE)) [-------------------------]   0% / 0s  Getting aggregate ds1 (calibrationCurve("D$valid", "pinv", 10, TRUE)) [==>-------------]  17% / 0s  Checking ds2 (calibrationCurve("D$valid", "pinv", 10, TRUE)) [===>---------------------]  17% / 0s  Getting aggregate ds2 (calibrationCurve("D$valid", "pinv", 10, TRUE)) [====>-----------]  33% / 0s  Checking ds3 (calibrationCurve("D$valid", "pinv", 10, TRUE)) [=======>-----------------]  33% / 0s  Getting aggregate ds3 (calibrationCurve("D$valid", "pinv", 10, TRUE)) [=======>--------]  50% / 1s  Checking ds4 (calibrationCurve("D$valid", "pinv", 10, TRUE)) [===========>-------------]  50% / 1s  Getting aggregate ds4 (calibrationCurve("D$valid", "pinv", 10, TRUE)) [==========>-----]  67% / 1s  Checking ds5 (calibrationCurve("D$valid", "pinv", 10, TRUE)) [================>--------]  67% / 1s  Getting aggregate ds5 (calibrationCurve("D$valid", "pinv", 10, TRUE)) [============>---]  83% / 1s  Aggregated (calibrationCurve("D$valid", "pinv", 10, TRUE)) [===========================] 100% / 1s
 cc
 #> $individuals
 #> $individuals$ds1
-#>          bin  n lower upper      truth       prob
-#> 1    (0,0.1] 12   0.0   0.1 0.08333333 0.05843787
-#> 2  (0.1,0.2] 11   0.1   0.2 0.09090909 0.15889461
-#> 3  (0.2,0.3] 13   0.2   0.3 0.23076923 0.24332767
-#> 4  (0.3,0.4]  3   0.3   0.4         NA         NA
-#> 5  (0.4,0.5]  2   0.4   0.5         NA         NA
-#> 6  (0.5,0.6]  7   0.5   0.6 0.71428571 0.56052096
-#> 7  (0.6,0.7]  5   0.6   0.7 0.40000000 0.64127509
-#> 8  (0.7,0.8]  0   0.7   0.8         NA         NA
-#> 9  (0.8,0.9]  0   0.8   0.9         NA         NA
-#> 10   (0.9,1]  0   0.9   1.0         NA         NA
+#>          bin  n lower upper   truth    prob
+#> 1    (0,0.1] 12   0.0   0.1 0.08333 0.05844
+#> 2  (0.1,0.2] 11   0.1   0.2 0.09091 0.15889
+#> 3  (0.2,0.3] 13   0.2   0.3 0.23077 0.24333
+#> 4  (0.3,0.4]  3   0.3   0.4      NA      NA
+#> 5  (0.4,0.5]  2   0.4   0.5      NA      NA
+#> 6  (0.5,0.6]  7   0.5   0.6 0.71429 0.56052
+#> 7  (0.6,0.7]  5   0.6   0.7 0.40000 0.64128
+#> 8  (0.7,0.8]  0   0.7   0.8      NA      NA
+#> 9  (0.8,0.9]  0   0.8   0.9      NA      NA
+#> 10   (0.9,1]  0   0.9   1.0      NA      NA
 #> 
 #> $individuals$ds2
-#>          bin  n lower upper      truth      prob
-#> 1    (0,0.1] 11   0.0   0.1 0.09090909 0.0618246
-#> 2  (0.1,0.2] 14   0.1   0.2 0.21428571 0.1521453
-#> 3  (0.2,0.3]  9   0.2   0.3 0.11111111 0.2547455
-#> 4  (0.3,0.4]  1   0.3   0.4         NA        NA
-#> 5  (0.4,0.5]  4   0.4   0.5         NA        NA
-#> 6  (0.5,0.6]  5   0.5   0.6 0.00000000 0.5479249
-#> 7  (0.6,0.7]  2   0.6   0.7         NA        NA
-#> 8  (0.7,0.8]  0   0.7   0.8         NA        NA
-#> 9  (0.8,0.9]  0   0.8   0.9         NA        NA
-#> 10   (0.9,1]  0   0.9   1.0         NA        NA
+#>          bin  n lower upper   truth    prob
+#> 1    (0,0.1] 11   0.0   0.1 0.09091 0.06182
+#> 2  (0.1,0.2] 14   0.1   0.2 0.21429 0.15215
+#> 3  (0.2,0.3]  9   0.2   0.3 0.11111 0.25475
+#> 4  (0.3,0.4]  1   0.3   0.4      NA      NA
+#> 5  (0.4,0.5]  4   0.4   0.5      NA      NA
+#> 6  (0.5,0.6]  5   0.5   0.6 0.00000 0.54792
+#> 7  (0.6,0.7]  2   0.6   0.7      NA      NA
+#> 8  (0.7,0.8]  0   0.7   0.8      NA      NA
+#> 9  (0.8,0.9]  0   0.8   0.9      NA      NA
+#> 10   (0.9,1]  0   0.9   1.0      NA      NA
 #> 
 #> $individuals$ds3
-#>          bin  n lower upper     truth       prob
-#> 1    (0,0.1] 13   0.0   0.1 0.0000000 0.06865713
-#> 2  (0.1,0.2] 12   0.1   0.2 0.2500000 0.14193578
-#> 3  (0.2,0.3] 12   0.2   0.3 0.4166667 0.24110349
-#> 4  (0.3,0.4]  5   0.3   0.4 0.4000000 0.33940491
-#> 5  (0.4,0.5]  3   0.4   0.5        NA         NA
-#> 6  (0.5,0.6]  4   0.5   0.6        NA         NA
-#> 7  (0.6,0.7]  7   0.6   0.7 0.2857143 0.63177041
-#> 8  (0.7,0.8]  1   0.7   0.8        NA         NA
-#> 9  (0.8,0.9]  0   0.8   0.9        NA         NA
-#> 10   (0.9,1]  0   0.9   1.0        NA         NA
+#>          bin  n lower upper  truth    prob
+#> 1    (0,0.1] 13   0.0   0.1 0.0000 0.06866
+#> 2  (0.1,0.2] 12   0.1   0.2 0.2500 0.14194
+#> 3  (0.2,0.3] 12   0.2   0.3 0.4167 0.24110
+#> 4  (0.3,0.4]  5   0.3   0.4 0.4000 0.33940
+#> 5  (0.4,0.5]  3   0.4   0.5     NA      NA
+#> 6  (0.5,0.6]  4   0.5   0.6     NA      NA
+#> 7  (0.6,0.7]  7   0.6   0.7 0.2857 0.63177
+#> 8  (0.7,0.8]  1   0.7   0.8     NA      NA
+#> 9  (0.8,0.9]  0   0.8   0.9     NA      NA
+#> 10   (0.9,1]  0   0.9   1.0     NA      NA
 #> 
 #> $individuals$ds4
-#>          bin n lower upper     truth       prob
-#> 1    (0,0.1] 8   0.0   0.1 0.1250000 0.02960261
-#> 2  (0.1,0.2] 6   0.1   0.2 0.3333333 0.14317594
-#> 3  (0.2,0.3] 9   0.2   0.3 0.3333333 0.26274740
-#> 4  (0.3,0.4] 5   0.3   0.4 0.2000000 0.36038460
-#> 5  (0.4,0.5] 9   0.4   0.5 0.2222222 0.44374449
-#> 6  (0.5,0.6] 6   0.5   0.6 0.3333333 0.55035963
-#> 7  (0.6,0.7] 5   0.6   0.7 0.6000000 0.63459336
-#> 8  (0.7,0.8] 0   0.7   0.8        NA         NA
-#> 9  (0.8,0.9] 0   0.8   0.9        NA         NA
-#> 10   (0.9,1] 0   0.9   1.0        NA         NA
+#>          bin n lower upper  truth   prob
+#> 1    (0,0.1] 8   0.0   0.1 0.1250 0.0296
+#> 2  (0.1,0.2] 6   0.1   0.2 0.3333 0.1432
+#> 3  (0.2,0.3] 9   0.2   0.3 0.3333 0.2627
+#> 4  (0.3,0.4] 5   0.3   0.4 0.2000 0.3604
+#> 5  (0.4,0.5] 9   0.4   0.5 0.2222 0.4437
+#> 6  (0.5,0.6] 6   0.5   0.6 0.3333 0.5504
+#> 7  (0.6,0.7] 5   0.6   0.7 0.6000 0.6346
+#> 8  (0.7,0.8] 0   0.7   0.8     NA     NA
+#> 9  (0.8,0.9] 0   0.8   0.9     NA     NA
+#> 10   (0.9,1] 0   0.9   1.0     NA     NA
 #> 
 #> $individuals$ds5
-#>          bin  n lower upper      truth      prob
-#> 1    (0,0.1] 13   0.0   0.1 0.07692308 0.0512249
-#> 2  (0.1,0.2] 13   0.1   0.2 0.15384615 0.1575906
-#> 3  (0.2,0.3] 10   0.2   0.3 0.00000000 0.2480549
-#> 4  (0.3,0.4]  1   0.3   0.4         NA        NA
-#> 5  (0.4,0.5]  6   0.4   0.5 0.16666667 0.4558774
-#> 6  (0.5,0.6]  5   0.5   0.6 0.40000000 0.5387631
-#> 7  (0.6,0.7]  9   0.6   0.7 0.66666667 0.6366734
-#> 8  (0.7,0.8]  1   0.7   0.8         NA        NA
-#> 9  (0.8,0.9]  0   0.8   0.9         NA        NA
-#> 10   (0.9,1]  0   0.9   1.0         NA        NA
+#>          bin  n lower upper   truth    prob
+#> 1    (0,0.1] 13   0.0   0.1 0.07692 0.05122
+#> 2  (0.1,0.2] 13   0.1   0.2 0.15385 0.15759
+#> 3  (0.2,0.3] 10   0.2   0.3 0.00000 0.24805
+#> 4  (0.3,0.4]  1   0.3   0.4      NA      NA
+#> 5  (0.4,0.5]  6   0.4   0.5 0.16667 0.45588
+#> 6  (0.5,0.6]  5   0.5   0.6 0.40000 0.53876
+#> 7  (0.6,0.7]  9   0.6   0.7 0.66667 0.63667
+#> 8  (0.7,0.8]  1   0.7   0.8      NA      NA
+#> 9  (0.8,0.9]  0   0.8   0.9      NA      NA
+#> 10   (0.9,1]  0   0.9   1.0      NA      NA
 #> 
 #> 
 #> $aggregated
-#>          bin lower upper      truth       prob missing_ratio
-#> 1    (0,0.1]   0.0   0.1 0.07017544 0.05573004    0.00000000
-#> 2  (0.1,0.2]   0.1   0.2 0.19642857 0.15158639    0.00000000
-#> 3  (0.2,0.3]   0.2   0.3 0.22641509 0.24895257    0.00000000
-#> 4  (0.3,0.4]   0.3   0.4 0.20000000 0.23326317    0.33333333
-#> 5  (0.4,0.5]   0.4   0.5 0.12500000 0.28037354    0.37500000
-#> 6  (0.5,0.6]   0.5   0.6 0.33333333 0.46886090    0.14814815
-#> 7  (0.6,0.7]   0.6   0.7 0.46428571 0.59042129    0.07142857
-#> 8  (0.7,0.8]   0.7   0.8 0.00000000 0.00000000    1.00000000
-#> 9  (0.8,0.9]   0.8   0.9        NaN        NaN           NaN
-#> 10   (0.9,1]   0.9   1.0        NaN        NaN           NaN
+#>          bin lower upper   truth    prob missing_ratio
+#> 1    (0,0.1]   0.0   0.1 0.07018 0.05573       0.00000
+#> 2  (0.1,0.2]   0.1   0.2 0.19643 0.15159       0.00000
+#> 3  (0.2,0.3]   0.2   0.3 0.22642 0.24895       0.00000
+#> 4  (0.3,0.4]   0.3   0.4 0.20000 0.23326       0.33333
+#> 5  (0.4,0.5]   0.4   0.5 0.12500 0.28037       0.37500
+#> 6  (0.5,0.6]   0.5   0.6 0.33333 0.46886       0.14815
+#> 7  (0.6,0.7]   0.6   0.7 0.46429 0.59042       0.07143
+#> 8  (0.7,0.8]   0.7   0.8 0.00000 0.00000       1.00000
+#> 9  (0.8,0.9]   0.8   0.9     NaN     NaN           NaN
+#> 10   (0.9,1]   0.9   1.0     NaN     NaN           NaN
 
 gg_cal = plotCalibrationCurve(cc, size = 1)
 gg_cal
@@ -407,46 +367,72 @@ gg_cal
 ``` r
 # Get the l2 sensitivity
 (l2s = dsL2Sens(conn, "D", "pinv"))
-#> [1] 0.01598668
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (dimDS("D")) [------------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (dimDS("D")) [=======>-------------------------------------------]  17% / 0s  Checking ds2 (dimDS("D")) [=========>--------------------------------------------------]  17% / 0s  Getting aggregate ds2 (dimDS("D")) [================>----------------------------------]  33% / 0s  Checking ds3 (dimDS("D")) [===================>----------------------------------------]  33% / 0s  Getting aggregate ds3 (dimDS("D")) [=========================>-------------------------]  50% / 1s  Checking ds4 (dimDS("D")) [=============================>------------------------------]  50% / 1s  Getting aggregate ds4 (dimDS("D")) [=================================>-----------------]  67% / 1s  Checking ds5 (dimDS("D")) [=======================================>--------------------]  67% / 1s  Getting aggregate ds5 (dimDS("D")) [=========================================>---------]  83% / 1s  Aggregated (dimDS("D")) [==============================================================] 100% / 1s
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d38000000fe", ...  Finalizing assignment ds1 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d...  Checking ds2 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d38000000fe", ...  Finalizing assignment ds2 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d...  Checking ds3 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d38000000fe", ...  Finalizing assignment ds3 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d...  Checking ds4 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d38000000fe", ...  Finalizing assignment ds4 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d...  Checking ds5 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d38000000fe", ...  Finalizing assignment ds5 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d...  Assigned expr. (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d38000000fe"...
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [-------------------------]   0% / 0s  Getting aggregate ds1 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [==>-------------]  17% / 0s  Checking ds2 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [===>---------------------]  17% / 0s  Getting aggregate ds2 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [====>-----------]  33% / 0s  Checking ds3 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [=======>-----------------]  33% / 0s  Getting aggregate ds3 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [=======>--------]  50% / 1s  Checking ds4 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [===========>-------------]  50% / 1s  Getting aggregate ds4 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [==========>-----]  67% / 1s  Checking ds5 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [================>--------]  67% / 1s  Getting aggregate ds5 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [============>---]  83% / 1s  Aggregated (...) [=====================================================================] 100% / 1s
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (rmDS("xXcols")) [--------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (rmDS("xXcols")) [=======>---------------------------------------]  17% / 0s  Checking ds2 (rmDS("xXcols")) [========>-----------------------------------------------]  17% / 0s  Getting aggregate ds2 (rmDS("xXcols")) [===============>-------------------------------]  33% / 0s  Checking ds3 (rmDS("xXcols")) [==================>-------------------------------------]  33% / 0s  Getting aggregate ds3 (rmDS("xXcols")) [=======================>-----------------------]  50% / 1s  Checking ds4 (rmDS("xXcols")) [===========================>----------------------------]  50% / 1s  Getting aggregate ds4 (rmDS("xXcols")) [==============================>----------------]  67% / 1s  Checking ds5 (rmDS("xXcols")) [====================================>-------------------]  67% / 1s  Getting aggregate ds5 (rmDS("xXcols")) [======================================>--------]  83% / 1s  Aggregated (rmDS("xXcols")) [==========================================================] 100% / 1s
+#> [1] 0.01599
 epsilon = 0.3
-delta = 0.2
+delta = 0.3
 
 # Amount of noise added:
 sqrt(2 * log(1.25 / delta)) * l2s / epsilon
-#> [1] 0.1020196
+#> [1] 0.09003
 
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", epsilon = epsilon,
-  delta = delta, dat_name = "D", seed_object = "probs")
+  delta = delta, dat_name = "D", seed_object = "D$cens")
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (dimDS("D")) [------------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (dimDS("D")) [=======>-------------------------------------------]  17% / 0s  Checking ds2 (dimDS("D")) [=========>--------------------------------------------------]  17% / 0s  Getting aggregate ds2 (dimDS("D")) [================>----------------------------------]  33% / 0s  Checking ds3 (dimDS("D")) [===================>----------------------------------------]  33% / 0s  Getting aggregate ds3 (dimDS("D")) [=========================>-------------------------]  50% / 1s  Checking ds4 (dimDS("D")) [=============================>------------------------------]  50% / 1s  Getting aggregate ds4 (dimDS("D")) [=================================>-----------------]  67% / 1s  Checking ds5 (dimDS("D")) [=======================================>--------------------]  67% / 1s  Getting aggregate ds5 (dimDS("D")) [=========================================>---------]  83% / 1s  Aggregated (dimDS("D")) [==============================================================] 100% / 1s
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d38000000fe", ...  Finalizing assignment ds1 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d...  Checking ds2 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d38000000fe", ...  Finalizing assignment ds2 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d...  Checking ds3 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d38000000fe", ...  Finalizing assignment ds3 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d...  Checking ds4 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d38000000fe", ...  Finalizing assignment ds4 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d...  Checking ds5 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d38000000fe", ...  Finalizing assignment ds5 (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d...  Assigned expr. (xXcols <- decodeBinary("580a000000030004010200030500000000055554462d38000000fe"...
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [-------------------------]   0% / 0s  Getting aggregate ds1 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [==>-------------]  17% / 0s  Checking ds2 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [===>---------------------]  17% / 0s  Getting aggregate ds2 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [====>-----------]  33% / 0s  Checking ds3 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [=======>-----------------]  33% / 0s  Getting aggregate ds3 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [=======>--------]  50% / 1s  Checking ds4 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [===========>-------------]  50% / 1s  Getting aggregate ds4 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [==========>-----]  67% / 1s  Checking ds5 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [================>--------]  67% / 1s  Getting aggregate ds5 (l2sens("D", "pinv", 91, "xXcols", diff, TRUE)) [============>---]  83% / 1s  Aggregated (...) [=====================================================================] 100% / 1s
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (rmDS("xXcols")) [--------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (rmDS("xXcols")) [=======>---------------------------------------]  17% / 0s  Checking ds2 (rmDS("xXcols")) [========>-----------------------------------------------]  17% / 0s  Getting aggregate ds2 (rmDS("xXcols")) [===============>-------------------------------]  33% / 0s  Checking ds3 (rmDS("xXcols")) [==================>-------------------------------------]  33% / 0s  Getting aggregate ds3 (rmDS("xXcols")) [=======================>-----------------------]  50% / 1s  Checking ds4 (rmDS("xXcols")) [===========================>----------------------------]  50% / 1s  Getting aggregate ds4 (rmDS("xXcols")) [==============================>----------------]  67% / 1s  Checking ds5 (rmDS("xXcols")) [====================================>-------------------]  67% / 1s  Getting aggregate ds5 (rmDS("xXcols")) [======================================>--------]  83% / 1s  Aggregated (rmDS("xXcols")) [==========================================================] 100% / 1s
 #> 
-#> [2022-03-14 14:11:03] L2 sensitivity is: 0.016
+#> [2022-03-15 17:29:52] L2 sensitivity is: 0.016
 #> 
-#> [2022-03-14 14:11:06] Initializing ROC-GLM
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (l2s <- decodeBinary("580a000000030004010200030500000000055554462d380000000e000000...  Finalizing assignment ds1 (l2s <- decodeBinary("580a000000030004010200030500000000055554462d380...  Checking ds2 (l2s <- decodeBinary("580a000000030004010200030500000000055554462d380000000e000000...  Finalizing assignment ds2 (l2s <- decodeBinary("580a000000030004010200030500000000055554462d380...  Checking ds3 (l2s <- decodeBinary("580a000000030004010200030500000000055554462d380000000e000000...  Finalizing assignment ds3 (l2s <- decodeBinary("580a000000030004010200030500000000055554462d380...  Checking ds4 (l2s <- decodeBinary("580a000000030004010200030500000000055554462d380000000e000000...  Finalizing assignment ds4 (l2s <- decodeBinary("580a000000030004010200030500000000055554462d380...  Checking ds5 (l2s <- decodeBinary("580a000000030004010200030500000000055554462d380000000e000000...  Finalizing assignment ds5 (l2s <- decodeBinary("580a000000030004010200030500000000055554462d380...  Assigned expr. (l2s <- decodeBinary("580a000000030004010200030500000000055554462d380000000e0000...
 #> 
-#> [2022-03-14 14:11:06] Host: Received scores of negative response
-#> [2022-03-14 14:11:06] Receiving negative scores
-#> [2022-03-14 14:11:08] Host: Pushing pooled scores
-#> [2022-03-14 14:11:10] Server: Calculating placement values and parts for ROC-GLM
-#> [2022-03-14 14:11:12] Server: Calculating probit regression to obtain ROC-GLM
-#> [2022-03-14 14:11:14] Deviance of iter1=32.6342
-#> [2022-03-14 14:11:16] Deviance of iter2=41.6637
-#> [2022-03-14 14:11:18] Deviance of iter3=45.9195
-#> [2022-03-14 14:11:21] Deviance of iter4=46.1016
-#> [2022-03-14 14:11:23] Deviance of iter5=46.1019
-#> [2022-03-14 14:11:25] Deviance of iter6=46.1019
-#> [2022-03-14 14:11:25] Host: Finished calculating ROC-GLM
-#> [2022-03-14 14:11:25] Host: Cleaning data on server
-#> [2022-03-14 14:11:27] Host: Calculating AUC and CI
-#> [2022-03-14 14:11:38] Finished!
+#> [2022-03-15 17:29:53] Initializing ROC-GLM
+#> 
+#> [2022-03-15 17:29:53] Host: Received scores of negative response
+#> 
+#> [2022-03-15 17:29:53] Receiving negative scores
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [--------]   0% / 0s  Getting aggregate ds1 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  17% ...  Checking ds2 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [>-------]  17% / 0s  Getting aggregate ds2 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  33% ...  Checking ds3 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [==>-----]  33% / 0s  Getting aggregate ds3 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  50% ...  Checking ds4 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [===>----]  50% / 1s  Getting aggregate ds4 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  67% ...  Checking ds5 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [====>---]  67% / 1s  Getting aggregate ds5 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  83% ...  Aggregated (...) [=====================================================================] 100% / 1s
+#> [2022-03-15 17:29:54] Host: Pushing pooled scores
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (pooled_scores <- decodeBinary("580a000000030004010200030500000000055554462d380000...  Finalizing assignment ds1 (pooled_scores <- decodeBinary("580a000000030004010200030500000000055...  Checking ds2 (pooled_scores <- decodeBinary("580a000000030004010200030500000000055554462d380000...  Finalizing assignment ds2 (pooled_scores <- decodeBinary("580a000000030004010200030500000000055...  Checking ds3 (pooled_scores <- decodeBinary("580a000000030004010200030500000000055554462d380000...  Finalizing assignment ds3 (pooled_scores <- decodeBinary("580a000000030004010200030500000000055...  Checking ds4 (pooled_scores <- decodeBinary("580a000000030004010200030500000000055554462d380000...  Finalizing assignment ds4 (pooled_scores <- decodeBinary("580a000000030004010200030500000000055...  Checking ds5 (pooled_scores <- decodeBinary("580a000000030004010200030500000000055554462d380000...  Finalizing assignment ds5 (pooled_scores <- decodeBinary("580a000000030004010200030500000000055...  Assigned expr. (pooled_scores <- decodeBinary("580a000000030004010200030500000000055554462d3800...
+#> [2022-03-15 17:29:55] Server: Calculating placement values and parts for ROC-GLM
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (roc_data <- rocGLMFrame("D$valid", "pinv", "pooled_scores")) [-----------]   0% / 0s  Finalizing assignment ds1 (roc_data <- rocGLMFrame("D$valid", "pinv", "pooled_scores")) []  17%...  Checking ds2 (roc_data <- rocGLMFrame("D$valid", "pinv", "pooled_scores")) [=>---------]  17% / 0s  Finalizing assignment ds2 (roc_data <- rocGLMFrame("D$valid", "pinv", "pooled_scores")) []  33%...  Checking ds3 (roc_data <- rocGLMFrame("D$valid", "pinv", "pooled_scores")) [===>-------]  33% / 0s  Finalizing assignment ds3 (roc_data <- rocGLMFrame("D$valid", "pinv", "pooled_scores")) []  50%...  Checking ds4 (roc_data <- rocGLMFrame("D$valid", "pinv", "pooled_scores")) [=====>-----]  50% / 1s  Finalizing assignment ds4 (roc_data <- rocGLMFrame("D$valid", "pinv", "pooled_scores")) []  67%...  Checking ds5 (roc_data <- rocGLMFrame("D$valid", "pinv", "pooled_scores")) [======>----]  67% / 1s  Finalizing assignment ds5 (roc_data <- rocGLMFrame("D$valid", "pinv", "pooled_scores")) []  83%...  Assigned expr. (roc_data <- rocGLMFrame("D$valid", "pinv", "pooled_scores")) [=========] 100% / 1s
+#> [2022-03-15 17:29:56] Server: Calculating probit regression to obtain ROC-GLM
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]   0% / 0s  Getting aggregate ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]  17% / 0s  Getting aggregate ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  33% / 0s  Getting aggregate ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  50% / 1s  Getting aggregate ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  67% / 1s  Getting aggregate ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Aggregated (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [====] 100% / 1s
+#> [2022-03-15 17:29:57] Deviance of iter1=32.6342
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]   0% / 0s  Getting aggregate ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]  17% / 0s  Getting aggregate ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  33% / 0s  Getting aggregate ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  50% / 1s  Getting aggregate ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  67% / 1s  Getting aggregate ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Aggregated (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [====] 100% / 1s
+#> [2022-03-15 17:29:58] Deviance of iter2=40.9884
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]   0% / 0s  Getting aggregate ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]  17% / 0s  Getting aggregate ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  33% / 0s  Getting aggregate ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  50% / 1s  Getting aggregate ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  67% / 1s  Getting aggregate ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Aggregated (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [====] 100% / 1s
+#> [2022-03-15 17:29:59] Deviance of iter3=45.7591
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]   0% / 0s  Getting aggregate ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]  17% / 0s  Getting aggregate ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  33% / 1s  Getting aggregate ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  50% / 1s  Getting aggregate ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  67% / 1s  Getting aggregate ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Aggregated (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [====] 100% / 1s
+#> [2022-03-15 17:29:59] Deviance of iter4=46.0505
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]   0% / 0s  Getting aggregate ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]  17% / 0s  Getting aggregate ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  33% / 0s  Getting aggregate ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  50% / 1s  Getting aggregate ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  67% / 1s  Getting aggregate ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Aggregated (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [====] 100% / 1s
+#> [2022-03-15 17:30:00] Deviance of iter5=46.0515
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]   0% / 0s  Getting aggregate ds1 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [--]  17% / 0s  Getting aggregate ds2 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  33% / 0s  Getting aggregate ds3 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  50% / 1s  Getting aggregate ds4 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Checking ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [>-]  67% / 1s  Getting aggregate ds5 (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) []...  Aggregated (calculateDistrGLMParts(formula = y ~ x, data = "roc_data", w = "w", ) [====] 100% / 1s
+#> [2022-03-15 17:30:01] Deviance of iter6=46.0515
+#> [2022-03-15 17:30:01] Host: Finished calculating ROC-GLM
+#> [2022-03-15 17:30:01] Host: Cleaning data on server
+#> [2022-03-15 17:30:03] Host: Calculating AUC and CI
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (meanDS(D$valid)) [-------------------------------------------------------]   0% / 0s  Getting aggregate ds1 (meanDS(D$valid)) [=======>--------------------------------------]  17% / 0s  Checking ds2 (meanDS(D$valid)) [========>----------------------------------------------]  17% / 0s  Getting aggregate ds2 (meanDS(D$valid)) [==============>-------------------------------]  33% / 0s  Checking ds3 (meanDS(D$valid)) [=================>-------------------------------------]  33% / 0s  Getting aggregate ds3 (meanDS(D$valid)) [======================>-----------------------]  50% / 1s  Checking ds4 (meanDS(D$valid)) [===========================>---------------------------]  50% / 1s  Getting aggregate ds4 (meanDS(D$valid)) [==============================>---------------]  67% / 1s  Checking ds5 (meanDS(D$valid)) [====================================>------------------]  67% / 1s  Getting aggregate ds5 (meanDS(D$valid)) [=====================================>--------]  83% / 1s  Aggregated (meanDS(D$valid)) [=========================================================] 100% / 1s
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (getNegativeScoresVar("D$valid", "pinv")) [-------------------------------]   0% / 0s  Getting aggregate ds1 (getNegativeScoresVar("D$valid", "pinv")) [===>------------------]  17% / 0s  Checking ds2 (getNegativeScoresVar("D$valid", "pinv")) [====>--------------------------]  17% / 0s  Getting aggregate ds2 (getNegativeScoresVar("D$valid", "pinv")) [======>---------------]  33% / 0s  Checking ds3 (getNegativeScoresVar("D$valid", "pinv")) [=========>---------------------]  33% / 0s  Getting aggregate ds3 (getNegativeScoresVar("D$valid", "pinv")) [==========>-----------]  50% / 1s  Checking ds4 (getNegativeScoresVar("D$valid", "pinv")) [===============>---------------]  50% / 1s  Getting aggregate ds4 (getNegativeScoresVar("D$valid", "pinv")) [==============>-------]  67% / 1s  Checking ds5 (getNegativeScoresVar("D$valid", "pinv")) [====================>----------]  67% / 1s  Getting aggregate ds5 (getNegativeScoresVar("D$valid", "pinv")) [=================>----]  83% / 1s  Aggregated (...) [=====================================================================] 100% / 1s
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (getPositiveScoresVar("D$valid", "pinv")) [-------------------------------]   0% / 0s  Getting aggregate ds1 (getPositiveScoresVar("D$valid", "pinv")) [===>------------------]  17% / 0s  Checking ds2 (getPositiveScoresVar("D$valid", "pinv")) [====>--------------------------]  17% / 0s  Getting aggregate ds2 (getPositiveScoresVar("D$valid", "pinv")) [======>---------------]  33% / 0s  Checking ds3 (getPositiveScoresVar("D$valid", "pinv")) [=========>---------------------]  33% / 0s  Getting aggregate ds3 (getPositiveScoresVar("D$valid", "pinv")) [==========>-----------]  50% / 1s  Checking ds4 (getPositiveScoresVar("D$valid", "pinv")) [===============>---------------]  50% / 1s  Getting aggregate ds4 (getPositiveScoresVar("D$valid", "pinv")) [==============>-------]  67% / 1s  Checking ds5 (getPositiveScoresVar("D$valid", "pinv")) [====================>----------]  67% / 1s  Getting aggregate ds5 (getPositiveScoresVar("D$valid", "pinv")) [=================>----]  83% / 1s  Aggregated (...) [=====================================================================] 100% / 1s
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [--------]   0% / 0s  Getting aggregate ds1 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  17% ...  Checking ds2 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [>-------]  17% / 0s  Getting aggregate ds2 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  33% ...  Checking ds3 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [==>-----]  33% / 0s  Getting aggregate ds3 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  50% ...  Checking ds4 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [===>----]  50% / 1s  Getting aggregate ds4 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  67% ...  Checking ds5 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [====>---]  67% / 1s  Getting aggregate ds5 (getNegativeScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  83% ...  Aggregated (...) [=====================================================================] 100% / 1s
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Checking ds1 (getPositiveScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [--------]   0% / 0s  Getting aggregate ds1 (getPositiveScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  17% ...  Checking ds2 (getPositiveScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [>-------]  17% / 0s  Getting aggregate ds2 (getPositiveScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  33% ...  Checking ds3 (getPositiveScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [==>-----]  33% / 0s  Getting aggregate ds3 (getPositiveScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  50% ...  Checking ds4 (getPositiveScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [===>----]  50% / 1s  Getting aggregate ds4 (getPositiveScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  67% ...  Checking ds5 (getPositiveScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) [====>---]  67% / 1s  Getting aggregate ds5 (getPositiveScores("D$valid", "pinv", 0.3, 0.3, "D$cens", TRUE)) []  83% ...  Aggregated (...) [=====================================================================] 100% / 1s
+#> [2022-03-15 17:30:08] Finished!
+
 roc_glm
 #> 
 #> ROC-GLM after Pepe:
 #> 
-#>  Binormal form: pnorm(0.72 + 1.1*qnorm(t))
+#>  Binormal form: pnorm(0.81 + 1.21*qnorm(t))
 #> 
-#>  AUC and 0.95 CI: [0.6----0.69----0.76]
+#>  AUC and 0.95 CI: [0.61----0.7----0.77]
 roc_glm$ci
-#> [1] 0.5968184 0.7642498
+#> [1] 0.6119 0.7690
 
 gg_distr_roc = plot(roc_glm)
 gg_distr_roc
@@ -468,7 +454,6 @@ if (! file.exists(here::here("data/roc-glm.Rda"))) {
 
   saveRDS(roc_glm, file = here::here("data/roc-glm.Rda"))
 }
-#> Warning: Old and new ROC-GLM are not equal!
 ```
 
 ## Cross check on pooled test data
@@ -496,11 +481,11 @@ auc = pROC::auc(dat_test$valid, 1 - probs)
 #> Setting direction: controls < cases
 c(auc_emp = auc, auc_distr_roc_glm = roc_glm$auc)
 #>           auc_emp auc_distr_roc_glm 
-#>         0.6918527         0.6865790
+#>            0.6919            0.6961
 
 source(here::here("R/helper.R"))
 (ci_emp = logitToAUC(pepeCI(toLogit(auc), 0.05, deLongVar(1 - probs, dat_test$valid))))
-#> [1] 0.6131496 0.7607906
+#> [1] 0.6131 0.7608
 
 
 # Calculate TPR and FPR values and add to distributed ROC-GLM plot
@@ -519,7 +504,7 @@ gg_roc_pooled
 brier_pooled = mean((dat_test$valid - (1 - probs))^2)
 c(brier_pooled = brier_pooled, brier_distr = brier)
 #> brier_pooled  brier_distr 
-#>    0.1733217    0.1733217
+#>       0.1733       0.1733
 
 cc_pooled = calibrationCurve("dat_test$valid", "1 - probs", nbins = 10)
 
@@ -590,7 +575,9 @@ tex_results = rbind(
   data.frame(command = "\\nFive", value = ddim[[5]][1]),
   data.frame(command = "\\privparOne", value = epsilon),
   data.frame(command = "\\privparTwo", value = delta),
-  data.frame(command = "\\ltwosensUC", value = round(l2s, 4))
+  data.frame(command = "\\ltwosensUC", value = round(l2s, 4)),
+  data.frame(command = "\\AUCdiffusecase", value = round(abs(auc - roc_glm$auc), 4)),
+  data.frame(command = "\\CIdiffusecase", value = round(sum(abs(ci_emp - roc_glm$ci)), 4))
 )
 writeLines(paste0("\\newcommand{", tex_results[[1]], "}{", tex_results[[2]], "}"),
   here::here("tables/tab-results.tex"))
@@ -600,4 +587,5 @@ writeLines(paste0("\\newcommand{", tex_results[[1]], "}{", tex_results[[2]], "}"
 
 ``` r
 datashield.logout(conn)
+#>    [-------------------------------------------------------------------------------------]   0% / 0s  Logout ds1 [===========>---------------------------------------------------------------]  17% / 0s  Logout ds2 [========================>--------------------------------------------------]  33% / 0s  Logout ds3 [=====================================>-------------------------------------]  50% / 0s  Logout ds4 [=================================================>-------------------------]  67% / 0s  Logout ds5 [=============================================================>-------------]  83% / 1s  Logged out from all servers [==========================================================] 100% / 1s
 ```
