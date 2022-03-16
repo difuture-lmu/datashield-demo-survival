@@ -18,6 +18,7 @@ output: github_document
     - [Evaluate the model using ROC analysis](#evaluate-the-model-using-roc-analysis)
     - [Cross check on pooled test data](#cross-check-on-pooled-test-data)
 - [Log out from DataSHIELD servers](#log-out-from-datashield-servers)
+- [Session Info](#session-info)
 
 
 ```{r, include=FALSE}
@@ -156,29 +157,6 @@ datashield.symbols(conn)
 (ddim = ds.dim("D"))
 ```
 
-```{r, include=FALSE}
-seeds = datashield.aggregate(conn, quote(seedBoundedToObject("D$age")))
-
-seed_log_file = here::here("data/seeds.csv")
-if (file.exists(seed_log_file)) {
-  sds_old = read.csv(seed_log_file)
-  sds = do.call(data.frame, c(list(
-    time = as.character(Sys.time()),
-    user = Sys.getenv()[["USER"]],
-    os = Sys.info()[["release"]]),
-    seeds))
-  sds = rbind(sds, sds_old)
-  write.csv(sds, file = seed_log_file, row.names = FALSE)
-} else {
-  sds = do.call(data.frame, c(list(
-    time = as.character(Sys.time()),
-    user = Sys.getenv()[["USER"]],
-    os = Sys.info()[["release"]]),
-    seeds))
-  write.csv(sds, file = seed_log_file, row.names = FALSE)
-}
-```
-
 ### Push and predict
 
 ```{r}
@@ -205,6 +183,8 @@ datashield.assign(conn, "pinv", quote(1 - probs))
 ```
 
 ### Analyse calibration of the predictions
+
+#### Figure 7, Section 6.3
 
 ```{r}
 brier = dsBrierScore(conn, "D$valid", "pinv")
@@ -244,6 +224,8 @@ ggsave(plot = gg_cal_pub,
 
 ### Evaluate the model using ROC analysis
 
+#### Figure 6, Section 6.2
+
 ```{r}
 # Get the l2 sensitivity
 (l2s = dsL2Sens(conn, "D", "pinv"))
@@ -262,20 +244,6 @@ roc_glm$ci
 
 gg_distr_roc = plot(roc_glm)
 gg_distr_roc
-```
-
-__Simple check if old (model from the last rendering) and new ROC-GLM are equal:__
-```{r}
-# Check if roc_glm object is the same for the new and the last run:
-if (! file.exists(here::here("data/roc-glm.Rda"))) {
-  saveRDS(roc_glm, file = here::here("data/roc-glm.Rda"))
-} else {
-  roc_glm_last_run = readRDS(here::here("data/roc-glm.Rda"))
-  if (! identical(roc_glm_last_run, roc_glm))
-    warning("Old and new ROC-GLM are not equal!")
-
-  saveRDS(roc_glm, file = here::here("data/roc-glm.Rda"))
-}
 ```
 
 ```{r, include=FALSE}
@@ -331,6 +299,8 @@ ggsave(plot = gg_roc_pub,
 
 ## Cross check on pooled test data
 
+#### Comparison of AUC values and CI on pooled data
+
 ```{r}
 #' Calculate TPR and FPRs to plot the empirical ROC curve
 #'
@@ -350,25 +320,46 @@ probs = ranger:::predict.ranger(mod, data = dat_test)$survival[, tpoint]
 
 # Calculate empirical AUC and compare with distributed ROC-GLM
 auc = pROC::auc(dat_test$valid, 1 - probs)
-c(auc_emp = auc, auc_distr_roc_glm = roc_glm$auc)
 
 source(here::here("R/helper.R"))
-(ci_emp = logitToAUC(pepeCI(toLogit(auc), 0.05, deLongVar(1 - probs, dat_test$valid))))
+ci_emp = logitToAUC(pepeCI(toLogit(auc), 0.05, deLongVar(1 - probs, dat_test$valid)))
 
+knitr::kable(data.frame(
+  lower = c(ci_emp[1], roc_glm$ci[1]),
+  auc   = c(auc, roc_glm$auc),
+  upper = c(ci_emp[2], roc_glm$ci[2]),
+  method = c("Pooled empirical", "Distribued ROC-GLM")))
+```
 
+#### ROC curve on pooled data vs. distributed ROC-GLM, Figure 8 (left), Section 6.4
+
+```{r}
 # Calculate TPR and FPR values and add to distributed ROC-GLM plot
 plt_emp_roc_data = simpleROC(dat_test$valid, 1 - probs)
 
 gg_roc_pooled = plot(roc_glm) +
   geom_line(data = plt_emp_roc_data, aes(x = FPR, y = TPR), color = "red")
 gg_roc_pooled
+```
 
+#### ROC curve on pooled data vs. distributed ROC-GLM, Figure 8 (right), Section 6.4
+
+```{r}
 # Calculate pooled brier score and calibration curve
 brier_pooled = mean((dat_test$valid - (1 - probs))^2)
 c(brier_pooled = brier_pooled, brier_distr = brier)
 
 cc_pooled = calibrationCurve("dat_test$valid", "1 - probs", nbins = 10)
 
+# Visualize distributed calibration curve vs. pooled one:
+gg_cal_pooled = plotCalibrationCurve(cc, size = 1.5, individuals = FALSE) +
+    geom_line(data = cc_pooled, aes(x = prob, y = truth), color = "red")
+gg_cal_pooled
+```
+
+#### Table of number of observations per bin, Table 2, Appendix A.3
+
+```{r}
 # Table of elements per server for the calibration curve:
 ll_tab = list()
 for (i in seq_along(cc$individuals)) {
@@ -390,14 +381,8 @@ writeLines(knitr::kable(tab, format = "latex", escape = FALSE),
 
 knitr::kable(tab0)
 
-
-
-# Visualize distributed calibration curve vs. pooled one:
-
-gg_cal_pooled = plotCalibrationCurve(cc, size = 1.5, individuals = FALSE) +
-    geom_line(data = cc_pooled, aes(x = prob, y = truth), color = "red")
-gg_cal_pooled
 ```
+
 
 ```{r, include=FALSE}
 # Save figure for paper
@@ -533,4 +518,10 @@ writeLines(paste0("\\newcommand{", tex_results[[1]], "}{", tex_results[[2]], "}"
 
 ```{r, output=FALSE}
 datashield.logout(conn)
+```
+
+## Session Info
+
+```{r}
+sessionInfo()
 ```
