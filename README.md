@@ -37,47 +37,55 @@ using the distributed
 The following contains the preparation of test data and a test model as
 [setup](#setup) while the second part is the [analysis](#analysis).
 
-Last time rendered: 09:38 - 16. Mar 2022 by user runner
+Last time rendered: 12:00 - 16. Mar 2022 by user runner
 
 Autobuild: [![Render
 README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
 
 ### Structure of the repository
 
-  - `R`:
+  - [`R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R):
       - `create-model.R`: Creates a
         [`ranger`](https://cran.r-project.org/web/packages/ranger/ranger.pdf)
         used for the use-case based on the data in `generate-data.R`
-      - `generate-data.R`: Takes the data set `GBSG2` (see `?GBSG2` for
-        a description) from the
+      - [`generate-data.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/generate-data.R):
+        Takes the data set `GBSG2` (see `?GBSG2` for a description) from
+        the
         [`TH.data`](https://cran.r-project.org/web/packages/TH.data/index.html),
         splits it into trian and test using 60 - 40 % of the data, and
         furhter splits the 40 % for testing into 5 parts for the
         distributed setup.
-      - `helper.R`: Helper functions to locally calculate the
+      - [`helper.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/helper.R):
+        Helper functions to locally calculate the
         [ROC-GLM](https://pubmed.ncbi.nlm.nih.gov/10877289/) and compute
         confidence intervals etc.
-      - `install-ds-packages.R`: Install the necessary packages
-        (`ranger`, `dsPredictBase`, `dsCalibration`, and `dsROCGLM`)
-        **at the DataSHIELD servers**.
-      - `install-packages.R`: Install ncessary packages locally.
-      - `upload-data.R` Creates a project at the DataSHIELD server and
-        uploads the data created by `generate-data.R`.
-  - `data`: All data is stored here:
+      - [`install-ds-packages.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/install-ds-packages.R):
+        Install the necessary packages (`ranger`, `dsPredictBase`,
+        `dsCalibration`, and `dsROCGLM`) **at the DataSHIELD servers**.
+      - [`install-packages.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/install-packages.R):
+        Install ncessary packages locally.
+      - [`upload-data.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/upload-data.R)
+        Creates a project at the DataSHIELD server and uploads the data
+        created by `generate-data.R`.
+  - [`data`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/data):
+    All data is stored here:
       - Train and test split of the GBSG2 data set (`data-train.csv` and
         `data-test.csv`).
       - The 5 splits of the `data-test.csv` for the servers (`SRV1.csv`,
         `SRV2.csv`, `SRV3.csv`, `SRV4.csv`, and `SRV5.csv`).
       - The model created by `create-model.R` (`mod.Rda`).
-      - A csv file for logging each rendering (`log.csv`). This file can
-        be used to get an overview about the important values and when
-        each rendering was conducted. The main purpose is to show that
-        the results are reproduced at each rendering.
+      - [`log.csv`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/data/log.csv):
+        A csv file for logging each rendering. This file can be used to
+        get an overview about the important values and when each
+        rendering was conducted. The main purpose is to show that the
+        results are reproduced at each rendering.
       - The ROC-GLM of the last rendering (`roc-glm.Rda`).
-  - `figures`: Figures created by the rendering are placed here. These
-    are the `.pdf` fuiles used in the publication but also the `.png`
-    files of the README.
-  - `tables`: Tables created by the rendering are placed here.
+  - [`figures`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/figures):
+    Figures created by the rendering are placed here. These are the
+    `.pdf` fuiles used in the publication but also the `.png` files of
+    the README.
+  - [`tables`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/tables):
+    Tables created by the rendering are placed here.
 
 ## Setup
 
@@ -93,7 +101,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Installing 12 packages: gridExtra, dotCall64, data.table, pbapply, mathjaxr, maps, viridis, spam, panelaggregation, metafor, fields, DSI
 #> Installing packages into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
-#> * checking for file ‘/tmp/RtmpB5RFpn/remotes8fe1ae17e42/datashield-dsBaseClient-d22ba51/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/Rtmpazrf3N/remotes8fcd4a339c8d/datashield-dsBaseClient-d22ba51/DESCRIPTION’ ... OK
 #> * preparing ‘dsBaseClient’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -106,7 +114,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> (as 'lib' is unspecified)
 #> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (d22ba514) has not changed since last install.
 #>   Use `force = TRUE` to force installation
-#> * checking for file ‘/tmp/RtmpB5RFpn/remotes8fe138ad7f25/difuture-lmu-dsPredictBase-ed79fd1/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/Rtmpazrf3N/remotes8fcd38ecb11c/difuture-lmu-dsPredictBase-ed79fd1/DESCRIPTION’ ... OK
 #> * preparing ‘dsPredictBase’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -122,7 +130,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsCalibration@HEAD
-#> * checking for file ‘/tmp/RtmpB5RFpn/remotes8fe167d4d6e8/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/Rtmpazrf3N/remotes8fcd20943a21/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
 #> * preparing ‘dsCalibration’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -133,7 +141,7 @@ remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 remotes::install_github("difuture-lmu/dsROCGLM", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsROCGLM@HEAD
-#> * checking for file ‘/tmp/RtmpB5RFpn/remotes8fe183bfdd1/difuture-lmu-dsROCGLM-92bdca9/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/Rtmpazrf3N/remotes8fcd2e2593e2/difuture-lmu-dsROCGLM-92bdca9/DESCRIPTION’ ... OK
 #> * preparing ‘dsROCGLM’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -256,10 +264,10 @@ load(here::here("data/mod.Rda"))
 ## Push the model to the servers (upload takes ~11 Minutes):
 t0 = proc.time()
 pushObject(conn, obj = mod)
-#> [2022-03-16 09:40:44] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
+#> [2022-03-16 12:02:33] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
 (t0 = proc.time() - t0)
 #>    user  system elapsed 
-#>  77.610  85.049 777.428
+#> 105.440  53.465 782.658
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"   "mod"
@@ -424,25 +432,25 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", epsilon = epsilon,
   delta = delta, dat_name = "D", seed_object = "D$cens")
 #> 
-#> [2022-03-16 09:54:14] L2 sensitivity is: 0.016
+#> [2022-03-16 12:16:00] L2 sensitivity is: 0.016
 #> 
-#> [2022-03-16 09:54:16] Initializing ROC-GLM
+#> [2022-03-16 12:16:02] Initializing ROC-GLM
 #> 
-#> [2022-03-16 09:54:16] Host: Received scores of negative response
-#> [2022-03-16 09:54:16] Receiving negative scores
-#> [2022-03-16 09:54:19] Host: Pushing pooled scores
-#> [2022-03-16 09:54:21] Server: Calculating placement values and parts for ROC-GLM
-#> [2022-03-16 09:54:24] Server: Calculating probit regression to obtain ROC-GLM
-#> [2022-03-16 09:54:26] Deviance of iter1=32.6342
-#> [2022-03-16 09:54:29] Deviance of iter2=40.9884
-#> [2022-03-16 09:54:31] Deviance of iter3=45.7591
-#> [2022-03-16 09:54:34] Deviance of iter4=46.0505
-#> [2022-03-16 09:54:36] Deviance of iter5=46.0515
-#> [2022-03-16 09:54:38] Deviance of iter6=46.0515
-#> [2022-03-16 09:54:38] Host: Finished calculating ROC-GLM
-#> [2022-03-16 09:54:38] Host: Cleaning data on server
-#> [2022-03-16 09:54:41] Host: Calculating AUC and CI
-#> [2022-03-16 09:54:53] Finished!
+#> [2022-03-16 12:16:02] Host: Received scores of negative response
+#> [2022-03-16 12:16:02] Receiving negative scores
+#> [2022-03-16 12:16:05] Host: Pushing pooled scores
+#> [2022-03-16 12:16:07] Server: Calculating placement values and parts for ROC-GLM
+#> [2022-03-16 12:16:09] Server: Calculating probit regression to obtain ROC-GLM
+#> [2022-03-16 12:16:11] Deviance of iter1=32.6342
+#> [2022-03-16 12:16:13] Deviance of iter2=40.9884
+#> [2022-03-16 12:16:15] Deviance of iter3=45.7591
+#> [2022-03-16 12:16:17] Deviance of iter4=46.0505
+#> [2022-03-16 12:16:19] Deviance of iter5=46.0515
+#> [2022-03-16 12:16:21] Deviance of iter6=46.0515
+#> [2022-03-16 12:16:21] Host: Finished calculating ROC-GLM
+#> [2022-03-16 12:16:21] Host: Cleaning data on server
+#> [2022-03-16 12:16:23] Host: Calculating AUC and CI
+#> [2022-03-16 12:16:34] Finished!
 
 roc_glm
 #> 
