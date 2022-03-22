@@ -45,7 +45,10 @@ sysfonts::font_add_google(font, font)
 extrafont::loadfonts()
 ft = extrafont::fonttable()
 
-if (all(! grepl(font, x = ft$FamilyName))) {
+ftF = ft$FamilyName
+use_font = all(! grepl(font, x = ft$FamilyName))
+if (length(use_font) == 0) use_font = FALSE
+if (use_font) {
   my_theme = theme_minimal()
 } else {
   my_theme = theme_minimal(base_family = font)
@@ -230,16 +233,16 @@ ggsave(plot = gg_cal_pub,
 # Get the l2 sensitivity
 (l2s = dsL2Sens(conn, "D", "pinv"))
 epsilon = 0.3
-delta = 0.3
+delta = 0.4
 
 # Amount of noise added:
 sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 
 # Calculate ROC-GLM
-roc_glm = dsROCGLM(conn, "D$valid", "pinv", epsilon = epsilon,
-  delta = delta, dat_name = "D", seed_object = "D$cens")
+roc_glm = dsROCGLM(conn, "D$valid", "pinv", dat_name = "D", seed_object = "l2s")
 
 roc_glm
+roc_glm$auc
 roc_glm$ci
 
 gg_distr_roc = plot(roc_glm)
@@ -272,7 +275,7 @@ gg_roc_pub = plot(roc_glm, plot_ci = FALSE) +
     panel.border = element_rect(colour = "black", fill = NA, size = 0.5)
   )
 
-if (all(! grepl(font, x = ft$FamilyName))) {
+if (use_font) {
   gg_roc_pub = gg_roc_pub +
     annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3) +
     annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5) +
@@ -432,7 +435,7 @@ gg_roc_pooled_pub = plot(roc_glm, plot_ci = FALSE) +
     panel.border = element_rect(colour = "black", fill = NA, size = 0.5)
   )
 
-if (all(! grepl(font, x = ft$FamilyName))) {
+if (use_font) {
   gg_roc_pooled_pub = gg_roc_pooled_pub +
     annotate("text", x = df_auc$auc, y = 0.1, label = "AUC", vjust = -1, size = 3) +
     annotate("text", x = df_auc$auc, y = 0.1, label = round(df_auc$auc, 2), vjust = 2, size = 2.5) +

@@ -196,6 +196,9 @@ updateParam = function(beta, X, lambda, w = NULL) {
 #' @return (`numeric()`) Parameter estimates.
 probitRegr = function(y, X, w = NULL, beta_start = 0, stop_tol = 1e-8, iter_max = 25L, trace = FALSE) {
   checkmate::assertIntegerish(x = y, lower = 0, upper = 1, any.missing = FALSE, len = nrow(X))
+  if (length(beta_start) == 1) beta_start = rep(beta_start, ncol(X))
+  if (is.vector(beta_start)) beta_start = cbind(beta_start)
+
   checkmate::assertMatrix(x = X, mode = "numeric")
   checkmate::assertNumeric(x = w, len = length(y), null.ok = TRUE)
   checkmate::assertNumeric(x = beta_start, len = ncol(X))
@@ -203,8 +206,6 @@ probitRegr = function(y, X, w = NULL, beta_start = 0, stop_tol = 1e-8, iter_max 
   checkmate::assertCount(x = iter_max)
   checkmate::assertLogical(x = trace, len = 1L)
 
-  if (length(beta_start) == 1) beta_start = rep(beta_start, ncol(X))
-  if (is.vector(beta_start)) beta_start = cbind(beta_start)
 
   beta = beta_start
   iter = 0L
