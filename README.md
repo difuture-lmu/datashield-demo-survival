@@ -37,7 +37,7 @@ using the distributed
 The following contains the preparation of test data and a test model as
 [setup](#setup) while the second part is the [analysis](#analysis).
 
-Last time rendered: 14:03 - 06. Jun 2022 by user runner
+Last time rendered: 14:01 - 13. Jun 2022 by user runner
 
 Autobuild: [![Render
 README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
@@ -101,7 +101,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Installing 21 packages: backports, nloptr, minqa, pbapply, mathjaxr, metadat, gridExtra, dotCall64, data.table, checkmate, CompQuadForm, lme4, metafor, maps, viridis, spam, panelaggregation, forestplot, meta, fields, DSI
 #> Installing packages into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
-#> * checking for file ‘/tmp/Rtmp7DT6sn/remotes911f426a8df0/datashield-dsBaseClient-5bdd61a/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpPB0jjk/remotes904b76ace0ea/datashield-dsBaseClient-5bdd61a/DESCRIPTION’ ... OK
 #> * preparing ‘dsBaseClient’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -114,7 +114,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> (as 'lib' is unspecified)
 #> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (5bdd61ad) has not changed since last install.
 #>   Use `force = TRUE` to force installation
-#> * checking for file ‘/tmp/Rtmp7DT6sn/remotes911f2cc2d521/difuture-lmu-dsPredictBase-8266eff/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpPB0jjk/remotes904b32bc8bcf/difuture-lmu-dsPredictBase-8266eff/DESCRIPTION’ ... OK
 #> * preparing ‘dsPredictBase’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -130,7 +130,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsCalibration@HEAD
-#> * checking for file ‘/tmp/Rtmp7DT6sn/remotes911f28a8468/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpPB0jjk/remotes904b61a89f98/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
 #> * preparing ‘dsCalibration’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -141,7 +141,7 @@ remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 remotes::install_github("difuture-lmu/dsROCGLM", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsROCGLM@HEAD
-#> * checking for file ‘/tmp/Rtmp7DT6sn/remotes911f1e4e1491/difuture-lmu-dsROCGLM-7c3b51e/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpPB0jjk/remotes904b1e69a383/difuture-lmu-dsROCGLM-7c3b51e/DESCRIPTION’ ... OK
 #> * preparing ‘dsROCGLM’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -264,10 +264,10 @@ load(here::here("data/mod.Rda"))
 ## Push the model to the servers (upload takes ~11 Minutes):
 t0 = proc.time()
 pushObject(conn, obj = mod)
-#> [2022-06-06 14:08:15] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
+#> [2022-06-13 14:06:02] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
 (t0 = proc.time() - t0)
 #>    user  system elapsed 
-#> 104.634  52.381 773.777
+#> 109.261  48.521 776.422
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"   "mod"
@@ -431,27 +431,27 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", dat_name = "D", seed_object = "l2s")
 #> 
-#> [2022-06-06 14:21:48] L2 sensitivity is: 0.016
+#> [2022-06-13 14:19:38] L2 sensitivity is: 0.016
 #> 
-#> [2022-06-06 14:21:52] Setting: epsilon = 0.3 and delta = 0.4
+#> [2022-06-13 14:19:41] Setting: epsilon = 0.3 and delta = 0.4
 #> 
-#> [2022-06-06 14:21:52] Initializing ROC-GLM
+#> [2022-06-13 14:19:41] Initializing ROC-GLM
 #> 
-#> [2022-06-06 14:21:52] Host: Received scores of negative response
-#> [2022-06-06 14:21:52] Receiving negative scores
-#> [2022-06-06 14:21:55] Host: Pushing pooled scores
-#> [2022-06-06 14:21:58] Server: Calculating placement values and parts for ROC-GLM
-#> [2022-06-06 14:22:01] Server: Calculating probit regression to obtain ROC-GLM
-#> [2022-06-06 14:22:05] Deviance of iter1=32.6342
-#> [2022-06-06 14:22:08] Deviance of iter2=41.5111
-#> [2022-06-06 14:22:11] Deviance of iter3=46.5649
-#> [2022-06-06 14:22:14] Deviance of iter4=46.8714
-#> [2022-06-06 14:22:17] Deviance of iter5=46.8724
-#> [2022-06-06 14:22:21] Deviance of iter6=46.8724
-#> [2022-06-06 14:22:21] Host: Finished calculating ROC-GLM
-#> [2022-06-06 14:22:21] Host: Cleaning data on server
-#> [2022-06-06 14:22:23] Host: Calculating AUC and CI
-#> [2022-06-06 14:22:46] Finished!
+#> [2022-06-13 14:19:41] Host: Received scores of negative response
+#> [2022-06-13 14:19:41] Receiving negative scores
+#> [2022-06-13 14:19:45] Host: Pushing pooled scores
+#> [2022-06-13 14:19:48] Server: Calculating placement values and parts for ROC-GLM
+#> [2022-06-13 14:19:51] Server: Calculating probit regression to obtain ROC-GLM
+#> [2022-06-13 14:19:54] Deviance of iter1=32.6342
+#> [2022-06-13 14:19:58] Deviance of iter2=41.5111
+#> [2022-06-13 14:20:01] Deviance of iter3=46.5649
+#> [2022-06-13 14:20:04] Deviance of iter4=46.8714
+#> [2022-06-13 14:20:07] Deviance of iter5=46.8724
+#> [2022-06-13 14:20:10] Deviance of iter6=46.8724
+#> [2022-06-13 14:20:10] Host: Finished calculating ROC-GLM
+#> [2022-06-13 14:20:10] Host: Cleaning data on server
+#> [2022-06-13 14:20:13] Host: Calculating AUC and CI
+#> [2022-06-13 14:20:36] Finished!
 
 roc_glm
 #> 
@@ -640,7 +640,7 @@ sessionInfo()
 #>  [1] dsROCGLM_1.0.0      dsCalibration_0.0.1 dsPredictBase_0.0.1
 #>  [4] dsBaseClient_6.2.0  DSOpal_1.3.1        DSI_1.4.0          
 #>  [7] R6_2.5.1            progress_1.2.2      ggsci_2.9          
-#> [10] ggplot2_3.3.6       opalr_3.1.0         httr_1.4.3         
+#> [10] ggplot2_3.3.6       opalr_3.1.1         httr_1.4.3         
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] Rcpp_1.0.8.3      here_1.0.1        lattice_0.20-45   prettyunits_1.1.1
@@ -658,7 +658,7 @@ sessionInfo()
 #> [49] scales_1.2.0      cli_3.3.0         stringi_1.7.6     farver_2.1.0     
 #> [53] remotes_2.4.2     ellipsis_0.3.2    generics_0.1.2    vctrs_0.4.1      
 #> [57] TH.data_1.1-1     tools_4.2.0       forcats_0.5.1     glue_1.6.2       
-#> [61] purrr_0.3.4       hms_1.1.1         processx_3.5.3    fastmap_1.1.0    
+#> [61] purrr_0.3.4       hms_1.1.1         processx_3.6.0    fastmap_1.1.0    
 #> [65] survival_3.3-1    yaml_2.3.5        colorspace_2.0-3  knitr_1.39       
 #> [69] haven_2.5.0
 ```
