@@ -37,7 +37,7 @@ using the distributed
 The following contains the preparation of test data and a test model as
 [setup](#setup) while the second part is the [analysis](#analysis).
 
-Last time rendered: 14:10 - 25. Jul 2022 by user runner
+Last time rendered: 14:21 - 01. Aug 2022 by user runner
 
 Autobuild: [![Render
 README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
@@ -101,7 +101,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Installing 21 packages: backports, nloptr, minqa, pbapply, mathjaxr, metadat, gridExtra, dotCall64, data.table, checkmate, CompQuadForm, lme4, metafor, maps, viridis, spam, panelaggregation, forestplot, meta, fields, DSI
 #> Installing packages into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
-#> * checking for file ‘/tmp/RtmpsJRBDF/remotesde5e2535b1af/datashield-dsBaseClient-5bdd61a/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/Rtmpu25xnJ/remotesdae94d1177d4/datashield-dsBaseClient-5bdd61a/DESCRIPTION’ ... OK
 #> * preparing ‘dsBaseClient’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -114,7 +114,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> (as 'lib' is unspecified)
 #> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (5bdd61ad) has not changed since last install.
 #>   Use `force = TRUE` to force installation
-#> * checking for file ‘/tmp/RtmpsJRBDF/remotesde5e399dadb3/difuture-lmu-dsPredictBase-8266eff/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/Rtmpu25xnJ/remotesdae96a0b5b32/difuture-lmu-dsPredictBase-8266eff/DESCRIPTION’ ... OK
 #> * preparing ‘dsPredictBase’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -130,7 +130,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsCalibration@HEAD
-#> * checking for file ‘/tmp/RtmpsJRBDF/remotesde5e47f95b3b/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/Rtmpu25xnJ/remotesdae955ca01d1/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
 #> * preparing ‘dsCalibration’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -141,7 +141,7 @@ remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 remotes::install_github("difuture-lmu/dsROCGLM", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsROCGLM@HEAD
-#> * checking for file ‘/tmp/RtmpsJRBDF/remotesde5e2b68bd94/difuture-lmu-dsROCGLM-7c3b51e/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/Rtmpu25xnJ/remotesdae914690900/difuture-lmu-dsROCGLM-3c2c43f/DESCRIPTION’ ... OK
 #> * preparing ‘dsROCGLM’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -188,6 +188,16 @@ library(dsBaseClient)
 library(dsPredictBase)
 library(dsCalibration)
 library(dsROCGLM)
+#> 
+#> Attaching package: 'dsROCGLM'
+#> The following objects are masked from 'package:dsCalibration':
+#> 
+#>     brierScore, calibrationCurve, dsBrierScore, dsCalibrationCurve,
+#>     plotCalibrationCurve
+#> The following objects are masked from 'package:dsPredictBase':
+#> 
+#>     assignPredictModel, decodeBinary, encodeObject, predictModel,
+#>     pushObject, removeMissings
 
 library(ggplot2)
 
@@ -264,10 +274,10 @@ load(here::here("data/mod.Rda"))
 ## Push the model to the servers (upload takes ~11 Minutes):
 t0 = proc.time()
 pushObject(conn, obj = mod)
-#> [2022-07-25 14:15:52] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
+#> [2022-08-01 14:28:18] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
 (t0 = proc.time() - t0)
 #>    user  system elapsed 
-#>  88.123  71.969 765.287
+#> 115.978  49.063 779.267
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"   "mod"
@@ -402,6 +412,9 @@ cc
 #> 8  (0.7,0.8]   0.7   0.8 0.00000000 0.00000000    1.00000000
 #> 9  (0.8,0.9]   0.8   0.9        NaN        NaN           NaN
 #> 10   (0.9,1]   0.9   1.0        NaN        NaN           NaN
+#> 
+#> attr(,"class")
+#> [1] "calibration.curve"
 
 gg_cal = plotCalibrationCurve(cc, size = 1)
 gg_cal
@@ -431,27 +444,27 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", dat_name = "D", seed_object = "l2s")
 #> 
-#> [2022-07-25 14:29:01] L2 sensitivity is: 0.016
+#> [2022-08-01 14:41:58] L2 sensitivity is: 0.016
 #> 
-#> [2022-07-25 14:29:03] Setting: epsilon = 0.3 and delta = 0.4
+#> [2022-08-01 14:42:01] Setting: epsilon = 0.3 and delta = 0.4
 #> 
-#> [2022-07-25 14:29:03] Initializing ROC-GLM
+#> [2022-08-01 14:42:01] Initializing ROC-GLM
 #> 
-#> [2022-07-25 14:29:03] Host: Received scores of negative response
-#> [2022-07-25 14:29:03] Receiving negative scores
-#> [2022-07-25 14:29:05] Host: Pushing pooled scores
-#> [2022-07-25 14:29:07] Server: Calculating placement values and parts for ROC-GLM
-#> [2022-07-25 14:29:09] Server: Calculating probit regression to obtain ROC-GLM
-#> [2022-07-25 14:29:11] Deviance of iter1=32.6342
-#> [2022-07-25 14:29:13] Deviance of iter2=41.5111
-#> [2022-07-25 14:29:15] Deviance of iter3=46.5649
-#> [2022-07-25 14:29:17] Deviance of iter4=46.8714
-#> [2022-07-25 14:29:19] Deviance of iter5=46.8724
-#> [2022-07-25 14:29:21] Deviance of iter6=46.8724
-#> [2022-07-25 14:29:21] Host: Finished calculating ROC-GLM
-#> [2022-07-25 14:29:21] Host: Cleaning data on server
-#> [2022-07-25 14:29:24] Host: Calculating AUC and CI
-#> [2022-07-25 14:29:38] Finished!
+#> [2022-08-01 14:42:01] Host: Received scores of negative response
+#> [2022-08-01 14:42:01] Receiving negative scores
+#> [2022-08-01 14:42:04] Host: Pushing pooled scores
+#> [2022-08-01 14:42:08] Server: Calculating placement values and parts for ROC-GLM
+#> [2022-08-01 14:42:11] Server: Calculating probit regression to obtain ROC-GLM
+#> [2022-08-01 14:42:14] Deviance of iter1=32.6342
+#> [2022-08-01 14:42:18] Deviance of iter2=41.5111
+#> [2022-08-01 14:42:21] Deviance of iter3=46.5649
+#> [2022-08-01 14:42:24] Deviance of iter4=46.8714
+#> [2022-08-01 14:42:28] Deviance of iter5=46.8724
+#> [2022-08-01 14:42:31] Deviance of iter6=46.8724
+#> [2022-08-01 14:42:31] Host: Finished calculating ROC-GLM
+#> [2022-08-01 14:42:31] Host: Cleaning data on server
+#> [2022-08-01 14:42:34] Host: Calculating AUC and CI
+#> [2022-08-01 14:42:57] Finished!
 
 roc_glm
 #> 
