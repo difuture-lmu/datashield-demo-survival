@@ -4,25 +4,23 @@ models by a modified ROC-GLM
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-  - [About the repository](#about-the-repository)
-      - [Structure of the repository](#structure-of-the-repository)
-  - [Setup](#setup)
-      - [Install packages](#install-packages)
-      - [Generate data and fit model](#generate-data-and-fit-model)
-      - [Install package on DataSHIELD and upload
-        data](#install-package-on-datashield-and-upload-data)
-  - [Analysis](#analysis)
-      - [Log into DataSHIELD test
-        server](#log-into-datashield-test-server)
-      - [Push and predict](#push-and-predict)
-      - [Analyse calibration of the
-        predictions](#analyse-calibration-of-the-predictions)
-      - [Evaluate the model using ROC
-        analysis](#evaluate-the-model-using-roc-analysis)
-      - [Cross check on pooled test
-        data](#cross-check-on-pooled-test-data)
-  - [Log out from DataSHIELD servers](#log-out-from-datashield-servers)
-  - [Session Info](#session-info)
+- [About the repository](#about-the-repository)
+  - [Structure of the repository](#structure-of-the-repository)
+- [Setup](#setup)
+  - [Install packages](#install-packages)
+  - [Generate data and fit model](#generate-data-and-fit-model)
+  - [Install package on DataSHIELD and upload
+    data](#install-package-on-datashield-and-upload-data)
+- [Analysis](#analysis)
+  - [Log into DataSHIELD test server](#log-into-datashield-test-server)
+  - [Push and predict](#push-and-predict)
+  - [Analyse calibration of the
+    predictions](#analyse-calibration-of-the-predictions)
+  - [Evaluate the model using ROC
+    analysis](#evaluate-the-model-using-roc-analysis)
+  - [Cross check on pooled test data](#cross-check-on-pooled-test-data)
+- [Log out from DataSHIELD servers](#log-out-from-datashield-servers)
+- [Session Info](#session-info)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -37,55 +35,54 @@ using the distributed
 The following contains the preparation of test data and a test model as
 [setup](#setup) while the second part is the [analysis](#analysis).
 
-Last time rendered: 13:53 - 05. Dec 2022 by user runner
+Last time rendered: 08:45 - 20. Dec 2022 by user runner
 
 Autobuild: [![Render
 README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
 
 ### Structure of the repository
 
-  - [`R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R):
-      - `create-model.R`: Creates a
-        [`ranger`](https://cran.r-project.org/web/packages/ranger/ranger.pdf)
-        used for the use-case based on the data in `generate-data.R`
-      - [`generate-data.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/generate-data.R):
-        Takes the data set `GBSG2` (see `?GBSG2` for a description) from
-        the
-        [`TH.data`](https://cran.r-project.org/web/packages/TH.data/index.html),
-        splits it into trian and test using 60 - 40 % of the data, and
-        furhter splits the 40 % for testing into 5 parts for the
-        distributed setup.
-      - [`helper.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/helper.R):
-        Helper functions to locally calculate the
-        [ROC-GLM](https://pubmed.ncbi.nlm.nih.gov/10877289/) and compute
-        confidence intervals etc.
-      - [`install-ds-packages.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/install-ds-packages.R):
-        Install the necessary packages (`ranger`, `dsPredictBase`,
-        `dsCalibration`, and `dsROCGLM`) **at the DataSHIELD servers**.
-      - [`install-packages.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/install-packages.R):
-        Install ncessary packages locally.
-      - [`upload-data.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/upload-data.R)
-        Creates a project at the DataSHIELD server and uploads the data
-        created by `generate-data.R`.
-  - [`data`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/data):
-    All data is stored here:
-      - Train and test split of the GBSG2 data set (`data-train.csv` and
-        `data-test.csv`).
-      - The 5 splits of the `data-test.csv` for the servers (`SRV1.csv`,
-        `SRV2.csv`, `SRV3.csv`, `SRV4.csv`, and `SRV5.csv`).
-      - The model created by `create-model.R` (`mod.Rda`).
-      - [`log.csv`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/data/log.csv):
-        A csv file for logging each rendering. This file can be used to
-        get an overview about the important values and when each
-        rendering was conducted. The main purpose is to show that the
-        results are reproduced at each rendering.
-      - The ROC-GLM of the last rendering (`roc-glm.Rda`).
-  - [`figures`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/figures):
-    Figures created by the rendering are placed here. These are the
-    `.pdf` fuiles used in the publication but also the `.png` files of
-    the README.
-  - [`tables`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/tables):
-    Tables created by the rendering are placed here.
+- [`R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R):
+  - `create-model.R`: Creates a
+    [`ranger`](https://cran.r-project.org/web/packages/ranger/ranger.pdf)
+    used for the use-case based on the data in `generate-data.R`
+  - [`generate-data.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/generate-data.R):
+    Takes the data set `GBSG2` (see `?GBSG2` for a description) from the
+    [`TH.data`](https://cran.r-project.org/web/packages/TH.data/index.html),
+    splits it into trian and test using 60 - 40 % of the data, and
+    furhter splits the 40 % for testing into 5 parts for the distributed
+    setup.
+  - [`helper.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/helper.R):
+    Helper functions to locally calculate the
+    [ROC-GLM](https://pubmed.ncbi.nlm.nih.gov/10877289/) and compute
+    confidence intervals etc.
+  - [`install-ds-packages.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/install-ds-packages.R):
+    Install the necessary packages (`ranger`, `dsPredictBase`,
+    `dsCalibration`, and `dsROCGLM`) **at the DataSHIELD servers**.
+  - [`install-packages.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/install-packages.R):
+    Install ncessary packages locally.
+  - [`upload-data.R`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/R/upload-data.R)
+    Creates a project at the DataSHIELD server and uploads the data
+    created by `generate-data.R`.
+- [`data`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/data):
+  All data is stored here:
+  - Train and test split of the GBSG2 data set (`data-train.csv` and
+    `data-test.csv`).
+  - The 5 splits of the `data-test.csv` for the servers (`SRV1.csv`,
+    `SRV2.csv`, `SRV3.csv`, `SRV4.csv`, and `SRV5.csv`).
+  - The model created by `create-model.R` (`mod.Rda`).
+  - [`log.csv`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/data/log.csv):
+    A csv file for logging each rendering. This file can be used to get
+    an overview about the important values and when each rendering was
+    conducted. The main purpose is to show that the results are
+    reproduced at each rendering.
+  - The ROC-GLM of the last rendering (`roc-glm.Rda`).
+- [`figures`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/figures):
+  Figures created by the rendering are placed here. These are the `.pdf`
+  fuiles used in the publication but also the `.png` files of the
+  README.
+- [`tables`](https://github.com/difuture-lmu/datashield-roc-glm-demo/blob/main/tables):
+  Tables created by the rendering are placed here.
 
 ## Setup
 
@@ -102,7 +99,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Installing packages into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmpLgAUvr/remotesdc7f740baa89/datashield-dsBaseClient-182a814/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpWMvXtk/remotesca1f35421569/datashield-dsBaseClient-182a814/DESCRIPTION’ ... OK
 #> * preparing ‘dsBaseClient’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -116,7 +113,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (182a8141) has not changed since last install.
 #>   Use `force = TRUE` to force installation
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmpLgAUvr/remotesdc7f8a80548/difuture-lmu-dsPredictBase-8266eff/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpWMvXtk/remotesca1f685497ee/difuture-lmu-dsPredictBase-8266eff/DESCRIPTION’ ... OK
 #> * preparing ‘dsPredictBase’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -133,7 +130,7 @@ remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsCalibration@HEAD
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmpLgAUvr/remotesdc7f7ede8844/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpWMvXtk/remotesca1f7c90884/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
 #> * preparing ‘dsCalibration’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -145,7 +142,7 @@ remotes::install_github("difuture-lmu/dsROCGLM", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsROCGLM@HEAD
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmpLgAUvr/remotesdc7f5a2de60b/difuture-lmu-dsROCGLM-3c2c43f/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpWMvXtk/remotesca1f52f8f03e/difuture-lmu-dsROCGLM-3c2c43f/DESCRIPTION’ ... OK
 #> * preparing ‘dsROCGLM’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -278,10 +275,10 @@ load(here::here("data/mod.Rda"))
 ## Push the model to the servers (upload takes ~11 Minutes):
 t0 = proc.time()
 pushObject(conn, obj = mod)
-#> [2022-12-05 13:58:52] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
+#> [2022-12-20 08:50:01] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
 (t0 = proc.time() - t0)
 #>    user  system elapsed 
-#> 106.879  50.066 776.021
+#>  31.288   0.293 729.694
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"   "mod"
@@ -448,27 +445,27 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", dat_name = "D", seed_object = "l2s")
 #> 
-#> [2022-12-05 14:12:12] L2 sensitivity is: 0.016
+#> [2022-12-20 09:02:35] L2 sensitivity is: 0.016
 #> 
-#> [2022-12-05 14:12:14] Setting: epsilon = 0.3 and delta = 0.4
+#> [2022-12-20 09:02:37] Setting: epsilon = 0.3 and delta = 0.4
 #> 
-#> [2022-12-05 14:12:14] Initializing ROC-GLM
+#> [2022-12-20 09:02:37] Initializing ROC-GLM
 #> 
-#> [2022-12-05 14:12:14] Host: Received scores of negative response
-#> [2022-12-05 14:12:14] Receiving negative scores
-#> [2022-12-05 14:12:16] Host: Pushing pooled scores
-#> [2022-12-05 14:12:18] Server: Calculating placement values and parts for ROC-GLM
-#> [2022-12-05 14:12:20] Server: Calculating probit regression to obtain ROC-GLM
-#> [2022-12-05 14:12:22] Deviance of iter1=32.6342
-#> [2022-12-05 14:12:24] Deviance of iter2=41.5111
-#> [2022-12-05 14:12:26] Deviance of iter3=46.5649
-#> [2022-12-05 14:12:28] Deviance of iter4=46.8714
-#> [2022-12-05 14:12:30] Deviance of iter5=46.8724
-#> [2022-12-05 14:12:32] Deviance of iter6=46.8724
-#> [2022-12-05 14:12:32] Host: Finished calculating ROC-GLM
-#> [2022-12-05 14:12:32] Host: Cleaning data on server
-#> [2022-12-05 14:12:34] Host: Calculating AUC and CI
-#> [2022-12-05 14:12:48] Finished!
+#> [2022-12-20 09:02:37] Host: Received scores of negative response
+#> [2022-12-20 09:02:37] Receiving negative scores
+#> [2022-12-20 09:02:39] Host: Pushing pooled scores
+#> [2022-12-20 09:02:41] Server: Calculating placement values and parts for ROC-GLM
+#> [2022-12-20 09:02:43] Server: Calculating probit regression to obtain ROC-GLM
+#> [2022-12-20 09:02:45] Deviance of iter1=32.6342
+#> [2022-12-20 09:02:47] Deviance of iter2=41.5111
+#> [2022-12-20 09:02:49] Deviance of iter3=46.5649
+#> [2022-12-20 09:02:50] Deviance of iter4=46.8714
+#> [2022-12-20 09:02:52] Deviance of iter5=46.8724
+#> [2022-12-20 09:02:54] Deviance of iter6=46.8724
+#> [2022-12-20 09:02:54] Host: Finished calculating ROC-GLM
+#> [2022-12-20 09:02:54] Host: Cleaning data on server
+#> [2022-12-20 09:02:57] Host: Calculating AUC and CI
+#> [2022-12-20 09:03:11] Finished!
 
 roc_glm
 #> 
@@ -525,7 +522,7 @@ knitr::kable(data.frame(
 ```
 
 |     lower |       auc |     upper | method             |
-| --------: | --------: | --------: | :----------------- |
+|----------:|----------:|----------:|:-------------------|
 | 0.6131496 | 0.6918527 | 0.7607906 | Pooled empirical   |
 | 0.6050649 | 0.6874512 | 0.7594828 | Distribued ROC-GLM |
 
@@ -590,7 +587,7 @@ knitr::kable(tab0)
 ```
 
 | Server | (0,0.1\] | (0.1,0.2\] | (0.2,0.3\] | (0.3,0.4\] | (0.4,0.5\] | (0.5,0.6\] | (0.6,0.7\] | (0.7,0.8\] | (0.8,0.9\] | (0.9,1\] |
-| -----: | -------: | ---------: | ---------: | ---------: | ---------: | ---------: | ---------: | ---------: | ---------: | -------: |
+|-------:|---------:|-----------:|-----------:|-----------:|-----------:|-----------:|-----------:|-----------:|-----------:|---------:|
 |      1 |       12 |         11 |         13 |          3 |          2 |          7 |          5 |          0 |          0 |        0 |
 |      2 |       11 |         14 |          9 |          1 |          4 |          5 |          2 |          0 |          0 |        0 |
 |      3 |       13 |         12 |         12 |          5 |          3 |          4 |          7 |          1 |          0 |        0 |
@@ -638,11 +635,11 @@ datashield.logout(conn)
 sessionInfo()
 #> R version 4.2.2 (2022-10-31)
 #> Platform: x86_64-pc-linux-gnu (64-bit)
-#> Running under: Ubuntu 20.04.5 LTS
+#> Running under: Ubuntu 22.04.1 LTS
 #> 
 #> Matrix products: default
-#> BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
-#> LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+#> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
+#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so
 #> 
 #> locale:
 #>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
@@ -661,16 +658,16 @@ sessionInfo()
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] Rcpp_1.0.9        here_1.0.1        lattice_0.20-45   prettyunits_1.1.1
-#>  [5] sysfonts_0.8.8    ps_1.7.2          rprojroot_2.0.3   digest_0.6.30    
+#>  [5] sysfonts_0.8.8    ps_1.7.2          rprojroot_2.0.3   digest_0.6.31    
 #>  [9] utf8_1.2.2        mime_0.12         plyr_1.8.8        ranger_0.14.1    
-#> [13] backports_1.4.1   labelled_2.10.0   evaluate_0.18     highr_0.9        
+#> [13] backports_1.4.1   labelled_2.10.0   evaluate_0.19     highr_0.9        
 #> [17] pillar_1.8.1      rlang_1.0.6       curl_4.3.3        extrafontdb_1.0  
-#> [21] callr_3.7.3       Matrix_1.5-1      checkmate_2.1.0   rmarkdown_2.18   
+#> [21] callr_3.7.3       Matrix_1.5-1      checkmate_2.1.0   rmarkdown_2.19   
 #> [25] labeling_0.4.2    desc_1.4.2        splines_4.2.2     extrafont_0.18   
 #> [29] stringr_1.5.0     munsell_0.5.0     compiler_4.2.2    xfun_0.35        
-#> [33] pkgconfig_2.0.3   pkgbuild_1.4.0    htmltools_0.5.3   tidyselect_1.2.0 
+#> [33] pkgconfig_2.0.3   pkgbuild_1.4.0    htmltools_0.5.4   tidyselect_1.2.0 
 #> [37] tibble_3.1.8      fansi_1.0.3       crayon_1.5.2      dplyr_1.0.10     
-#> [41] withr_2.5.0       MASS_7.3-58.1     grid_4.2.2        jsonlite_1.8.3   
+#> [41] withr_2.5.0       MASS_7.3-58.1     grid_4.2.2        jsonlite_1.8.4   
 #> [45] Rttf2pt1_1.3.11   gtable_0.3.1      lifecycle_1.0.3   magrittr_2.0.3   
 #> [49] pROC_1.18.0       scales_1.2.1      cli_3.4.1         stringi_1.7.8    
 #> [53] farver_2.1.1      remotes_2.4.2     ellipsis_0.3.2    generics_0.1.3   
