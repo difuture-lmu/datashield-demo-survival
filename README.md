@@ -35,7 +35,7 @@ using the distributed
 The following contains the preparation of test data and a test model as
 [setup](#setup) while the second part is the [analysis](#analysis).
 
-Last time rendered: 13:48 - 15. May 2023 by user runner
+Last time rendered: 13:49 - 22. May 2023 by user runner
 
 Autobuild: [![Render
 README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
@@ -99,7 +99,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Installing packages into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmpMie9IF/remotesa557502ac7cf/datashield-dsBaseClient-c5384b2/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpbHnHNq/remotesa54c45d43de4/datashield-dsBaseClient-92e2d59/DESCRIPTION’ ... OK
 #> * preparing ‘dsBaseClient’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -110,10 +110,10 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Installing 4 packages: backports, DSI, checkmate, DSOpal
 #> Installing packages into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
-#> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (c5384b2d) has not changed since last install.
+#> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (92e2d592) has not changed since last install.
 #>   Use `force = TRUE` to force installation
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmpMie9IF/remotesa557407e97fe/difuture-lmu-dsPredictBase-8266eff/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpbHnHNq/remotesa54c38d16b32/difuture-lmu-dsPredictBase-8266eff/DESCRIPTION’ ... OK
 #> * preparing ‘dsPredictBase’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -130,7 +130,7 @@ remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsCalibration@HEAD
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmpMie9IF/remotesa55744821ae3/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpbHnHNq/remotesa54c2df6957/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
 #> * preparing ‘dsCalibration’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -142,7 +142,7 @@ remotes::install_github("difuture-lmu/dsROCGLM", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsROCGLM@HEAD
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmpMie9IF/remotesa557469a68e1/difuture-lmu-dsROCGLM-3c2c43f/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpbHnHNq/remotesa54c46484853/difuture-lmu-dsROCGLM-3c2c43f/DESCRIPTION’ ... OK
 #> * preparing ‘dsROCGLM’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -275,10 +275,10 @@ load(here::here("data/mod.Rda"))
 ## Push the model to the servers (upload takes ~11 Minutes):
 t0 = proc.time()
 pushObject(conn, obj = mod)
-#> [2023-05-15 13:55:00.975036] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
+#> [2023-05-22 13:55:45.147782] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
 (t0 = proc.time() - t0)
 #>    user  system elapsed 
-#>  41.519   0.396 783.628
+#>  38.795   0.341 783.963
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"   "mod"
@@ -445,27 +445,27 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", dat_name = "D", seed_object = "l2s")
 #> 
-#> [2023-05-15 14:08:36.764831] L2 sensitivity is: 0.016
+#> [2023-05-22 14:09:28.657271] L2 sensitivity is: 0.016
 #> 
-#> [2023-05-15 14:08:39.467881] Setting: epsilon = 0.3 and delta = 0.4
+#> [2023-05-22 14:09:31.910641] Setting: epsilon = 0.3 and delta = 0.4
 #> 
-#> [2023-05-15 14:08:39.468639] Initializing ROC-GLM
+#> [2023-05-22 14:09:31.911104] Initializing ROC-GLM
 #> 
-#> [2023-05-15 14:08:39.468647] Host: Received scores of negative response
-#> [2023-05-15 14:08:39.469141] Receiving negative scores
-#> [2023-05-15 14:08:42.194568] Host: Pushing pooled scores
-#> [2023-05-15 14:08:44.942901] Server: Calculating placement values and parts for ROC-GLM
-#> [2023-05-15 14:08:47.658935] Server: Calculating probit regression to obtain ROC-GLM
-#> [2023-05-15 14:08:50.377622] Deviance of iter1=32.6342
-#> [2023-05-15 14:08:53.089404] Deviance of iter2=41.5111
-#> [2023-05-15 14:08:55.817291] Deviance of iter3=46.5649
-#> [2023-05-15 14:08:58.532027] Deviance of iter4=46.8714
-#> [2023-05-15 14:09:01.260867] Deviance of iter5=46.8724
-#> [2023-05-15 14:09:03.988285] Deviance of iter6=46.8724
-#> [2023-05-15 14:09:03.988681] Host: Finished calculating ROC-GLM
-#> [2023-05-15 14:09:03.988916] Host: Cleaning data on server
-#> [2023-05-15 14:09:06.5589] Host: Calculating AUC and CI
-#> [2023-05-15 14:09:25.606439] Finished!
+#> [2023-05-22 14:09:31.911109] Host: Received scores of negative response
+#> [2023-05-22 14:09:31.911455] Receiving negative scores
+#> [2023-05-22 14:09:35.171952] Host: Pushing pooled scores
+#> [2023-05-22 14:09:38.441327] Server: Calculating placement values and parts for ROC-GLM
+#> [2023-05-22 14:09:41.693194] Server: Calculating probit regression to obtain ROC-GLM
+#> [2023-05-22 14:09:44.94752] Deviance of iter1=32.6342
+#> [2023-05-22 14:09:48.201593] Deviance of iter2=41.5111
+#> [2023-05-22 14:09:51.461277] Deviance of iter3=46.5649
+#> [2023-05-22 14:09:54.707195] Deviance of iter4=46.8714
+#> [2023-05-22 14:09:57.969953] Deviance of iter5=46.8724
+#> [2023-05-22 14:10:01.215447] Deviance of iter6=46.8724
+#> [2023-05-22 14:10:01.215811] Host: Finished calculating ROC-GLM
+#> [2023-05-22 14:10:01.216052] Host: Cleaning data on server
+#> [2023-05-22 14:10:04.055712] Host: Calculating AUC and CI
+#> [2023-05-22 14:10:26.818067] Finished!
 
 roc_glm
 #> 
