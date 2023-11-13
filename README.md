@@ -35,7 +35,7 @@ using the distributed
 The following contains the preparation of test data and a test model as
 [setup](#setup) while the second part is the [analysis](#analysis).
 
-Last time rendered: 13:48 - 06. Nov 2023 by user runner
+Last time rendered: 13:42 - 13. Nov 2023 by user runner
 
 Autobuild: [![Render
 README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
@@ -99,7 +99,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Installing packages into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmprrLsoZ/remotesa68c7f4e96b5/datashield-dsBaseClient-92e2d59/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpyJJEBx/remotesa66f62d5a7d3/datashield-dsBaseClient-92e2d59/DESCRIPTION’ ... OK
 #> * preparing ‘dsBaseClient’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -113,7 +113,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (92e2d592) has not changed since last install.
 #>   Use `force = TRUE` to force installation
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmprrLsoZ/remotesa68c1081c9b9/difuture-lmu-dsPredictBase-8266eff/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpyJJEBx/remotesa66f6f4a2d42/difuture-lmu-dsPredictBase-8266eff/DESCRIPTION’ ... OK
 #> * preparing ‘dsPredictBase’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -130,7 +130,7 @@ remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsCalibration@HEAD
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmprrLsoZ/remotesa68c30379553/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpyJJEBx/remotesa66f17134fed/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
 #> * preparing ‘dsCalibration’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -142,7 +142,7 @@ remotes::install_github("difuture-lmu/dsROCGLM", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsROCGLM@HEAD
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmprrLsoZ/remotesa68ceabaf6e/difuture-lmu-dsROCGLM-3c2c43f/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpyJJEBx/remotesa66f153c3600/difuture-lmu-dsROCGLM-3c2c43f/DESCRIPTION’ ... OK
 #> * preparing ‘dsROCGLM’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -275,10 +275,10 @@ load(here::here("data/mod.Rda"))
 ## Push the model to the servers (upload takes ~11 Minutes):
 t0 = proc.time()
 pushObject(conn, obj = mod)
-#> [2023-11-06 13:54:18.269511] Your object is bigger than 1 MB (14.4 MB). Uploading larger objects may take some time.
+#> [2023-11-13 13:47:08.100473] Your object is bigger than 1 MB (6.6 MB). Uploading larger objects may take some time.
 (t0 = proc.time() - t0)
 #>    user  system elapsed 
-#>  40.826   0.398 589.875
+#>  14.566   0.124 141.742
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"   "mod"
@@ -297,7 +297,7 @@ datashield.symbols(conn)
 
 ## Time point:
 (tpoint = which(ranger::timepoints(mod) >= 730)[1])
-#> [1] 134
+#> [1] 97
 
 ## Predict the model on the data sets located at the servers:
 pfun = paste0("ranger:::predict.ranger(mod, data = D)$survival[, ", tpoint, "]")
@@ -330,97 +330,97 @@ datashield.assign(conn, "pinv", quote(1 - probs))
 ``` r
 brier = dsBrierScore(conn, "D$valid", "pinv")
 brier
-#> [1] 0.1733217
+#> [1] 0.1752662
 
 cc = dsCalibrationCurve(conn, "D$valid", "pinv")
 cc
 #> $individuals
 #> $individuals$ds1
-#>          bin  n lower upper      truth       prob
-#> 1    (0,0.1] 12   0.0   0.1 0.08333333 0.05843787
-#> 2  (0.1,0.2] 11   0.1   0.2 0.09090909 0.15889461
-#> 3  (0.2,0.3] 13   0.2   0.3 0.23076923 0.24332767
-#> 4  (0.3,0.4]  3   0.3   0.4         NA         NA
-#> 5  (0.4,0.5]  2   0.4   0.5         NA         NA
-#> 6  (0.5,0.6]  7   0.5   0.6 0.71428571 0.56052096
-#> 7  (0.6,0.7]  5   0.6   0.7 0.40000000 0.64127509
-#> 8  (0.7,0.8]  0   0.7   0.8         NA         NA
-#> 9  (0.8,0.9]  0   0.8   0.9         NA         NA
-#> 10   (0.9,1]  0   0.9   1.0         NA         NA
+#>          bin  n lower upper     truth       prob
+#> 1    (0,0.1]  7   0.0   0.1 0.1428571 0.03428287
+#> 2  (0.1,0.2] 15   0.1   0.2 0.1333333 0.14191317
+#> 3  (0.2,0.3] 16   0.2   0.3 0.1250000 0.24256183
+#> 4  (0.3,0.4]  2   0.3   0.4        NA         NA
+#> 5  (0.4,0.5]  2   0.4   0.5        NA         NA
+#> 6  (0.5,0.6]  5   0.5   0.6 1.0000000 0.56477305
+#> 7  (0.6,0.7]  6   0.6   0.7 0.3333333 0.62814721
+#> 8  (0.7,0.8]  0   0.7   0.8        NA         NA
+#> 9  (0.8,0.9]  0   0.8   0.9        NA         NA
+#> 10   (0.9,1]  0   0.9   1.0        NA         NA
 #> 
 #> $individuals$ds2
-#>          bin  n lower upper      truth      prob
-#> 1    (0,0.1] 11   0.0   0.1 0.09090909 0.0618246
-#> 2  (0.1,0.2] 14   0.1   0.2 0.21428571 0.1521453
-#> 3  (0.2,0.3]  9   0.2   0.3 0.11111111 0.2547455
-#> 4  (0.3,0.4]  1   0.3   0.4         NA        NA
-#> 5  (0.4,0.5]  4   0.4   0.5         NA        NA
-#> 6  (0.5,0.6]  5   0.5   0.6 0.00000000 0.5479249
-#> 7  (0.6,0.7]  2   0.6   0.7         NA        NA
-#> 8  (0.7,0.8]  0   0.7   0.8         NA        NA
-#> 9  (0.8,0.9]  0   0.8   0.9         NA        NA
-#> 10   (0.9,1]  0   0.9   1.0         NA        NA
+#>          bin  n lower upper     truth      prob
+#> 1    (0,0.1] 12   0.0   0.1 0.1666667 0.0590041
+#> 2  (0.1,0.2] 12   0.1   0.2 0.1666667 0.1536756
+#> 3  (0.2,0.3] 10   0.2   0.3 0.2000000 0.2458506
+#> 4  (0.3,0.4]  3   0.3   0.4        NA        NA
+#> 5  (0.4,0.5]  1   0.4   0.5        NA        NA
+#> 6  (0.5,0.6]  7   0.5   0.6 0.2857143 0.5410863
+#> 7  (0.6,0.7]  2   0.6   0.7        NA        NA
+#> 8  (0.7,0.8]  0   0.7   0.8        NA        NA
+#> 9  (0.8,0.9]  0   0.8   0.9        NA        NA
+#> 10   (0.9,1]  0   0.9   1.0        NA        NA
 #> 
 #> $individuals$ds3
 #>          bin  n lower upper     truth       prob
-#> 1    (0,0.1] 13   0.0   0.1 0.0000000 0.06865713
-#> 2  (0.1,0.2] 12   0.1   0.2 0.2500000 0.14193578
-#> 3  (0.2,0.3] 12   0.2   0.3 0.4166667 0.24110349
-#> 4  (0.3,0.4]  5   0.3   0.4 0.4000000 0.33940491
+#> 1    (0,0.1] 16   0.0   0.1 0.0625000 0.06378714
+#> 2  (0.1,0.2] 15   0.1   0.2 0.2666667 0.14253427
+#> 3  (0.2,0.3]  9   0.2   0.3 0.3333333 0.25617144
+#> 4  (0.3,0.4]  3   0.3   0.4        NA         NA
 #> 5  (0.4,0.5]  3   0.4   0.5        NA         NA
 #> 6  (0.5,0.6]  4   0.5   0.6        NA         NA
-#> 7  (0.6,0.7]  7   0.6   0.7 0.2857143 0.63177041
+#> 7  (0.6,0.7]  8   0.6   0.7 0.2500000 0.63134082
 #> 8  (0.7,0.8]  1   0.7   0.8        NA         NA
 #> 9  (0.8,0.9]  0   0.8   0.9        NA         NA
 #> 10   (0.9,1]  0   0.9   1.0        NA         NA
 #> 
 #> $individuals$ds4
-#>          bin n lower upper     truth       prob
-#> 1    (0,0.1] 8   0.0   0.1 0.1250000 0.02960261
-#> 2  (0.1,0.2] 6   0.1   0.2 0.3333333 0.14317594
-#> 3  (0.2,0.3] 9   0.2   0.3 0.3333333 0.26274740
-#> 4  (0.3,0.4] 5   0.3   0.4 0.2000000 0.36038460
-#> 5  (0.4,0.5] 9   0.4   0.5 0.2222222 0.44374449
-#> 6  (0.5,0.6] 6   0.5   0.6 0.3333333 0.55035963
-#> 7  (0.6,0.7] 5   0.6   0.7 0.6000000 0.63459336
-#> 8  (0.7,0.8] 0   0.7   0.8        NA         NA
-#> 9  (0.8,0.9] 0   0.8   0.9        NA         NA
-#> 10   (0.9,1] 0   0.9   1.0        NA         NA
+#>          bin  n lower upper     truth       prob
+#> 1    (0,0.1] 10   0.0   0.1 0.1000000 0.04007436
+#> 2  (0.1,0.2]  6   0.1   0.2 0.3333333 0.16099544
+#> 3  (0.2,0.3]  8   0.2   0.3 0.3750000 0.24150888
+#> 4  (0.3,0.4]  3   0.3   0.4        NA         NA
+#> 5  (0.4,0.5] 12   0.4   0.5 0.2500000 0.44069729
+#> 6  (0.5,0.6]  5   0.5   0.6 0.4000000 0.54823617
+#> 7  (0.6,0.7]  5   0.6   0.7 0.6000000 0.63767800
+#> 8  (0.7,0.8]  0   0.7   0.8        NA         NA
+#> 9  (0.8,0.9]  0   0.8   0.9        NA         NA
+#> 10   (0.9,1]  0   0.9   1.0        NA         NA
 #> 
 #> $individuals$ds5
-#>          bin  n lower upper      truth      prob
-#> 1    (0,0.1] 13   0.0   0.1 0.07692308 0.0512249
-#> 2  (0.1,0.2] 13   0.1   0.2 0.15384615 0.1575906
-#> 3  (0.2,0.3] 10   0.2   0.3 0.00000000 0.2480549
-#> 4  (0.3,0.4]  1   0.3   0.4         NA        NA
-#> 5  (0.4,0.5]  6   0.4   0.5 0.16666667 0.4558774
-#> 6  (0.5,0.6]  5   0.5   0.6 0.40000000 0.5387631
-#> 7  (0.6,0.7]  9   0.6   0.7 0.66666667 0.6366734
-#> 8  (0.7,0.8]  1   0.7   0.8         NA        NA
-#> 9  (0.8,0.9]  0   0.8   0.9         NA        NA
-#> 10   (0.9,1]  0   0.9   1.0         NA        NA
+#>          bin  n lower upper      truth       prob
+#> 1    (0,0.1] 13   0.0   0.1 0.07692308 0.05352202
+#> 2  (0.1,0.2] 15   0.1   0.2 0.13333333 0.15701214
+#> 3  (0.2,0.3]  8   0.2   0.3 0.00000000 0.23251239
+#> 4  (0.3,0.4]  2   0.3   0.4         NA         NA
+#> 5  (0.4,0.5]  6   0.4   0.5 0.33333333 0.46306169
+#> 6  (0.5,0.6]  4   0.5   0.6         NA         NA
+#> 7  (0.6,0.7]  9   0.6   0.7 0.66666667 0.62558971
+#> 8  (0.7,0.8]  2   0.7   0.8         NA         NA
+#> 9  (0.8,0.9]  0   0.8   0.9         NA         NA
+#> 10   (0.9,1]  0   0.9   1.0         NA         NA
 #> 
 #> 
 #> $aggregated
-#>          bin lower upper      truth       prob missing_ratio
-#> 1    (0,0.1]   0.0   0.1 0.07017544 0.05573004    0.00000000
-#> 2  (0.1,0.2]   0.1   0.2 0.19642857 0.15158639    0.00000000
-#> 3  (0.2,0.3]   0.2   0.3 0.22641509 0.24895257    0.00000000
-#> 4  (0.3,0.4]   0.3   0.4 0.20000000 0.23326317    0.33333333
-#> 5  (0.4,0.5]   0.4   0.5 0.12500000 0.28037354    0.37500000
-#> 6  (0.5,0.6]   0.5   0.6 0.33333333 0.46886090    0.14814815
-#> 7  (0.6,0.7]   0.6   0.7 0.46428571 0.59042129    0.07142857
-#> 8  (0.7,0.8]   0.7   0.8 0.00000000 0.00000000    1.00000000
-#> 9  (0.8,0.9]   0.8   0.9        NaN        NaN           NaN
-#> 10   (0.9,1]   0.9   1.0        NaN        NaN           NaN
+#>          bin lower upper     truth       prob missing_ratio
+#> 1    (0,0.1]   0.0   0.1 0.1034483 0.05284747    0.00000000
+#> 2  (0.1,0.2]   0.1   0.2 0.1904762 0.14971387    0.00000000
+#> 3  (0.2,0.3]   0.2   0.3 0.1960784 0.24386684    0.00000000
+#> 4  (0.3,0.4]   0.3   0.4 0.0000000 0.00000000    1.00000000
+#> 5  (0.4,0.5]   0.4   0.5 0.2083333 0.33611407    0.25000000
+#> 6  (0.5,0.6]   0.5   0.6 0.3600000 0.37410601    0.32000000
+#> 7  (0.6,0.7]   0.6   0.7 0.4333333 0.58794357    0.06666667
+#> 8  (0.7,0.8]   0.7   0.8 0.0000000 0.00000000    1.00000000
+#> 9  (0.8,0.9]   0.8   0.9       NaN        NaN           NaN
+#> 10   (0.9,1]   0.9   1.0       NaN        NaN           NaN
 #> 
 #> attr(,"class")
 #> [1] "calibration.curve"
 
 gg_cal = plotCalibrationCurve(cc, size = 1)
 gg_cal
-#> Warning: Removed 23 rows containing missing values (`geom_point()`).
-#> Warning: Removed 23 rows containing missing values (`geom_line()`).
+#> Warning: Removed 26 rows containing missing values (`geom_point()`).
+#> Warning: Removed 26 rows containing missing values (`geom_line()`).
 #> Warning: Removed 2 rows containing missing values (`geom_point()`).
 #> Warning: Removed 2 rows containing missing values (`geom_line()`).
 ```
@@ -445,39 +445,39 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", dat_name = "D", seed_object = "l2s")
 #> 
-#> [2023-11-06 14:04:32.495081] L2 sensitivity is: 0.016
+#> [2023-11-13 13:49:55.40976] L2 sensitivity is: 0.016
 #> 
-#> [2023-11-06 14:04:34.500942] Setting: epsilon = 0.3 and delta = 0.4
+#> [2023-11-13 13:49:57.348082] Setting: epsilon = 0.3 and delta = 0.4
 #> 
-#> [2023-11-06 14:04:34.50137] Initializing ROC-GLM
+#> [2023-11-13 13:49:57.348461] Initializing ROC-GLM
 #> 
-#> [2023-11-06 14:04:34.501375] Host: Received scores of negative response
-#> [2023-11-06 14:04:34.501691] Receiving negative scores
-#> [2023-11-06 14:04:36.540942] Host: Pushing pooled scores
-#> [2023-11-06 14:04:38.565601] Server: Calculating placement values and parts for ROC-GLM
-#> [2023-11-06 14:04:40.59222] Server: Calculating probit regression to obtain ROC-GLM
-#> [2023-11-06 14:04:42.633506] Deviance of iter1=32.6342
-#> [2023-11-06 14:04:44.658771] Deviance of iter2=41.5111
-#> [2023-11-06 14:04:46.68584] Deviance of iter3=46.5649
-#> [2023-11-06 14:04:48.705326] Deviance of iter4=46.8714
-#> [2023-11-06 14:04:50.743075] Deviance of iter5=46.8724
-#> [2023-11-06 14:04:52.763577] Deviance of iter6=46.8724
-#> [2023-11-06 14:04:52.76403] Host: Finished calculating ROC-GLM
-#> [2023-11-06 14:04:52.764319] Host: Cleaning data on server
-#> [2023-11-06 14:04:55.410413] Host: Calculating AUC and CI
-#> [2023-11-06 14:05:09.801941] Finished!
+#> [2023-11-13 13:49:57.348465] Host: Received scores of negative response
+#> [2023-11-13 13:49:57.348708] Receiving negative scores
+#> [2023-11-13 13:49:59.285401] Host: Pushing pooled scores
+#> [2023-11-13 13:50:01.225753] Server: Calculating placement values and parts for ROC-GLM
+#> [2023-11-13 13:50:03.155824] Server: Calculating probit regression to obtain ROC-GLM
+#> [2023-11-13 13:50:05.114158] Deviance of iter1=32.6342
+#> [2023-11-13 13:50:07.050596] Deviance of iter2=42.9688
+#> [2023-11-13 13:50:08.988332] Deviance of iter3=47.2468
+#> [2023-11-13 13:50:10.924637] Deviance of iter4=47.4013
+#> [2023-11-13 13:50:12.872163] Deviance of iter5=47.4015
+#> [2023-11-13 13:50:14.808429] Deviance of iter6=47.4015
+#> [2023-11-13 13:50:14.808759] Host: Finished calculating ROC-GLM
+#> [2023-11-13 13:50:14.808943] Host: Cleaning data on server
+#> [2023-11-13 13:50:17.624111] Host: Calculating AUC and CI
+#> [2023-11-13 13:50:31.176188] Finished!
 
 roc_glm
 #> 
 #> ROC-GLM after Pepe:
 #> 
-#>  Binormal form: pnorm(0.78 + 1.25*qnorm(t))
+#>  Binormal form: pnorm(0.64 + 1.03*qnorm(t))
 #> 
-#>  AUC and 0.95 CI: [0.61----0.69----0.76]
+#>  AUC and 0.95 CI: [0.59----0.67----0.75]
 roc_glm$auc
-#> [1] 0.6874512
+#> [1] 0.6719936
 roc_glm$ci
-#> [1] 0.6050649 0.7594828
+#> [1] 0.5891955 0.7453172
 
 gg_distr_roc = plot(roc_glm)
 gg_distr_roc
@@ -523,8 +523,8 @@ knitr::kable(data.frame(
 
 |     lower |       auc |     upper | method             |
 |----------:|----------:|----------:|:-------------------|
-| 0.6131496 | 0.6918527 | 0.7607906 | Pooled empirical   |
-| 0.6050649 | 0.6874512 | 0.7594828 | Distribued ROC-GLM |
+| 0.6003891 | 0.6803571 | 0.7509603 | Pooled empirical   |
+| 0.5891955 | 0.6719936 | 0.7453172 | Distribued ROC-GLM |
 
 #### ROC curve on pooled data vs. distributed ROC-GLM, Figure 8 (left), Section 6.4
 
@@ -546,7 +546,7 @@ gg_roc_pooled
 brier_pooled = mean((dat_test$valid - (1 - probs))^2)
 c(brier_pooled = brier_pooled, brier_distr = brier)
 #> brier_pooled  brier_distr 
-#>    0.1733217    0.1733217
+#>    0.1752662    0.1752662
 
 cc_pooled = calibrationCurve("dat_test$valid", "1 - probs", nbins = 10)
 
@@ -588,12 +588,12 @@ knitr::kable(tab0)
 
 | Server | (0,0.1\] | (0.1,0.2\] | (0.2,0.3\] | (0.3,0.4\] | (0.4,0.5\] | (0.5,0.6\] | (0.6,0.7\] | (0.7,0.8\] | (0.8,0.9\] | (0.9,1\] |
 |-------:|---------:|-----------:|-----------:|-----------:|-----------:|-----------:|-----------:|-----------:|-----------:|---------:|
-|      1 |       12 |         11 |         13 |          3 |          2 |          7 |          5 |          0 |          0 |        0 |
-|      2 |       11 |         14 |          9 |          1 |          4 |          5 |          2 |          0 |          0 |        0 |
-|      3 |       13 |         12 |         12 |          5 |          3 |          4 |          7 |          1 |          0 |        0 |
-|      4 |        8 |          6 |          9 |          5 |          9 |          6 |          5 |          0 |          0 |        0 |
-|      5 |       13 |         13 |         10 |          1 |          6 |          5 |          9 |          1 |          0 |        0 |
-|     15 |       57 |         56 |         53 |         15 |         24 |         27 |         28 |          2 |          0 |        0 |
+|      1 |        7 |         15 |         16 |          2 |          2 |          5 |          6 |          0 |          0 |        0 |
+|      2 |       12 |         12 |         10 |          3 |          1 |          7 |          2 |          0 |          0 |        0 |
+|      3 |       16 |         15 |          9 |          3 |          3 |          4 |          8 |          1 |          0 |        0 |
+|      4 |       10 |          6 |          8 |          3 |         12 |          5 |          5 |          0 |          0 |        0 |
+|      5 |       13 |         15 |          8 |          2 |          6 |          4 |          9 |          2 |          0 |        0 |
+|     15 |       58 |         63 |         51 |         13 |         24 |         25 |         30 |          3 |          0 |        0 |
 
 ``` r
 # Summary of the results used in the paper:
@@ -665,7 +665,7 @@ sessionInfo()
 #>  [9] tools_4.3.2       ps_1.7.5          generics_0.1.3    curl_5.1.0       
 #> [13] tibble_3.2.1      fansi_1.0.5       highr_0.10        pkgconfig_2.0.3  
 #> [17] Matrix_1.6-1.1    checkmate_2.3.0   data.table_1.14.8 desc_1.4.2       
-#> [21] lifecycle_1.0.3   farver_2.1.1      stringr_1.5.0     compiler_4.3.2   
+#> [21] lifecycle_1.0.4   farver_2.1.1      stringr_1.5.0     compiler_4.3.2   
 #> [25] munsell_0.5.0     htmltools_0.5.7   yaml_2.3.7        Rttf2pt1_1.3.12  
 #> [29] pillar_1.9.0      crayon_1.5.2      extrafontdb_1.0   MASS_7.3-60      
 #> [33] mime_0.12         tidyselect_1.2.0  digest_0.6.33     stringi_1.7.12   
@@ -675,7 +675,7 @@ sessionInfo()
 #> [49] magrittr_2.0.3    survival_3.5-7    pkgbuild_1.4.2    utf8_1.2.4       
 #> [53] TH.data_1.1-2     readr_2.1.4       withr_2.5.2       backports_1.4.1  
 #> [57] prettyunits_1.2.0 scales_1.2.1      rmarkdown_2.25    sysfonts_0.8.8   
-#> [61] ranger_0.15.1     hms_1.1.3         evaluate_0.23     knitr_1.45       
+#> [61] ranger_0.16.0     hms_1.1.3         evaluate_0.23     knitr_1.45       
 #> [65] haven_2.5.3       rlang_1.1.2       Rcpp_1.0.11       glue_1.6.2       
 #> [69] pROC_1.18.5       jsonlite_1.8.7    plyr_1.8.9
 ```
