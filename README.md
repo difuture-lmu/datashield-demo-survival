@@ -35,7 +35,7 @@ using the distributed
 The following contains the preparation of test data and a test model as
 [setup](#setup) while the second part is the [analysis](#analysis).
 
-Last time rendered: 13:37 - 19. Feb 2024 by user runner
+Last time rendered: 13:35 - 26. Feb 2024 by user runner
 
 Autobuild: [![Render
 README](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml/badge.svg)](https://github.com/difuture-lmu/datashield-demo-survival/actions/workflows/render-readme.yaml)
@@ -99,7 +99,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Installing packages into '/home/runner/work/_temp/Library'
 #> (as 'lib' is unspecified)
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmppwdzAc/remotesab3e23248216/datashield-dsBaseClient-92e2d59/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpxE7ATE/remotesab0d260e3aa5/datashield-dsBaseClient-92e2d59/DESCRIPTION’ ... OK
 #> * preparing ‘dsBaseClient’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -113,7 +113,7 @@ remotes::install_github("difuture-lmu/dsPredictBase", upgrade = "never")
 #> Skipping install of 'dsBaseClient' from a github remote, the SHA1 (92e2d592) has not changed since last install.
 #>   Use `force = TRUE` to force installation
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmppwdzAc/remotesab3e425671f5/difuture-lmu-dsPredictBase-8266eff/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpxE7ATE/remotesab0d556d6a59/difuture-lmu-dsPredictBase-8266eff/DESCRIPTION’ ... OK
 #> * preparing ‘dsPredictBase’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -130,7 +130,7 @@ remotes::install_github("difuture-lmu/dsCalibration", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsCalibration@HEAD
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmppwdzAc/remotesab3e6c5b0fce/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpxE7ATE/remotesab0d6735da16/difuture-lmu-dsCalibration-1805632/DESCRIPTION’ ... OK
 #> * preparing ‘dsCalibration’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -142,7 +142,7 @@ remotes::install_github("difuture-lmu/dsROCGLM", upgrade = "never")
 #> Using github PAT from envvar GITHUB_PAT
 #> Downloading GitHub repo difuture-lmu/dsROCGLM@HEAD
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/tmp/RtmppwdzAc/remotesab3e69cb4650/difuture-lmu-dsROCGLM-3c2c43f/DESCRIPTION’ ... OK
+#> * checking for file ‘/tmp/RtmpxE7ATE/remotesab0d7ba1090e/difuture-lmu-dsROCGLM-3c2c43f/DESCRIPTION’ ... OK
 #> * preparing ‘dsROCGLM’:
 #> * checking DESCRIPTION meta-information ... OK
 #> * checking for LF line-endings in source and make files and shell scripts
@@ -275,10 +275,10 @@ load(here::here("data/mod.Rda"))
 ## Push the model to the servers (upload takes ~11 Minutes):
 t0 = proc.time()
 pushObject(conn, obj = mod)
-#> [2024-02-19 13:41:57.505025] Your object is bigger than 1 MB (6.6 MB). Uploading larger objects may take some time.
+#> [2024-02-26 13:39:58.87933] Your object is bigger than 1 MB (6.6 MB). Uploading larger objects may take some time.
 (t0 = proc.time() - t0)
 #>    user  system elapsed 
-#>  11.221   0.113 189.521
+#>  11.137   0.097 149.850
 datashield.symbols(conn)
 #> $ds1
 #> [1] "D"   "mod"
@@ -419,10 +419,14 @@ cc
 
 gg_cal = plotCalibrationCurve(cc, size = 1)
 gg_cal
-#> Warning: Removed 26 rows containing missing values (`geom_point()`).
-#> Warning: Removed 26 rows containing missing values (`geom_line()`).
-#> Warning: Removed 2 rows containing missing values (`geom_point()`).
-#> Warning: Removed 2 rows containing missing values (`geom_line()`).
+#> Warning: Removed 26 rows containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 26 rows containing missing values or values outside the scale range
+#> (`geom_line()`).
+#> Warning: Removed 2 rows containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 2 rows containing missing values or values outside the scale range
+#> (`geom_line()`).
 ```
 
 ![](figures/unnamed-chunk-7-1.png)<!-- -->
@@ -445,27 +449,27 @@ sqrt(2 * log(1.25 / delta)) * l2s / epsilon
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", dat_name = "D", seed_object = "l2s")
 #> 
-#> [2024-02-19 13:45:51.067811] L2 sensitivity is: 0.016
+#> [2024-02-26 13:42:54.966978] L2 sensitivity is: 0.016
 #> 
-#> [2024-02-19 13:45:54.386503] Setting: epsilon = 0.3 and delta = 0.4
+#> [2024-02-26 13:42:56.885443] Setting: epsilon = 0.3 and delta = 0.4
 #> 
-#> [2024-02-19 13:45:54.386823] Initializing ROC-GLM
+#> [2024-02-26 13:42:56.88576] Initializing ROC-GLM
 #> 
-#> [2024-02-19 13:45:54.386826] Host: Received scores of negative response
-#> [2024-02-19 13:45:54.387022] Receiving negative scores
-#> [2024-02-19 13:45:57.688473] Host: Pushing pooled scores
-#> [2024-02-19 13:46:01.006738] Server: Calculating placement values and parts for ROC-GLM
-#> [2024-02-19 13:46:04.330099] Server: Calculating probit regression to obtain ROC-GLM
-#> [2024-02-19 13:46:07.652583] Deviance of iter1=32.6342
-#> [2024-02-19 13:46:10.96266] Deviance of iter2=42.9688
-#> [2024-02-19 13:46:14.255278] Deviance of iter3=47.2468
-#> [2024-02-19 13:46:17.532364] Deviance of iter4=47.4013
-#> [2024-02-19 13:46:20.844025] Deviance of iter5=47.4015
-#> [2024-02-19 13:46:24.153965] Deviance of iter6=47.4015
-#> [2024-02-19 13:46:24.154295] Host: Finished calculating ROC-GLM
-#> [2024-02-19 13:46:24.154513] Host: Cleaning data on server
-#> [2024-02-19 13:46:27.674501] Host: Calculating AUC and CI
-#> [2024-02-19 13:46:50.842122] Finished!
+#> [2024-02-26 13:42:56.885763] Host: Received scores of negative response
+#> [2024-02-26 13:42:56.885963] Receiving negative scores
+#> [2024-02-26 13:42:58.811845] Host: Pushing pooled scores
+#> [2024-02-26 13:43:00.735782] Server: Calculating placement values and parts for ROC-GLM
+#> [2024-02-26 13:43:02.665674] Server: Calculating probit regression to obtain ROC-GLM
+#> [2024-02-26 13:43:04.615282] Deviance of iter1=32.6342
+#> [2024-02-26 13:43:06.534986] Deviance of iter2=42.9688
+#> [2024-02-26 13:43:08.43718] Deviance of iter3=47.2468
+#> [2024-02-26 13:43:10.339149] Deviance of iter4=47.4013
+#> [2024-02-26 13:43:12.239187] Deviance of iter5=47.4015
+#> [2024-02-26 13:43:14.142828] Deviance of iter6=47.4015
+#> [2024-02-26 13:43:14.14308] Host: Finished calculating ROC-GLM
+#> [2024-02-26 13:43:14.143234] Host: Cleaning data on server
+#> [2024-02-26 13:43:17.288837] Host: Calculating AUC and CI
+#> [2024-02-26 13:43:30.532112] Finished!
 
 roc_glm
 #> 
@@ -554,9 +558,12 @@ cc_pooled = calibrationCurve("dat_test$valid", "1 - probs", nbins = 10)
 gg_cal_pooled = plotCalibrationCurve(cc, size = 1.5, individuals = FALSE) +
     geom_line(data = cc_pooled, aes(x = prob, y = truth), color = "red")
 gg_cal_pooled
-#> Warning: Removed 2 rows containing missing values (`geom_point()`).
-#> Warning: Removed 2 rows containing missing values (`geom_line()`).
-#> Warning: Removed 3 rows containing missing values (`geom_line()`).
+#> Warning: Removed 2 rows containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 2 rows containing missing values or values outside the scale range
+#> (`geom_line()`).
+#> Warning: Removed 3 rows containing missing values or values outside the scale range
+#> (`geom_line()`).
 ```
 
 ![](figures/unnamed-chunk-13-1.png)<!-- -->
@@ -635,7 +642,7 @@ datashield.logout(conn)
 sessionInfo()
 #> R version 4.3.2 (2023-10-31)
 #> Platform: x86_64-pc-linux-gnu (64-bit)
-#> Running under: Ubuntu 22.04.3 LTS
+#> Running under: Ubuntu 22.04.4 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -657,11 +664,11 @@ sessionInfo()
 #>  [1] dsROCGLM_1.0.0      dsCalibration_0.0.1 dsPredictBase_0.0.1
 #>  [4] dsBaseClient_6.3.0  DSOpal_1.4.0        DSI_1.5.0          
 #>  [7] R6_2.5.1            progress_1.2.3      ggsci_3.0.0        
-#> [10] ggplot2_3.4.4       opalr_3.4.1         httr_1.4.7         
+#> [10] ggplot2_3.5.0       opalr_3.4.1         httr_1.4.7         
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] gtable_0.3.4      xfun_0.42         remotes_2.4.2.1   processx_3.8.3   
-#>  [5] lattice_0.21-9    callr_3.7.4       tzdb_0.4.0        vctrs_0.6.5      
+#>  [5] lattice_0.21-9    callr_3.7.5       tzdb_0.4.0        vctrs_0.6.5      
 #>  [9] tools_4.3.2       ps_1.7.6          generics_0.1.3    curl_5.2.0       
 #> [13] tibble_3.2.1      fansi_1.0.6       highr_0.10        pkgconfig_2.0.3  
 #> [17] Matrix_1.6-1.1    checkmate_2.3.1   data.table_1.15.0 desc_1.4.3       
