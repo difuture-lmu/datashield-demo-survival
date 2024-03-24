@@ -232,11 +232,11 @@ ggsave(plot = gg_cal_pub,
 ```{r}
 # Get the l2 sensitivity
 (l2s = dsL2Sens(conn, "D", "pinv"))
-epsilon = 0.3
-delta = 0.4
+epsilon = 5
+delta = 0.01
 
 # Amount of noise added:
-sqrt(2 * log(1.25 / delta)) * l2s / epsilon
+analyticGaussianMechanism(5, 0.01, l2s)
 
 # Calculate ROC-GLM
 roc_glm = dsROCGLM(conn, "D$valid", "pinv", dat_name = "D", seed_object = "l2s")
